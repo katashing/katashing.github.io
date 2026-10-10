@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="学校申请跟踪：已选与备选学校、进度、日期、备注、翰岭院出行时间。">
+  <title>学校申请跟踪</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="schools.js" defer></script>
+  <script src="travel-data.js" defer></script>
+  <script src="transit-data.js" defer></script>
+  <script src="travel.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-icon" aria-hidden="true">学</span><span>学校申请跟踪<small> 小三插班 · 2026—2027</small></span></a>
+    <div class="top-actions"><span id="save-state" class="save-state">本机自动保存</span><button id="backup-button" class="button small">导出备份</button><button id="import-button" class="button small subtle">导入备份</button></div>
+  </header>
+  <main>
+    <section class="workspace" aria-label="学校清单">
+      <nav class="tabs" aria-label="学校表页"><button data-scope="selected" class="active" aria-pressed="true">已选学校 <span id="tab-selected-count">7</span></button><button data-scope="candidates" aria-pressed="false">备选学校 <span id="tab-candidate-count">24</span></button></nav>
+      <div class="filters">
+        <label class="search"><span class="sr-only">搜索学校或备注</span><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索学校或备注…"></label>
+        <label><span class="sr-only">地区</span><select id="region"><option value="">全部地区</option><option>北区</option><option>大埔</option><option>沙田</option><option>深圳</option></select></label>
+        <label><span class="sr-only">梯队</span><select id="tier"><option value="">全部梯队</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option><option value="none">未列梯队</option></select></label>
+        <label><span class="sr-only">申请状态</span><select id="status"><option value="">全部状态</option></select></label>
+        <label><span class="sr-only">排序</span><select id="sort"><option value="default">原表顺序</option><option value="followup">跟进日期</option><option value="deadline">截止日期</option><option value="commute">公共交通时间</option></select></label>
+      </div>
+      <div id="travel-settings" class="travel-settings" hidden></div>
+      <div class="list-note"><span id="result-count"></span><div><button id="csv-button" class="text-button">导出 CSV</button><button id="print-button" class="text-button">打印</button></div></div>
+      <div class="table-wrap"><table><thead><tr><th>学校 / 已选报名</th><th>地区</th><th>梯队</th><th>申请截止 / 笔试</th><th>报名进度</th><th>下次跟进</th><th id="travel-head">地铁 / 公交</th><th>皇岗驾车<small>深圳校为直达</small></th><th>莲塘驾车</th><th><span class="sr-only">操作</span></th></tr></thead><tbody id="school-list"></tbody></table></div>
+      <div id="empty-state" class="empty-state" hidden><strong>没有符合条件的学校</strong><button id="clear-filters" class="button">清除筛选</button></div>
+    </section>
+    <details class="sources"><summary>资料来源 / 就读信息 / 保存说明</summary>
+      <div class="source-grid"><div class="source-copy"><p>老师备选表 24 所、已选表 7 所，重复 3 所共用一条记录。梯队和排名来自老师，非官方排名。</p><p>截止及11月笔试按2026年；马锦灿1月笔试按2027年。笔试以学校通知为准。“明日电话”须核对原图日期。</p><p>马锦灿、上水惠州两表校名不同，详情中保留原名。已选原图含学生姓名，仅转录学校信息。</p><div id="travel-source-notes"></div><div class="intro-note"><span class="note-line">当前就读</span><strong>深圳公立小学</strong><span>具体校名待补充 · 原表记为“在读”</span><button id="current-button" class="text-button">编辑就读信息</button></div></div><div class="source-links"><a href="assets/taipo.png" target="_blank" rel="noopener">大埔备选原图 ↗</a><a href="assets/north.png" target="_blank" rel="noopener">北区备选原图 ↗</a><div class="storage-note"><strong>记录保存在当前浏览器</strong><p>换设备时导出、导入备份。清理浏览器数据前请备份。</p></div></div></div>
+    </details>
+  </main>
+  <dialog id="detail-dialog" class="detail-dialog">
+    <form id="detail-form"><div class="dialog-head"><div><p class="eyebrow" id="detail-subtitle"></p><h2 id="detail-title"></h2></div><button class="close-button" type="button" data-close="detail-dialog" aria-label="关闭学校详情">×</button></div>
+      <div class="dialog-body"><section id="detail-facts" class="fact-box"></section>
+        <h3>跟踪记录</h3><div class="form-grid">
+          <label class="check-label wide"><input id="edit-selected" type="checkbox"> 已选报名（我们选中了这所学校）</label><p id="edit-selected-help" class="form-help wide" hidden>原已选表学校保留跟踪；不再报名可将进度改为“不再申请”。</p>
+          <label>进度<select id="edit-status"></select></label><label>关注程度<select id="edit-priority"><option>普通</option><option>重点关注</option></select></label>
+          <label>申请截止日期<input id="edit-deadline" type="date"></label><label>笔试 / 面试日期<input id="edit-assessment" type="date"></label>
+          <label>下次跟进<input id="edit-followup" type="date"></label><label>学校电话<input id="edit-contact" type="text" maxlength="120" placeholder="电话 / 联系人"></label>
+          <label class="wide">学校官网<input id="edit-website" type="url" maxlength="500" placeholder="https://…"></label>
+          <label class="check-label wide"><input id="edit-confirmed" type="checkbox"> 已核对原表时间 / 电话待办</label>
+          <label class="wide">备注<textarea id="edit-notes" rows="4" maxlength="5000" placeholder="咨询结果、材料、提交方式…"></textarea></label>
+        </div><p id="record-updated" class="form-help"></p>
+      </div><div class="dialog-footer"><button type="button" class="button" data-close="detail-dialog">取消</button><button type="submit" class="button primary">保存</button></div></form>
+  </dialog>
+  <dialog id="import-dialog" class="compact-dialog"><h2>导入备份</h2><p id="import-description"></p><p>将替换当前记录。建议先导出当前备份。</p><div class="dialog-footer"><button class="button" data-close="import-dialog">取消</button><button id="confirm-import" class="button primary">确认导入</button></div></dialog>
+  <dialog id="current-dialog" class="compact-dialog"><form id="current-form"><h2>当前就读</h2><label>学校名称<input id="current-name" maxlength="150" placeholder="深圳公立小学"></label><label>备注<textarea id="current-notes" rows="3" maxlength="1000"></textarea></label><div class="dialog-footer"><button type="button" class="button" data-close="current-dialog">取消</button><button class="button primary" type="submit">保存</button></div></form></dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
