@@ -55,28 +55,23 @@
     if(scope==='selected' && sort==='default') { const order=['north06','north08','north07','hk-extra01','sz01','sz02','sz03']; rows.sort((a,b)=>{const ai=order.indexOf(a.id),bi=order.indexOf(b.id);return (ai<0?999:ai)-(bi<0?999:bi);}); }
     return rows;
   }
-  function renderActions() {
-    const actions=[];
-    for(const s of DATA) { const r=recordFor(s); if(!r.selected||['不再申请','未录取','录取'].includes(r.status)) continue;
-      if(r.followup) actions.push({s,title:`${dateText(r.followup)} · ${reminder(r.followup)}`,copy:r.notes||'查看记录，完成本次跟进',order:r.followup,cls:diffDays(r.followup)<0?'overdue':''});
-      else if(s.plan?.actionText&&!r.sourceConfirmed) actions.push({s,title:'电话确认',copy:`原表：${s.plan.actionText} · 先确认联系日期`,order:'0001',cls:''});
-      if(r.deadline&&!['已提交','获邀笔试','已笔试','面试中','候补'].includes(r.status)) actions.push({s,title:`${dateText(r.deadline)} 截止`,copy:`${reminder(r.deadline)} · 当前${r.status}`,order:r.deadline,cls:diffDays(r.deadline)<0?'overdue':''});
-      if(r.assessment&&['获邀笔试','已提交','面试中'].includes(r.status)) actions.push({s,title:`${dateText(r.assessment)} 笔试 / 面试`,copy:r.status==='已提交'?'原表安排，先确认是否收到邀请':'查看学校通知和准备事项',order:r.assessment,cls:''});
-    }
-    actions.sort((a,b)=>a.order.localeCompare(b.order));
-    const seen=new Set(); const top=actions.filter(a=>{if(seen.has(a.s.id))return false; seen.add(a.s.id);return true;}).slice(0,3);
-    $('next-actions').innerHTML=top.length?top.map((a,i)=>`<button class="action-card" data-edit="${a.s.id}"><span class="action-index">0${i+1}</span><span class="action-copy"><small class="${a.cls}">${esc(a.title)}</small><strong>${esc(a.s.name)}</strong><span>${esc(a.copy)}</span></span><b aria-hidden="true">↗</b></button>`).join(''):'<div class="action-card"><span class="action-copy"><strong>暂无待安排的跟进</strong><span>在学校详情填写下次跟进日期，或更新申请状态。</span></span></div>';
+  const introduction = school => school.source==='selected'
+    ? [school.plan?.type,school.plan?.language,school.plan?.religion==='无'?'':school.plan?.religion].filter(Boolean).join(' · ')
+    : school.highlight;
+  function scheduleIssue(s) {
+    const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
+    if(!check || check.status==='confirmed') return '';
+    const source=check.sources?.[0];
+    return `<div class="schedule-issue"><strong>${esc(check.issueLabel??(check.status==='conflict'?'日期有冲突':'未核实'))}</strong><span>${esc(check.message)}</span>${source?`<a href="${esc(source.url)}" target="_blank" rel="noopener">官方资料 ↗</a>`:''}</div>`;
   }
   function dateCell(s,r) {
-    if(!s.plan&&!r.deadline&&!r.assessment) return '<span class="muted">尚未记录申请安排</span>';
-    const p=s.plan; const pieces=[];
-    if(r.deadline) pieces.push(`<span class="date-main ${diffDays(r.deadline)<0?'overdue':''}">${dateText(r.deadline)} 截止</span>`);
+    const p=s.plan, pieces=[];
+    if(r.deadline) pieces.push(`<span class="date-main ${diffDays(r.deadline)<0?'overdue':''}">截止 ${dateText(r.deadline)}</span>`);
     else if(p?.deadlineText) pieces.push(`<span class="date-main">${esc(p.deadlineText)}</span>`);
-    if(r.assessment) pieces.push(`<small>笔试 ${dateText(r.assessment)}${p?.assessmentText?' · 获邀者':''}</small>`);
-    else if(p?.assessmentText) pieces.push(`<small>${p.assessmentYear??p.year}年${esc(p.assessmentText.replace(/^入选者/,''))} · ${p.assessmentDate?'原表安排':'具体日待定'}</small>`);
-    if(p?.actionText) pieces.push(`<small>${esc(p.actionText)}${r.sourceConfirmed?' · 已核对':''}</small>`);
-    if(needConfirm(s,r)) pieces.push('<span class="date-note">时间待确认</span>');
-    return pieces.join('');
+    if(r.assessment) pieces.push(`<small>笔试 ${dateText(r.assessment)}</small>`);
+    else if(p?.assessmentText) pieces.push(`<small>${p.assessmentYear??p.year}年${esc(p.assessmentText.replace(/^入选者/,''))} · 日期待定</small>`);
+    if(p?.actionText) pieces.push('<small>电话确认</small>');
+    return (pieces.join('')||'<span class="muted">—</span>')+scheduleIssue(s);
   }
   function renderTravel(s) { return window.renderSchoolTravel ? window.renderSchoolTravel(s,state.travelSettings) : '<span class="muted">正在补充出行查询</span>'; }
   function render() {
@@ -89,10 +84,11 @@
       const r=recordFor(s);
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,state.travelSettings):'<td class="travel-cell" data-label="地铁 / 公交">查询中</td><td class="travel-cell" data-label="皇岗驾车">查询中</td><td class="travel-cell" data-label="莲塘驾车">查询中</td>';
       return `<tr>
-        <td data-label="学校"><button class="school-name" data-edit="${s.id}">${esc(s.name)}</button><div class="school-meta">${r.selected?'<span class="selected-tag">✓ 已选报名</span>':''}${r.priority==='重点关注'?'<span class="priority-tag">重点关注</span>':''}</div>${scope==='candidates'&&s.highlight?`<p class="highlight">${esc(s.highlight)}</p>`:''}${r.notes?`<p class="notes-preview">${esc(r.notes.slice(0,75))}${r.notes.length>75?'…':''}</p>`:''}</td>
-        <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):'—'}</span></td>
-        <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span><span class="muted">原表 #${s.rank}</span>`:'<span class="muted">未提供</span>'}</td>
-        <td data-label="申请安排" class="source-date">${dateCell(s,r)}</td>
+        <td data-label="学校"><button class="school-name" data-edit="${s.id}">${esc(s.name)}</button><div class="school-meta">${r.selected?'<span class="selected-tag">✓ 已选报名</span>':''}${r.priority==='重点关注'?'<span class="priority-tag">重点关注</span>':''}</div>${r.notes?`<p class="notes-preview">${esc(r.notes.slice(0,75))}${r.notes.length>75?'…':''}</p>`:''}</td>
+        <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):''}</span></td>
+        <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
+        <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
+        <td data-label="重要日期" class="source-date">${dateCell(s,r)}</td>
         <td data-label="报名进度"><span class="status-pill" data-status="${esc(r.status)}">${esc(r.status)}</span>${r.website?`<a href="${esc(r.website)}" class="route-link" target="_blank" rel="noopener">官网 ↗</a>`:''}</td>
         <td data-label="下次跟进">${r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>`:'<span class="muted">待安排</span>'}</td>
         ${travel}
@@ -104,9 +100,11 @@
   function setScope(next) { scope=next; render(); document.querySelector('.table-wrap').scrollLeft=0; }
   function openDetail(id) {
     const s=DATA.find(s=>s.id===id); if(!s)return; editingId=id; const r=recordFor(s),p=s.plan;
-    $('detail-title').textContent=s.name; $('detail-subtitle').textContent=[s.region,s.net?'校网 '+s.net:'',s.tier?'老师 '+s.tier:'已选补充'].filter(Boolean).join(' · ');
-    const facts=[['老师提到的亮点',s.highlight||'暂无资料'],['原表公共交通',s.commute||'原表未提供'],...(p?[['学校基本信息',[p.type,p.gender,p.language,p.religion==='无'?'无宗教':p.religion].join(' · ')],['原表申请安排',[p.deadlineText,p.actionText].filter(Boolean).join('；')||'未提供'],['原表笔试安排',p.assessmentText?`${p.assessmentYear??p.year}年 · ${p.assessmentText}`:'未提供'],...(p.dateNote?[['时间备注',p.dateNote]]:[]),...(p.alias?[['校名待核对',`已选原表写作“${p.alias}”，备选表写作“${s.name}”；暂合并为一条。`]]:[])]:[])];
-    $('detail-facts').innerHTML=facts.map(([label,value])=>`<p><strong>${esc(label)}</strong><span>${esc(value)}</span></p>`).join('')+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${renderTravel(s)}</span></p>`:'');
+    $('detail-title').textContent=s.name; $('detail-subtitle').textContent=[s.region,s.net?'校网 '+s.net:'',s.tier?s.tier:''].filter(Boolean).join(' · ');
+    const facts=[['学校介绍',introduction(s)||'—'],...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.assessmentText&&!r.assessment?[['笔试安排',`${p.assessmentYear??p.year}年${p.assessmentText.replace(/^入选者/,'')}，具体日期待确认`]]:[]),...(p.alias?[['其他名称',p.alias]]:[])]:[])];
+    const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
+    const checked=check?`<div class="schedule-check ${check.status==='confirmed'?'':'schedule-issue'}"><strong>日期核查 · ${window.SCHEDULE_CHECK_DATA.checkedAt}</strong><p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
+    $('detail-facts').innerHTML=facts.map(([label,value])=>`<p><strong>${esc(label)}</strong><span>${esc(value)}</span></p>`).join('')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${renderTravel(s)}</span></p>`:'');
     $('edit-selected').checked=r.selected; $('edit-selected').disabled=s.source==='selected'; $('edit-selected-help').hidden=s.source!=='selected'; $('edit-status').value=r.status; $('edit-priority').value=r.priority;
     for(const key of ['deadline','assessment','followup','contact','website','notes']) $('edit-'+key).value=r[key];
     $('edit-confirmed').checked=r.sourceConfirmed; $('record-updated').textContent=r.updatedAt?'上次更新：'+new Date(r.updatedAt).toLocaleString('zh-CN'):'';
@@ -123,8 +121,13 @@
   $('import-file').addEventListener('change',async()=>{const file=$('import-file').files[0];if(!file)return;try{if(file.size>1000000)throw new Error('备份文件过大');const raw=JSON.parse(await file.text());if(raw.format!=='school-notebook'||raw.version!==1)throw new Error('请选择此网页导出的备份文件');pendingImport=validateState(raw);$('import-description').textContent=`备份包含 ${Object.keys(pendingImport.records).length} 所学校的修改记录，导出于 ${raw.exportedAt?new Date(raw.exportedAt).toLocaleString('zh-CN'):'未知时间'}。`;$('import-dialog').showModal();}catch(error){notify(error.message||'读取备份失败');}$('import-file').value='';});
   $('confirm-import').addEventListener('click',()=>{if(!pendingImport)return;state=pendingImport;pendingImport=null;const saved=persist();$('import-dialog').close();render();if(saved)notify('备份已导入');});
   const csvValue=value=>'"'+String(value??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
-  $('csv-button').addEventListener('click',()=>{const head=['学校','地区','原表排名','老师梯队','校网','已选','申请状态','申请截止日期','笔试/面试日期','下次跟进','原表申请时间','原表笔试','原表电话待办','原表公共交通','联系电话','官网','备注'];const rows=DATA.map(s=>{const r=recordFor(s);return [s.name,s.region,s.rank,s.tier,s.net,r.selected?'是':'否',r.status,r.deadline,r.assessment,r.followup,s.plan?.deadlineText?`${s.plan.year}年 · ${s.plan.deadlineText}`:'',s.plan?.assessmentText?`${s.plan.assessmentYear??s.plan.year}年 · ${s.plan.assessmentText}`:'',s.plan?.actionText,s.commute,r.contact,r.website,r.notes];});if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(DATA[i],state.travelSettings)));}download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');});
-  function renderCurrent() { const box=document.querySelector('.intro-note');box.querySelector('strong').textContent=state.currentSchool.name||'深圳公立小学';box.querySelectorAll('span')[1].textContent=state.currentSchool.notes||'具体校名待补充 · 老师表中记为“在读”'; }
+  $('csv-button').addEventListener('click',()=>{
+    const head=['学校','地区','梯队','校网','学校介绍','已选报名','报名进度','申请截止','笔试/面试日期','笔试安排','下次跟进','联系电话','官网','备注','日期核查'];
+    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [s.name,s.region,s.tier,s.net,introduction(s),r.selected?'是':'否',r.status,r.deadline,r.assessment,s.plan?.assessmentText?`${s.plan.assessmentYear??s.plan.year}年 · ${s.plan.assessmentText.replace(/^入选者/,'')}`:'',r.followup,r.contact,r.website,r.notes,check?.message??''];});
+    if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(DATA[i],state.travelSettings)));}
+    download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
+  });
+  function renderCurrent() { const box=document.querySelector('.intro-note');box.querySelector('strong').textContent=state.currentSchool.name||'深圳公立小学';box.querySelectorAll('span')[1].textContent=state.currentSchool.notes||'校名待补充'; }
   $('current-button').addEventListener('click',()=>{$('current-name').value=state.currentSchool.name;$('current-notes').value=state.currentSchool.notes;$('current-dialog').showModal();});
   $('current-form').addEventListener('submit',event=>{event.preventDefault();state.currentSchool={name:$('current-name').value.trim()||'深圳公立小学',notes:$('current-notes').value.trim()};const saved=persist();renderCurrent();$('current-dialog').close();if(saved)notify('就读信息已保存');});
   $('print-button').addEventListener('click',()=>window.print());

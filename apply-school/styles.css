@@ -444,3 +444,47 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   .travel-cell { min-width: 0; max-width: none; width: auto; }
   .travel-settings { display: none !important; }
 }
+
+/* 家长查询与进度跟踪：介绍完整展示，辅助信息缩减。 */
+.schedule-issue { margin-top: 8px; padding: 7px 9px; border-left: 3px solid #b6332b; background: #fff1ef; color: #a12922; font-size: 12px; line-height: 1.6; }
+.schedule-issue > strong, .schedule-issue > span { display: block; }
+.schedule-issue a { color: #a12922; }
+.schedule-check a { display: block; margin-top: 4px; }
+.school-meta:empty, td > .muted:empty { display: none; }
+@media screen {
+  main { width: calc(100% - 48px); max-width: 1720px; }
+  table { min-width: 1530px; }
+  td { padding: 15px 13px; min-width: 80px; font-size: 13px; color: #33443b; }
+  th { padding: 13px; font-size: 13px; color: #536557; }
+  th:first-child { min-width: 210px; width: 15%; }
+  .school-intro, .intro-head { min-width: 205px; width: 17%; }
+  .school-intro { color: #405246; font-size: 13px; line-height: 1.7; }
+  .school-name { font-size: 15px; }
+  .source-date { min-width: 180px; }
+  .date-main { font-size: 13px; }
+  .source-date > small { font-size: 12px; }
+  .pill, .tier, .selected-tag, .status-pill, .priority-tag { font-size: 11px; }
+  .route-link { font-size: 12px; }
+  .travel-cell strong { font-size: 14px; }
+  .fact-box { color: #405246; font-size: 13px; }
+  .fact-box p { color: #526355; }
+  .fact-box p > strong { display: block; margin-bottom: 2px; }
+  .fact-box p > span { display: block; }
+}
+@media screen and (max-width:700px) {
+  main { width: calc(100% - 30px); }
+  table { min-width: 0; }
+  td { width: 50%; min-width: 0; padding: 12px 10px 3px 0; }
+  .school-intro { width: 100%; min-width: 0; padding-bottom: 10px; border-bottom: 1px solid var(--line-light); }
+  .source-date { min-width: 0; }
+  .school-name { font-size: 16px; }
+  td::before { color: #6a766c; font-size: 11px; }
+  .travel-cell { min-width: 0; }
+  .schedule-issue { font-size: 12px; }
+}
+@media print {
+  .school-intro { font-size: 9px; line-height: 1.5; }
+  .schedule-issue { font-size: 8px; color: #a12922; padding: 3px; }
+}
+
+.fact-box .schedule-issue, .fact-box .schedule-issue p, .fact-box .schedule-issue strong { color: #a12922; }
