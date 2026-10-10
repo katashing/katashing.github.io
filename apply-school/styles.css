@@ -488,3 +488,5 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
 }
 
 .fact-box .schedule-issue, .fact-box .schedule-issue p, .fact-box .schedule-issue strong { color: #a12922; }
+
+.travel-cell .travel-over-limit, .route-summary .travel-over-limit { color: #b3261e; font-weight: 800; background: #fff1ef; padding: 2px 5px; border-radius: 3px; }

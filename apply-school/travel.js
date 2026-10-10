@@ -3,6 +3,7 @@
   const TRAVEL=window.TRAVEL_DATA;
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const minutes=range=>range?`${range[0]===range[1]?range[0]:range.join('–')} 分`:'待核对';
+  const timeMarkup=(range,tag='strong')=>`<${tag}${range?.[1]>50?' class="travel-over-limit" title="单程时间上限超过50分钟"':''}>${minutes(range)}</${tag}>`;
   function transit(s,settings) {
     const record=window.TRANSIT_DATA?.schools?.[s.id];
     if(!record)return null;
@@ -20,7 +21,7 @@
     if(home==null||school==null)return null;
     return [home+school+settings.queueMin+settings.trafficBuffer,home+school+settings.queueMax+settings.trafficBuffer];
   }
-  function cell(label,range,note,link) { return `<td data-label="${esc(label)}" class="travel-cell"><strong>${minutes(range)}</strong>${note?`<small class="travel-note">${esc(note)}</small>`:''}${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">导航 ↗</a>`:''}</td>`; }
+  function cell(label,range,note,link) { return `<td data-label="${esc(label)}" class="travel-cell">${timeMarkup(range)}${note?`<small class="travel-note">${esc(note)}</small>`:''}${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">导航 ↗</a>`:''}</td>`; }
   window.renderSchoolTravelCells=(s,settings)=>{
     const rec=TRAVEL.schools[s.id], pt=window.TRANSIT_DATA?.schools?.[s.id];
     const publicLink=rec?.mapLinks?.directPublicTransport??(rec?.coordinates?`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent('深圳翰岭院')}&destination=${encodeURIComponent(rec.officialName+' '+rec.address)}&travelmode=transit`:null);
@@ -31,7 +32,7 @@
   window.renderSchoolTravel=(s,settings)=>{
     const rec=TRAVEL.schools[s.id], pt=window.TRANSIT_DATA?.schools?.[s.id];
     const rows=[['地铁 / 公交',transit(s,settings)],...(s.region==='深圳'?[['直接驾车',drive(s,'huanggang',settings)]]:[['皇岗驾车',drive(s,'huanggang',settings)],['莲塘驾车',drive(s,'liantang',settings)]])];
-    let html=rows.map(([label,range])=>`<span class="route-summary"><b>${label}</b>　${minutes(range)}</span>`).join('');
+    let html=rows.map(([label,range])=>`<span class="route-summary"><b>${label}</b>　${timeMarkup(range,'span')}</span>`).join('');
     html+=`<details class="route-details"><summary>地址与路线</summary>`;
     if(rec?.officialName) html+=`<div>${esc(rec.officialName)}</div>`;
     if(rec?.address) html+=`<div>${esc(rec.address)} <a href="${esc(rec.addressSourceUrl??rec.sourceUrl)}" target="_blank" rel="noopener">校址 ↗</a></div>`;
