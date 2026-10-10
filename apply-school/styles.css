@@ -133,7 +133,6 @@ th:first-child { min-width: 300px; width: 27%; }
 th:last-child, td:last-child { padding-right: 27px; }
 td { min-width: 104px; padding: 15px 17px; vertical-align: top; border-top: 1px solid var(--line-light); font-size: 12px; line-height: 1.65; }
 tbody tr:hover { background: #fbfcf5; }
-td:last-child { min-width: 126px; vertical-align: middle; }
 .school-name { display: block; margin-bottom: 6px; color: var(--ink); font-size: 14px; font-weight: 600; line-height: 1.55; }
 .school-name a { color: inherit; }
 .school-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 6px; margin-bottom: 7px; color: #707d66; font-size: 10px; }
@@ -303,8 +302,6 @@ dialog::backdrop { background: rgb(27 43 32 / 44%); backdrop-filter: blur(3px); 
   td::before { display: block; content: attr(data-label); margin-bottom: 5px; color: #a1a590; font-size: 9px; font-weight: 500; line-height: 1.5; }
   td:first-child { width: 100%; min-width: 0; padding: 15px 0 12px; border-bottom: 1px solid var(--line-light); }
   td:first-child::before { display: none; }
-  td:last-child { display: flex; justify-content: flex-end; align-items: flex-end; min-width: 0; padding: 12px 0 3px; margin-left: auto; }
-  td:last-child::before { display: none; }
   .school-name { font-size: 14px; margin-bottom: 6px; }
   .school-meta { font-size: 9px; gap: 4px 5px; margin-bottom: 6px; }
   .highlight { max-width: none; font-size: 10px; line-height: 1.8; }
@@ -390,7 +387,6 @@ dialog::backdrop { background: rgb(27 43 32 / 44%); backdrop-filter: blur(3px); 
   td::before { display: none; }
   th:first-child { width: 27%; }
   td:first-child { border-bottom: 1px solid #ddd; }
-  th:last-child, td:last-child { display: none; }
   .school-name { font-size: 11px; }
   .school-meta, .highlight, .source-date, .date-main, .date-note, .travel-note, .route-summary, .notes-preview { font-size: 8px; }
   .travel-cell { min-width: 0; width: auto; }
@@ -453,12 +449,14 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
 .school-meta:empty, td > .muted:empty { display: none; }
 @media screen {
   main { width: calc(100% - 48px); max-width: 1720px; }
-  table { min-width: 1530px; }
+  table { min-width: 1810px; }
   td { padding: 15px 13px; min-width: 80px; font-size: 13px; color: #33443b; }
   th { padding: 13px; font-size: 13px; color: #536557; }
   th:first-child { min-width: 210px; width: 15%; }
   .school-intro, .intro-head { min-width: 205px; width: 17%; }
   .school-intro { color: #405246; font-size: 13px; line-height: 1.7; }
+  .teacher-route, .teacher-route-head { min-width: 250px; width: 16%; }
+  .teacher-route { color: #405246; font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
   .school-name { font-size: 15px; }
   .source-date { min-width: 180px; }
   .date-main { font-size: 13px; }
@@ -476,6 +474,7 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   table { min-width: 0; }
   td { width: 50%; min-width: 0; padding: 12px 10px 3px 0; }
   .school-intro { width: 100%; min-width: 0; padding-bottom: 10px; border-bottom: 1px solid var(--line-light); }
+  .teacher-route { width: 100%; min-width: 0; padding-bottom: 10px; border-bottom: 1px solid var(--line-light); }
   .source-date { min-width: 0; }
   .school-name { font-size: 16px; }
   td::before { color: #6a766c; font-size: 11px; }
@@ -483,10 +482,16 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   .schedule-issue { font-size: 12px; }
 }
 @media print {
-  .school-intro { font-size: 9px; line-height: 1.5; }
+  .school-intro, .teacher-route { font-size: 9px; line-height: 1.5; }
   .schedule-issue { font-size: 8px; color: #a12922; padding: 3px; }
 }
 
 .fact-box .schedule-issue, .fact-box .schedule-issue p, .fact-box .schedule-issue strong { color: #a12922; }
 
 .travel-cell .travel-over-limit, .route-summary .travel-over-limit { color: #b3261e; font-weight: 800; background: #fff1ef; padding: 2px 5px; border-radius: 3px; }
+
+.school-intro, .teacher-route { white-space: pre-wrap; }
+.detail-dialog { display: none; }
+.detail-dialog[open] { display: flex; flex-direction: column; }
+.detail-dialog .dialog-head, .detail-dialog .dialog-footer { flex: 0 0 auto; }
+.detail-dialog .dialog-body { min-height: 0; overflow: auto; }

@@ -1,7 +1,7 @@
 // Sources and routing were checked on 2026-10-10. Durations exclude border clearance and traffic.
 window.TRAVEL_DATA = {
   "checkedAt": "2026-10-10",
-  "method": "OSRM 汽车路网分段估算；使用香港教育局学校坐标及香港入境处口岸坐标；不含实时路况、排队、边检检查、步行、停车、上下客与口岸内部接驳时间。",
+  "method": "OSRM 汽车路网分段规划估算；香港学校用教育局坐标，莲塘用入境处坐标，新皇岗用九巴新PTI官方WGS84公交点；家庭到新皇岗为旧10分钟历史基准加5分钟接入规划预留。均不含实时路况、排队、边检检查、步行、停车、上下客与口岸内部候车时间。",
   "rounding": "路线秒数换算为分钟后，向上取整至5分钟。",
   "hasLiveTraffic": false,
   "hasBorderQueueData": false,
@@ -24,21 +24,26 @@ window.TRAVEL_DATA = {
   },
   "origins": {
     "huanggangShenzhen": {
-      "name": "皇岗口岸（深圳侧）",
-      "address": "深圳市福田区福田南路与百合路交叉口南420米",
+      "name": "新皇岗口岸（深圳侧新联检楼抵达区域）",
+      "address": "深圳市福田区新皇岗口岸；普通网约车B3、深圳出租车B1下客",
       "coordinates": [
-        114.07232911,
-        22.52234021
+        114.068333,
+        22.523177
       ],
-      "longitude": 114.07232911,
-      "latitude": 22.52234021,
+      "longitude": 114.068333,
+      "latitude": 22.523177,
       "coordinateSystem": "WGS84",
-      "sourceCoordinateSystem": "GCJ-02",
+      "sourceCoordinateSystem": "WGS84",
       "sourceCoordinates": [
-        114.077454,
-        22.519643
+        114.068333,
+        22.523177
       ],
-      "sourceUrl": "https://www.amap.com/place/B0I32HLGAJ"
+      "sourceUrl": "https://data.etabus.gov.hk/v1/transport/kmb/stop",
+      "stopId": "C9A6689E84F83D1A",
+      "stopName": "皇崗口岸 (HU900)",
+      "coordinateNote": "用同栋新联检楼港方PTI官方公交点作建筑区域代理点，非实测深圳B3/B1入口；家庭到新楼只采用历史前段加明确接入预留。",
+      "arrangementSourceUrl": "https://ka.sz.gov.cn/ztzl/hgkazt/index.html",
+      "routeVerificationSourceUrl": "https://data.etabus.gov.hk/v1/transport/kmb/route-stop/B10/outbound/1"
     },
     "liantangShenzhen": {
       "name": "莲塘口岸（深圳侧旅检楼抵达点）",
@@ -59,21 +64,26 @@ window.TRAVEL_DATA = {
       "coordinateNote": "用口岸负一层公交首末站POI作为深圳侧抵达规划点，非指定跨境私家车车道。位置与抵达方式应在导航复核。"
     },
     "huanggangHongKong": {
-      "name": "落马洲管制站（皇岗港方）",
-      "address": "落马洲管制站",
+      "name": "新皇岗口岸港方公共运输交汇处（L2）",
+      "address": "新皇岗口岸新联检楼L2港方PTI；红／绿的士站",
       "coordinates": [
-        114.07404556,
-        22.50937751
+        114.068333,
+        22.523177
       ],
-      "longitude": 114.07404556,
-      "latitude": 22.50937751,
+      "longitude": 114.068333,
+      "latitude": 22.523177,
       "coordinateSystem": "WGS84",
       "sourceCoordinateSystem": "WGS84",
       "sourceCoordinates": [
-        114.07404556,
-        22.50937751
+        114.068333,
+        22.523177
       ],
-      "sourceUrl": "https://portal.csdi.gov.hk/server/rest/services/common/immd_rcd_1633320081376_19895/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson"
+      "sourceUrl": "https://data.etabus.gov.hk/v1/transport/kmb/stop",
+      "stopId": "C9A6689E84F83D1A",
+      "stopName": "皇崗口岸 (HU900)",
+      "coordinateNote": "九巴新皇岗B10终点HU900官方WGS84坐标。现有OSRM路网向福田南路／百合三路吸附约201米，尚未完整映射L2内部连接；路线是规划基准。",
+      "arrangementSourceUrl": "https://ka.sz.gov.cn/ztzl/hgkazt/index.html",
+      "routeVerificationSourceUrl": "https://data.etabus.gov.hk/v1/transport/kmb/route-stop/B10/outbound/1"
     },
     "liantangHongKong": {
       "name": "香园围管制站（莲塘港方）",
@@ -94,15 +104,15 @@ window.TRAVEL_DATA = {
     }
   },
   "driveMinutes": {
-    "homeToHuanggang": 10,
+    "homeToHuanggang": 15,
     "homeToLiantang": 15
   },
   "driveSeconds": {
-    "homeToHuanggang": 515.5,
+    "homeToHuanggang": null,
     "homeToLiantang": 732.8
   },
   "driveDistanceMeters": {
-    "homeToHuanggang": 7696.6,
+    "homeToHuanggang": null,
     "homeToLiantang": 14556.1
   },
   "schools": {
@@ -124,20 +134,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 959.9,
+        "huanggang": 988.5,
         "liantang": 1032.4
       },
       "driveDistanceMeters": {
-        "huanggang": 15703,
+        "huanggang": 17731.3,
         "liantang": 15956.2
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.44877997%2C114.17036538&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E8%88%8A%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1%28%E5%AF%B6%E6%B9%96%E9%81%93%29+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%B6%E6%B9%96%E9%81%937%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.44877997%2C114.17036538&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E5%A4%A7%E5%9F%94%E8%88%8A%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1%28%E5%AF%B6%E6%B9%96%E9%81%93%29+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%B6%E6%B9%96%E9%81%937%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.44877997%2C114.17036538&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E8%88%8A%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1%28%E5%AF%B6%E6%B9%96%E9%81%93%29+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%B6%E6%B9%96%E9%81%937%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 36.1
+      "roadSnapDistanceMeters": 36.1,
+      "routingStatus": "success"
     },
     "tp02": {
       "officialName": "香港教育大學賽馬會小學",
@@ -157,21 +168,22 @@ window.TRAVEL_DATA = {
       "huanggang": 25,
       "liantang": 25,
       "driveSeconds": {
-        "huanggang": 1320.7,
+        "huanggang": 1349.3,
         "liantang": 1393.2
       },
       "driveDistanceMeters": {
-        "huanggang": 19345.3,
+        "huanggang": 21373.5,
         "liantang": 19598.5
       },
       "travelNote": "学校位于香港教育大学露屏路校区，老师图中太和站+15分钟步行路线与官方地址不吻合，应重新导航，勿直接采用老师步行时间。",
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.46965751%2C114.19449024&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%A6%99%E6%B8%AF%E6%95%99%E8%82%B2%E5%A4%A7%E5%AD%B8%E8%B3%BD%E9%A6%AC%E6%9C%83%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E9%9C%B2%E5%B1%8F%E8%B7%AF10%E8%99%9F%E9%A6%99%E6%B8%AF%E6%95%99%E8%82%B2%E5%A4%A7%E5%AD%B8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.46965751%2C114.19449024&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E9%A6%99%E6%B8%AF%E6%95%99%E8%82%B2%E5%A4%A7%E5%AD%B8%E8%B3%BD%E9%A6%AC%E6%9C%83%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E9%9C%B2%E5%B1%8F%E8%B7%AF10%E8%99%9F%E9%A6%99%E6%B8%AF%E6%95%99%E8%82%B2%E5%A4%A7%E5%AD%B8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.46965751%2C114.19449024&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%A6%99%E6%B8%AF%E6%95%99%E8%82%B2%E5%A4%A7%E5%AD%B8%E8%B3%BD%E9%A6%AC%E6%9C%83%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E9%9C%B2%E5%B1%8F%E8%B7%AF10%E8%99%9F%E9%A6%99%E6%B8%AF%E6%95%99%E8%82%B2%E5%A4%A7%E5%AD%B8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 31.8
+      "roadSnapDistanceMeters": 31.8,
+      "routingStatus": "success"
     },
     "tp03": {
       "officialName": "保良局田家炳千禧小學",
@@ -191,20 +203,21 @@ window.TRAVEL_DATA = {
       "huanggang": 25,
       "liantang": 25,
       "driveSeconds": {
-        "huanggang": 1272.4,
+        "huanggang": 1301,
         "liantang": 1344.9
       },
       "driveDistanceMeters": {
-        "huanggang": 21073.8,
+        "huanggang": 23102.1,
         "liantang": 21327
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.43075416%2C114.19602979&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%BF%9D%E8%89%AF%E5%B1%80%E7%94%B0%E5%AE%B6%E7%82%B3%E5%8D%83%E7%A6%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%A4%A7%E5%9F%94%E5%85%AC%E8%B7%AF%E5%A4%A7%E5%9F%94%E6%BB%98%E6%AE%B54641%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.43075416%2C114.19602979&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E4%BF%9D%E8%89%AF%E5%B1%80%E7%94%B0%E5%AE%B6%E7%82%B3%E5%8D%83%E7%A6%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%A4%A7%E5%9F%94%E5%85%AC%E8%B7%AF%E5%A4%A7%E5%9F%94%E6%BB%98%E6%AE%B54641%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.43075416%2C114.19602979&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%BF%9D%E8%89%AF%E5%B1%80%E7%94%B0%E5%AE%B6%E7%82%B3%E5%8D%83%E7%A6%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%A4%A7%E5%9F%94%E5%85%AC%E8%B7%AF%E5%A4%A7%E5%9F%94%E6%BB%98%E6%AE%B54641%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 47.8
+      "roadSnapDistanceMeters": 47.8,
+      "routingStatus": "success"
     },
     "tp04": {
       "officialName": "大埔舊墟公立學校",
@@ -224,20 +237,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 941.9,
+        "huanggang": 970.5,
         "liantang": 1014.4
       },
       "driveDistanceMeters": {
-        "huanggang": 15329.3,
+        "huanggang": 17357.6,
         "liantang": 15582.5
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.45175984%2C114.1669455&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E8%88%8A%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AE%89%E7%A5%A5%E8%B7%AF10%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.45175984%2C114.1669455&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E5%A4%A7%E5%9F%94%E8%88%8A%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AE%89%E7%A5%A5%E8%B7%AF10%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.45175984%2C114.1669455&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E8%88%8A%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AE%89%E7%A5%A5%E8%B7%AF10%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 14.3
+      "roadSnapDistanceMeters": 14.3,
+      "routingStatus": "success"
     },
     "tp05": {
       "officialName": "聖公會阮鄭夢芹小學",
@@ -257,20 +271,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 983.7,
+        "huanggang": 1012.3,
         "liantang": 1056.2
       },
       "driveDistanceMeters": {
-        "huanggang": 16116.8,
+        "huanggang": 18145,
         "liantang": 16370
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.44736227%2C114.17314389&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%81%96%E5%85%AC%E6%9C%83%E9%98%AE%E9%84%AD%E5%A4%A2%E8%8A%B9%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%BB%A3%E7%A6%8F%E9%82%A8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.44736227%2C114.17314389&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E8%81%96%E5%85%AC%E6%9C%83%E9%98%AE%E9%84%AD%E5%A4%A2%E8%8A%B9%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%BB%A3%E7%A6%8F%E9%82%A8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.44736227%2C114.17314389&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%81%96%E5%85%AC%E6%9C%83%E9%98%AE%E9%84%AD%E5%A4%A2%E8%8A%B9%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%BB%A3%E7%A6%8F%E9%82%A8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 89.1
+      "roadSnapDistanceMeters": 89.1,
+      "routingStatus": "success"
     },
     "tp06": {
       "officialName": "港九街坊婦女會孫方中小學",
@@ -290,20 +305,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 996.1,
+        "huanggang": 1024.7,
         "liantang": 1068.6
       },
       "driveDistanceMeters": {
-        "huanggang": 16469.6,
+        "huanggang": 18497.9,
         "liantang": 16722.8
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.45385521%2C114.17746703&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%B8%AF%E4%B9%9D%E8%A1%97%E5%9D%8A%E5%A9%A6%E5%A5%B3%E6%9C%83%E5%AD%AB%E6%96%B9%E4%B8%AD%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E7%AC%AC%E5%8D%81%E4%B8%83%E5%8D%80%E5%AF%8C%E5%96%84%E9%82%A8%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%B8%E7%AC%AC%E4%B8%89%E6%A0%A1%E8%88%8D&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.45385521%2C114.17746703&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E6%B8%AF%E4%B9%9D%E8%A1%97%E5%9D%8A%E5%A9%A6%E5%A5%B3%E6%9C%83%E5%AD%AB%E6%96%B9%E4%B8%AD%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E7%AC%AC%E5%8D%81%E4%B8%83%E5%8D%80%E5%AF%8C%E5%96%84%E9%82%A8%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%B8%E7%AC%AC%E4%B8%89%E6%A0%A1%E8%88%8D&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.45385521%2C114.17746703&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%B8%AF%E4%B9%9D%E8%A1%97%E5%9D%8A%E5%A9%A6%E5%A5%B3%E6%9C%83%E5%AD%AB%E6%96%B9%E4%B8%AD%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E7%AC%AC%E5%8D%81%E4%B8%83%E5%8D%80%E5%AF%8C%E5%96%84%E9%82%A8%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%B8%E7%AC%AC%E4%B8%89%E6%A0%A1%E8%88%8D&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 47.3
+      "roadSnapDistanceMeters": 47.3,
+      "routingStatus": "success"
     },
     "tp07": {
       "officialName": "大埔循道衛理小學",
@@ -323,20 +339,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 1030.3,
+        "huanggang": 1058.9,
         "liantang": 1102.8
       },
       "driveDistanceMeters": {
-        "huanggang": 16276.3,
+        "huanggang": 18304.5,
         "liantang": 16529.5
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.45659143%2C114.17519361&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E5%BE%AA%E9%81%93%E8%A1%9B%E7%90%86%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E6%A3%9F%E6%A8%91%E8%B7%AF10%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.45659143%2C114.17519361&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E5%A4%A7%E5%9F%94%E5%BE%AA%E9%81%93%E8%A1%9B%E7%90%86%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E6%A3%9F%E6%A8%91%E8%B7%AF10%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.45659143%2C114.17519361&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E5%BE%AA%E9%81%93%E8%A1%9B%E7%90%86%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E6%A3%9F%E6%A8%91%E8%B7%AF10%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 30.3
+      "roadSnapDistanceMeters": 30.3,
+      "routingStatus": "success"
     },
     "tp08": {
       "officialName": "大埔崇德黃建常紀念學校",
@@ -356,20 +373,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 946.8,
+        "huanggang": 975.4,
         "liantang": 1019.3
       },
       "driveDistanceMeters": {
-        "huanggang": 15577.7,
+        "huanggang": 17606,
         "liantang": 15830.9
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.44892441%2C114.16937444&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E5%B4%87%E5%BE%B7%E9%BB%83%E5%BB%BA%E5%B8%B8%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E6%9D%B1%E6%98%8C%E8%A1%97&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.44892441%2C114.16937444&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E5%A4%A7%E5%9F%94%E5%B4%87%E5%BE%B7%E9%BB%83%E5%BB%BA%E5%B8%B8%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E6%9D%B1%E6%98%8C%E8%A1%97&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.44892441%2C114.16937444&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E5%B4%87%E5%BE%B7%E9%BB%83%E5%BB%BA%E5%B8%B8%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E6%9D%B1%E6%98%8C%E8%A1%97&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 44.0
+      "roadSnapDistanceMeters": 44.0,
+      "routingStatus": "success"
     },
     "tp09": {
       "officialName": "聖公會阮鄭夢芹銀禧小學",
@@ -389,20 +407,21 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 1042.8,
+        "huanggang": 1071.4,
         "liantang": 1115.3
       },
       "driveDistanceMeters": {
-        "huanggang": 16308.9,
+        "huanggang": 18337.2,
         "liantang": 16562.1
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.45945402%2C114.1723566&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%81%96%E5%85%AC%E6%9C%83%E9%98%AE%E9%84%AD%E5%A4%A2%E8%8A%B9%E9%8A%80%E7%A6%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%8C%E4%BA%A8%E9%82%A8%E7%AC%AC%E5%9B%9B%E6%9C%9F%E7%AC%AC%E5%85%AB%E5%8D%80%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%B8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.45945402%2C114.1723566&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E8%81%96%E5%85%AC%E6%9C%83%E9%98%AE%E9%84%AD%E5%A4%A2%E8%8A%B9%E9%8A%80%E7%A6%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%8C%E4%BA%A8%E9%82%A8%E7%AC%AC%E5%9B%9B%E6%9C%9F%E7%AC%AC%E5%85%AB%E5%8D%80%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%B8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.45945402%2C114.1723566&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%81%96%E5%85%AC%E6%9C%83%E9%98%AE%E9%84%AD%E5%A4%A2%E8%8A%B9%E9%8A%80%E7%A6%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%8C%E4%BA%A8%E9%82%A8%E7%AC%AC%E5%9B%9B%E6%9C%9F%E7%AC%AC%E5%85%AB%E5%8D%80%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%B8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 28.8
+      "roadSnapDistanceMeters": 28.8,
+      "routingStatus": "success"
     },
     "tp10": {
       "officialName": "大埔浸信會公立學校",
@@ -422,11 +441,11 @@ window.TRAVEL_DATA = {
       "huanggang": 20,
       "liantang": 25,
       "driveSeconds": {
-        "huanggang": 1161.7,
+        "huanggang": 1190.3,
         "liantang": 1234.2
       },
       "driveDistanceMeters": {
-        "huanggang": 16666.7,
+        "huanggang": 18695,
         "liantang": 16919.9
       },
       "addressNote": "2026/27学年已迁入富善邨新校舍；不采用旧广福邨及已到期临时校址。",
@@ -435,12 +454,13 @@ window.TRAVEL_DATA = {
         "https://www.tpbps.edu.hk/"
       ],
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.4553534%2C114.17678289&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E6%B5%B8%E4%BF%A1%E6%9C%83%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%8C%E5%96%84%E9%82%A8%E7%AC%AC%E4%BA%8C%E6%9C%9F%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%A6%E7%AC%AC%E4%BA%8C%E6%A0%A1%E8%88%8D&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.4553534%2C114.17678289&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E5%A4%A7%E5%9F%94%E6%B5%B8%E4%BF%A1%E6%9C%83%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%8C%E5%96%84%E9%82%A8%E7%AC%AC%E4%BA%8C%E6%9C%9F%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%A6%E7%AC%AC%E4%BA%8C%E6%A0%A1%E8%88%8D&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.4553534%2C114.17678289&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E5%A4%A7%E5%9F%94%E6%B5%B8%E4%BF%A1%E6%9C%83%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%AF%8C%E5%96%84%E9%82%A8%E7%AC%AC%E4%BA%8C%E6%9C%9F%E5%B1%8B%E9%82%A8%E5%B0%8F%E5%AD%A6%E7%AC%AC%E4%BA%8C%E6%A0%A1%E8%88%8D&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 27.1
+      "roadSnapDistanceMeters": 27.1,
+      "routingStatus": "success"
     },
     "tp11": {
       "officialName": "林村公立黃福鑾紀念學校",
@@ -457,23 +477,24 @@ window.TRAVEL_DATA = {
       "coordinateSystem": "WGS84",
       "schoolNo": "115401000123",
       "sourceUrl": "https://www.edb.gov.hk/attachment/en/student-parents/sch-info/sch-search/sch-location-info/SCH_LOC_EDB.csv",
-      "huanggang": 15,
+      "huanggang": 20,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 893.8,
+        "huanggang": 922.4,
         "liantang": 966.3
       },
       "driveDistanceMeters": {
-        "huanggang": 14826.1,
+        "huanggang": 16854.4,
         "liantang": 15079.3
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.45056757%2C114.16339959&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%9E%97%E6%9D%91%E5%85%AC%E7%AB%8B%E9%BB%83%E7%A6%8F%E9%91%BE%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%A4%AA%E5%92%8C%E9%82%A8%E7%AC%AC%E4%B8%80%E6%9C%9F%E5%B1%8B%E9%82%A8%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AD%B8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.45056757%2C114.16339959&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E6%9E%97%E6%9D%91%E5%85%AC%E7%AB%8B%E9%BB%83%E7%A6%8F%E9%91%BE%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%A4%AA%E5%92%8C%E9%82%A8%E7%AC%AC%E4%B8%80%E6%9C%9F%E5%B1%8B%E9%82%A8%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AD%B8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.45056757%2C114.16339959&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%9E%97%E6%9D%91%E5%85%AC%E7%AB%8B%E9%BB%83%E7%A6%8F%E9%91%BE%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E5%A4%A7%E5%9F%94%E5%A4%AA%E5%92%8C%E9%82%A8%E7%AC%AC%E4%B8%80%E6%9C%9F%E5%B1%8B%E9%82%A8%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AD%B8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 17.7
+      "roadSnapDistanceMeters": 17.7,
+      "routingStatus": "success"
     },
     "north01": {
       "officialName": "李志達紀念學校",
@@ -493,20 +514,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 557.6,
+        "huanggang": 586.2,
         "liantang": 737.1
       },
       "driveDistanceMeters": {
-        "huanggang": 8279.1,
+        "huanggang": 10307.4,
         "liantang": 7691.2
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.50714623%2C114.13110754&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%9D%8E%E5%BF%97%E9%81%94%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E7%9F%B3%E6%B9%96%E5%A2%9F%E5%A4%A9%E5%B9%B3%E8%B7%AF30%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.50714623%2C114.13110754&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E6%9D%8E%E5%BF%97%E9%81%94%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E7%9F%B3%E6%B9%96%E5%A2%9F%E5%A4%A9%E5%B9%B3%E8%B7%AF30%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.50714623%2C114.13110754&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%9D%8E%E5%BF%97%E9%81%94%E7%B4%80%E5%BF%B5%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E7%9F%B3%E6%B9%96%E5%A2%9F%E5%A4%A9%E5%B9%B3%E8%B7%AF30%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 39.7
+      "roadSnapDistanceMeters": 39.7,
+      "routingStatus": "success"
     },
     "north02": {
       "officialName": "香海正覺蓮社佛教正慧小學",
@@ -526,20 +548,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 509.6,
+        "huanggang": 538.2,
         "liantang": 845.5
       },
       "driveDistanceMeters": {
-        "huanggang": 7348.3,
+        "huanggang": 9376.6,
         "liantang": 9238.8
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.49372493%2C114.12410522&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%A6%99%E6%B5%B7%E6%AD%A3%E8%A6%BA%E8%93%AE%E7%A4%BE%E4%BD%9B%E6%95%99%E6%AD%A3%E6%85%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E6%B8%85%E5%9F%8E%E8%B7%AF6%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.49372493%2C114.12410522&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E9%A6%99%E6%B5%B7%E6%AD%A3%E8%A6%BA%E8%93%AE%E7%A4%BE%E4%BD%9B%E6%95%99%E6%AD%A3%E6%85%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E6%B8%85%E5%9F%8E%E8%B7%AF6%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.49372493%2C114.12410522&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%A6%99%E6%B5%B7%E6%AD%A3%E8%A6%BA%E8%93%AE%E7%A4%BE%E4%BD%9B%E6%95%99%E6%AD%A3%E6%85%A7%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E6%B8%85%E5%9F%8E%E8%B7%AF6%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 47.5
+      "roadSnapDistanceMeters": 47.5,
+      "routingStatus": "success"
     },
     "north03": {
       "officialName": "聖公會嘉福榮真小學",
@@ -559,20 +582,21 @@ window.TRAVEL_DATA = {
       "huanggang": 15,
       "liantang": 20,
       "driveSeconds": {
-        "huanggang": 611.4,
+        "huanggang": 640,
         "liantang": 957.2
       },
       "driveDistanceMeters": {
-        "huanggang": 8670.5,
+        "huanggang": 10698.8,
         "liantang": 10361.8
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.49338496%2C114.1349507&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%81%96%E5%85%AC%E6%9C%83%E5%98%89%E7%A6%8F%E6%A6%AE%E7%9C%9F%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E5%98%89%E7%A6%8F%E9%82%A8%E5%B0%8F%E5%AD%B8%E6%A0%A1%E8%88%8D&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.49338496%2C114.1349507&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E8%81%96%E5%85%AC%E6%9C%83%E5%98%89%E7%A6%8F%E6%A6%AE%E7%9C%9F%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E5%98%89%E7%A6%8F%E9%82%A8%E5%B0%8F%E5%AD%B8%E6%A0%A1%E8%88%8D&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.49338496%2C114.1349507&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%81%96%E5%85%AC%E6%9C%83%E5%98%89%E7%A6%8F%E6%A6%AE%E7%9C%9F%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E5%98%89%E7%A6%8F%E9%82%A8%E5%B0%8F%E5%AD%B8%E6%A0%A1%E8%88%8D&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 76.7
+      "roadSnapDistanceMeters": 76.7,
+      "routingStatus": "success"
     },
     "north04": {
       "officialName": "五旬節靳茂生小學",
@@ -592,20 +616,21 @@ window.TRAVEL_DATA = {
       "huanggang": 15,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 610.3,
+        "huanggang": 638.9,
         "liantang": 749
       },
       "driveDistanceMeters": {
-        "huanggang": 8521.3,
+        "huanggang": 10549.6,
         "liantang": 10579.3
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.49632071%2C114.13845811&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%BA%94%E6%97%AC%E7%AF%80%E9%9D%B3%E8%8C%82%E7%94%9F%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E7%92%A7%E5%B3%B0%E8%B7%AF%E5%9B%9B%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.49632071%2C114.13845811&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E4%BA%94%E6%97%AC%E7%AF%80%E9%9D%B3%E8%8C%82%E7%94%9F%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E7%92%A7%E5%B3%B0%E8%B7%AF%E5%9B%9B%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.49632071%2C114.13845811&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%BA%94%E6%97%AC%E7%AF%80%E9%9D%B3%E8%8C%82%E7%94%9F%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E7%92%A7%E5%B3%B0%E8%B7%AF%E5%9B%9B%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 39.2
+      "roadSnapDistanceMeters": 39.2,
+      "routingStatus": "success"
     },
     "north05": {
       "officialName": "五旬節于良發小學",
@@ -625,20 +650,21 @@ window.TRAVEL_DATA = {
       "huanggang": 15,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 690.4,
+        "huanggang": 719,
         "liantang": 882.4
       },
       "driveDistanceMeters": {
-        "huanggang": 10103.1,
+        "huanggang": 12131.4,
         "liantang": 13524.9
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.48179083%2C114.13864674&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%BA%94%E6%97%AC%E7%AF%80%E4%BA%8E%E8%89%AF%E7%99%BC%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E6%9A%89%E6%98%8E%E8%B7%AF16%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.48179083%2C114.13864674&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E4%BA%94%E6%97%AC%E7%AF%80%E4%BA%8E%E8%89%AF%E7%99%BC%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E6%9A%89%E6%98%8E%E8%B7%AF16%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.48179083%2C114.13864674&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%BA%94%E6%97%AC%E7%AF%80%E4%BA%8E%E8%89%AF%E7%99%BC%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E6%9A%89%E6%98%8E%E8%B7%AF16%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 41.1
+      "roadSnapDistanceMeters": 41.1,
+      "routingStatus": "success"
     },
     "north06": {
       "officialName": "東華三院馬錦燦紀念小學",
@@ -658,20 +684,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 530.5,
+        "huanggang": 559.1,
         "liantang": 866.4
       },
       "driveDistanceMeters": {
-        "huanggang": 7303.5,
+        "huanggang": 9331.8,
         "liantang": 9194
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.49430285%2C114.12403697&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%9D%B1%E8%8F%AF%E4%B8%89%E9%99%A2%E9%A6%AC%E9%8C%A6%E7%87%A6%E7%B4%80%E5%BF%B5%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E6%B8%85%E5%9F%8E%E8%B7%AF2%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.49430285%2C114.12403697&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E6%9D%B1%E8%8F%AF%E4%B8%89%E9%99%A2%E9%A6%AC%E9%8C%A6%E7%87%A6%E7%B4%80%E5%BF%B5%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E6%B8%85%E5%9F%8E%E8%B7%AF2%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.49430285%2C114.12403697&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E6%9D%B1%E8%8F%AF%E4%B8%89%E9%99%A2%E9%A6%AC%E9%8C%A6%E7%87%A6%E7%B4%80%E5%BF%B5%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E6%B8%85%E5%9F%8E%E8%B7%AF2%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 53.6
+      "roadSnapDistanceMeters": 53.6,
+      "routingStatus": "success"
     },
     "north07": {
       "officialName": "上水惠州公立學校",
@@ -691,20 +718,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 519.6,
+        "huanggang": 548.2,
         "liantang": 790.3
       },
       "driveDistanceMeters": {
-        "huanggang": 8012.9,
+        "huanggang": 10041.2,
         "liantang": 10917.9
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.50342676%2C114.13499627&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%B8%8A%E6%B0%B4%E6%83%A0%E5%B7%9E%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E5%A4%A9%E5%B9%B3%E8%B7%AF51%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.50342676%2C114.13499627&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E4%B8%8A%E6%B0%B4%E6%83%A0%E5%B7%9E%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E5%A4%A9%E5%B9%B3%E8%B7%AF51%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.50342676%2C114.13499627&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E4%B8%8A%E6%B0%B4%E6%83%A0%E5%B7%9E%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E5%A4%A9%E5%B9%B3%E8%B7%AF51%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 46.6
+      "roadSnapDistanceMeters": 46.6,
+      "routingStatus": "success"
     },
     "north08": {
       "officialName": "鳳溪第一小學",
@@ -721,23 +749,24 @@ window.TRAVEL_DATA = {
       "coordinateSystem": "WGS84",
       "schoolNo": "114405000123",
       "sourceUrl": "https://www.edb.gov.hk/attachment/en/student-parents/sch-info/sch-search/sch-location-info/SCH_LOC_EDB.csv",
-      "huanggang": 10,
+      "huanggang": 15,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 582.6,
+        "huanggang": 611.2,
         "liantang": 727.5
       },
       "driveDistanceMeters": {
-        "huanggang": 8357.8,
+        "huanggang": 10386,
         "liantang": 7181.9
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.5106851%2C114.12760744&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%B3%B3%E6%BA%AA%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%9315%E8%99%9F%E5%8F%8A19%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.5106851%2C114.12760744&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E9%B3%B3%E6%BA%AA%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%9315%E8%99%9F%E5%8F%8A19%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.5106851%2C114.12760744&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%B3%B3%E6%BA%AA%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%9315%E8%99%9F%E5%8F%8A19%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 14.3
+      "roadSnapDistanceMeters": 14.3,
+      "routingStatus": "success"
     },
     "north09": {
       "officialName": "石湖墟公立學校",
@@ -757,20 +786,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 543.7,
+        "huanggang": 572.3,
         "liantang": 767.6
       },
       "driveDistanceMeters": {
-        "huanggang": 8282.3,
+        "huanggang": 10310.6,
         "liantang": 8030.1
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.50435621%2C114.13245938&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E7%9F%B3%E6%B9%96%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E5%A4%A9%E5%B9%B3%E9%82%A8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.50435621%2C114.13245938&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E7%9F%B3%E6%B9%96%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E5%A4%A9%E5%B9%B3%E9%82%A8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.50435621%2C114.13245938&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E7%9F%B3%E6%B9%96%E5%A2%9F%E5%85%AC%E7%AB%8B%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E5%A4%A9%E5%B9%B3%E9%82%A8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 39.5
+      "roadSnapDistanceMeters": 39.5,
+      "routingStatus": "success"
     },
     "north10": {
       "officialName": "粉嶺官立小學",
@@ -790,20 +820,21 @@ window.TRAVEL_DATA = {
       "huanggang": 15,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 665.6,
+        "huanggang": 694.2,
         "liantang": 767.6
       },
       "driveDistanceMeters": {
-        "huanggang": 9633.5,
+        "huanggang": 11661.7,
         "liantang": 10819.2
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.49331461%2C114.14302642&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E7%B2%89%E5%B6%BA%E5%AE%98%E7%AB%8B%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E7%A5%A5%E8%8F%AF%E9%82%A8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.49331461%2C114.14302642&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E7%B2%89%E5%B6%BA%E5%AE%98%E7%AB%8B%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E7%A5%A5%E8%8F%AF%E9%82%A8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.49331461%2C114.14302642&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E7%B2%89%E5%B6%BA%E5%AE%98%E7%AB%8B%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E7%B2%89%E5%B6%BA%E7%A5%A5%E8%8F%AF%E9%82%A8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 33.4
+      "roadSnapDistanceMeters": 33.4,
+      "routingStatus": "success"
     },
     "north11": {
       "officialName": "育賢學校",
@@ -823,20 +854,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 561.6,
+        "huanggang": 590.2,
         "liantang": 787.9
       },
       "driveDistanceMeters": {
-        "huanggang": 8261.1,
+        "huanggang": 10289.3,
         "liantang": 8241.7
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.50272145%2C114.13150746&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%82%B2%E8%B3%A2%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%93&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.50272145%2C114.13150746&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E8%82%B2%E8%B3%A2%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%93&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.50272145%2C114.13150746&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E8%82%B2%E8%B3%A2%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%93&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 30.6
+      "roadSnapDistanceMeters": 30.6,
+      "routingStatus": "success"
     },
     "north12": {
       "officialName": "鳳溪創新小學",
@@ -853,23 +885,24 @@ window.TRAVEL_DATA = {
       "coordinateSystem": "WGS84",
       "schoolNo": "566462000123",
       "sourceUrl": "https://www.edb.gov.hk/attachment/en/student-parents/sch-info/sch-search/sch-location-info/SCH_LOC_EDB.csv",
-      "huanggang": 10,
+      "huanggang": 15,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 588.7,
+        "huanggang": 617.3,
         "liantang": 733.6
       },
       "driveDistanceMeters": {
-        "huanggang": 8383.2,
+        "huanggang": 10411.4,
         "liantang": 7207.3
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.51091103%2C114.12815164&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%B3%B3%E6%BA%AA%E5%89%B5%E6%96%B0%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%9319A%E8%99%9F&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.51091103%2C114.12815164&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E9%B3%B3%E6%BA%AA%E5%89%B5%E6%96%B0%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%9319A%E8%99%9F&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.51091103%2C114.12815164&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%B3%B3%E6%BA%AA%E5%89%B5%E6%96%B0%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%A6%AC%E6%9C%83%E9%81%9319A%E8%99%9F&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 19.7
+      "roadSnapDistanceMeters": 19.7,
+      "routingStatus": "success"
     },
     "north13": {
       "officialName": "金錢村何東學校",
@@ -889,20 +922,21 @@ window.TRAVEL_DATA = {
       "huanggang": 10,
       "liantang": 15,
       "driveSeconds": {
-        "huanggang": 515.7,
+        "huanggang": 544.3,
         "liantang": 887.6
       },
       "driveDistanceMeters": {
-        "huanggang": 5975.6,
+        "huanggang": 8003.9,
         "liantang": 9881.9
       },
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.50183862%2C114.11147762&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%87%91%E9%8C%A2%E6%9D%91%E4%BD%95%E6%9D%B1%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%87%91%E9%8C%A2%E6%9D%91&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.50183862%2C114.11147762&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E9%87%91%E9%8C%A2%E6%9D%91%E4%BD%95%E6%9D%B1%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%87%91%E9%8C%A2%E6%9D%91&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.50183862%2C114.11147762&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%87%91%E9%8C%A2%E6%9D%91%E4%BD%95%E6%9D%B1%E5%AD%B8%E6%A0%A1+%E6%96%B0%E7%95%8C%E4%B8%8A%E6%B0%B4%E9%87%91%E9%8C%A2%E6%9D%91&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 13.2
+      "roadSnapDistanceMeters": 13.2,
+      "routingStatus": "success"
     },
     "hk-extra01": {
       "officialName": "香港九龍塘基督教中華宣道會陳元喜小學",
@@ -922,21 +956,22 @@ window.TRAVEL_DATA = {
       "huanggang": 30,
       "liantang": 30,
       "driveSeconds": {
-        "huanggang": 1700.6,
+        "huanggang": 1729.2,
         "liantang": 1773.1
       },
       "driveDistanceMeters": {
-        "huanggang": 30491,
+        "huanggang": 32519.3,
         "liantang": 30744.2
       },
       "nameNote": "根据老师简称“陈元喜小学”匹配美林邨陈元喜小学；另有“台山陈元喜小学”（马鞍山），需与老师核对全名。",
       "mapLinks": {
-        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.50937751%2C114.07404556&destination=22.38015741%2C114.17527219&travelmode=driving",
-        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A9%AC%E6%B4%B2%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E7%9A%87%E5%B2%97%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%A6%99%E6%B8%AF%E4%B9%9D%E9%BE%8D%E5%A1%98%E5%9F%BA%E7%9D%A3%E6%95%99%E4%B8%AD%E8%8F%AF%E5%AE%A3%E9%81%93%E6%9C%83%E9%99%B3%E5%85%83%E5%96%9C%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E6%B2%99%E7%94%B0%E7%BE%8E%E6%9E%97%E9%82%A8%E7%AC%AC%E4%B8%89%E5%B0%8F%E5%AD%B8&travelmode=transit",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.38015741%2C114.17527219&travelmode=driving",
+        "huanggangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=%E9%A6%99%E6%B8%AF%E4%B9%9D%E9%BE%8D%E5%A1%98%E5%9F%BA%E7%9D%A3%E6%95%99%E4%B8%AD%E8%8F%AF%E5%AE%A3%E9%81%93%E6%9C%83%E9%99%B3%E5%85%83%E5%96%9C%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E6%B2%99%E7%94%B0%E7%BE%8E%E6%9E%97%E9%82%A8%E7%AC%AC%E4%B8%89%E5%B0%8F%E5%AD%B8&travelmode=transit",
         "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.38015741%2C114.17527219&travelmode=driving",
         "liantangPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E9%A6%99%E5%9B%AD%E5%9B%B4%E7%AE%A1%E5%88%B6%E7%AB%99%EF%BC%88%E8%8E%B2%E5%A1%98%E6%B8%AF%E6%96%B9%EF%BC%89&destination=%E9%A6%99%E6%B8%AF%E4%B9%9D%E9%BE%8D%E5%A1%98%E5%9F%BA%E7%9D%A3%E6%95%99%E4%B8%AD%E8%8F%AF%E5%AE%A3%E9%81%93%E6%9C%83%E9%99%B3%E5%85%83%E5%96%9C%E5%B0%8F%E5%AD%B8+%E6%96%B0%E7%95%8C%E6%B2%99%E7%94%B0%E7%BE%8E%E6%9E%97%E9%82%A8%E7%AC%AC%E4%B8%89%E5%B0%8F%E5%AD%B8&travelmode=transit"
       },
-      "roadSnapDistanceMeters": 38.7
+      "roadSnapDistanceMeters": 38.7,
+      "routingStatus": "success"
     },
     "sz01": {
       "officialName": "深圳香港培侨书院龙华信义学校",
@@ -1099,6 +1134,22 @@ window.TRAVEL_DATA = {
     {
       "title": "普林云海学校地块位置（Mapcarta/OpenStreetMap）",
       "url": "https://mapcarta.com/W1243990465"
+    },
+    {
+      "title": "九巴新皇岗HU900公共运输交汇处官方站点坐标",
+      "url": "https://data.etabus.gov.hk/v1/transport/kmb/stop"
+    },
+    {
+      "title": "九巴新皇岗B10/B11/NB73路线公告",
+      "url": "https://www.kmb.hk/news_detail.html?id=1396&year=2026"
+    },
+    {
+      "title": "深圳口岸办新皇岗启用公告",
+      "url": "https://ka.sz.gov.cn/ztzl/hgkazt/news/content/post_13011579.html"
+    },
+    {
+      "title": "香港运输署新皇岗交通安排",
+      "url": "https://www.td.gov.hk/tc/transport_in_hong_kong/land_based_cross_boundary_transport/athp/index.html"
     }
   ],
   "coordinateConversion": {
@@ -1107,16 +1158,16 @@ window.TRAVEL_DATA = {
     "accuracyNote": "转换模型、POI中心与道路匹配均可能有位置误差，不能视为实测车道或家庭出口。"
   },
   "notes": [
-    "香港驾车路线起点为过关后港方口岸，深圳侧段到口岸单独计算，通关和口岸内部接驳需另加。",
-    "两口岸路线为皇岗↔落马洲管制站、莲塘↔香园围管制站；皇岗不是福田口岸落马洲支线地铁站。",
-    "这份路线估算不提供真实排队等待。界面通关预留分钟为用户可调整的计划参数。",
+    "港方驾车段分别从新皇岗L2公共运输交汇处、香园围口岸道路点计算；深圳到口岸与通关／候车预留另计。新皇岗内部路段尚未完整映射，须出发前导航复核。",
+    "10月12日6:30起皇岗使用重建新联检楼及港方PTI，经落马洲大桥进入香港；莲塘对应香园围管制站。皇岗不是福田口岸落马洲支线地铁站。",
+    "这份路线估算不提供真实排队等待。表格香港总耗时另含30–60分钟通关预留，驾车另留15分钟路况。",
     "从深圳连续驾车过境需使用具备相应资格的车辆或跨境车辆服务；普通深圳网约车与香港的士为两段。"
   ],
   "routingStatus": "success",
   "routingRequestUrl": "https://router.project-osrm.org/table/v1/driving/114.06369389,22.57485284;114.07232911,22.52234021;114.15320256,22.55589916;114.07404556,22.50937751;114.15385221,22.55278148;114.17036538,22.44877997;114.19449024,22.46965751;114.19602979,22.43075416;114.1669455,22.45175984;114.17314389,22.44736227;114.17746703,22.45385521;114.17519361,22.45659143;114.16937444,22.44892441;114.1723566,22.45945402;114.17678289,22.4553534;114.16339959,22.45056757;114.13110754,22.50714623;114.12410522,22.49372493;114.1349507,22.49338496;114.13845811,22.49632071;114.13864674,22.48179083;114.12403697,22.49430285;114.13499627,22.50342676;114.12760744,22.5106851;114.13245938,22.50435621;114.14302642,22.49331461;114.13150746,22.50272145;114.12815164,22.51091103;114.11147762,22.50183862;114.17527219,22.38015741?sources=0;3;4&destinations=1;2;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29&annotations=duration,distance",
   "roadSnapDistanceMeters": {
     "home": 91.0,
-    "huanggangHongKong": 4.0,
+    "huanggangHongKong": 201.1,
     "liantangHongKong": 60.8,
     "huanggangShenzhen": 52.2,
     "liantangShenzhen": 9.8
@@ -1124,7 +1175,85 @@ window.TRAVEL_DATA = {
   "shenzhenRoutingRequestUrl": "https://router.project-osrm.org/table/v1/driving/114.06369389,22.57485284;114.01644971,22.613424;113.88487914,22.4821629?sources=0&destinations=1;2&annotations=duration,distance",
   "huanggangChange": {
     "effectiveDate": "2026-10-12",
-    "note": "2026年10月12日6:30旧落马洲／皇岗口岸交接至重建皇岗口岸；本页皇岗车程仍使用既有落马洲道路点估算，新口岸路线与上下客点需出发前导航复核。",
-    "sourceUrl": "https://www.td.gov.hk/tc/transport_in_hong_kong/land_based_cross_boundary_transport/athp/index.html"
-  }
+    "effectiveTime": "06:30",
+    "status": "new-port-planning-estimate",
+    "note": "已按2026年10月12日启用的新皇岗口岸计算港方到校规划车程；家庭到口岸为旧10分钟基准加5分钟新口岸接入预留。",
+    "sourceUrl": "https://www.td.gov.hk/tc/transport_in_hong_kong/land_based_cross_boundary_transport/athp/index.html",
+    "routeNote": "按九巴新皇岗PTI官方坐标计算现有路网基准；道路吸附约201米，地下入口和L2内部连接尚未完整映射；已核对代表路线经落马洲大桥，不含通关、候车与实时路况。",
+    "coordinateSourceUrl": "https://data.etabus.gov.hk/v1/transport/kmb/stop",
+    "portOpeningSourceUrl": "https://ka.sz.gov.cn/ztzl/hgkazt/news/content/post_13011579.html",
+    "transportArrangementSourceUrl": "https://www.info.gov.hk/gia/general/202610/07/P2026100700238.htm",
+    "geometryCheck": {
+      "checkedAt": "2026-10-10",
+      "schoolIds": [
+        "north08",
+        "tp02"
+      ],
+      "roadNames": [
+        "新深路 San Sham Road",
+        "落馬洲路 Lok Ma Chau Road",
+        "粉嶺公路 Fanling Highway"
+      ],
+      "note": "两条完整路线均经皇岗／落马洲大桥，没有绕莲塘或深圳湾；吸附点存在深圳侧道路绕行，属于规划估算。"
+    },
+    "sourceRoadSnapDistanceMeters": 201.1
+  },
+  "previousHuanggangBaseline": {
+    "origins": {
+      "huanggangShenzhen": {
+        "name": "皇岗口岸（深圳侧）",
+        "address": "深圳市福田区福田南路与百合路交叉口南420米",
+        "coordinates": [
+          114.07232911,
+          22.52234021
+        ],
+        "longitude": 114.07232911,
+        "latitude": 22.52234021,
+        "coordinateSystem": "WGS84",
+        "sourceCoordinateSystem": "GCJ-02",
+        "sourceCoordinates": [
+          114.077454,
+          22.519643
+        ],
+        "sourceUrl": "https://www.amap.com/place/B0I32HLGAJ"
+      },
+      "huanggangHongKong": {
+        "name": "落马洲管制站（皇岗港方）",
+        "address": "落马洲管制站",
+        "coordinates": [
+          114.07404556,
+          22.50937751
+        ],
+        "longitude": 114.07404556,
+        "latitude": 22.50937751,
+        "coordinateSystem": "WGS84",
+        "sourceCoordinateSystem": "WGS84",
+        "sourceCoordinates": [
+          114.07404556,
+          22.50937751
+        ],
+        "sourceUrl": "https://portal.csdi.gov.hk/server/rest/services/common/immd_rcd_1633320081376_19895/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson"
+      }
+    },
+    "homeToOldHuanggang": {
+      "minutes": 10,
+      "seconds": 515.5,
+      "distanceMeters": 7696.6
+    },
+    "note": "10月12日前旧皇岗临时旅检楼／旧落马洲管制站历史基准，不用作新口岸已重算路线。"
+  },
+  "homeToHuanggangEstimate": {
+    "minutes": 15,
+    "historicalBaseMinutes": 10,
+    "newAccessReserveMinutes": 5,
+    "status": "planning",
+    "note": "旧皇岗深圳侧历史10分钟基准 + 5分钟新口岸接入规划预留；未重算家庭精确起点到新楼的连续路线，不含通关、候车与实时路况。",
+    "privateOriginRequeried": false,
+    "publicConnectionCheck": {
+      "status": "rejected-as-implausible",
+      "note": "旧深圳口岸公开点到新PTI点的OSRM连接绕经香港再回深圳，未采用其12公里／799.4秒结果。"
+    }
+  },
+  "routingCheckedAt": "2026-10-10",
+  "huanggangRoutingRequestUrl": "https://router.project-osrm.org/table/v1/driving/114.068333,22.523177;114.17036538,22.44877997;114.19449024,22.46965751;114.19602979,22.43075416;114.1669455,22.45175984;114.17314389,22.44736227;114.17746703,22.45385521;114.17519361,22.45659143;114.16937444,22.44892441;114.1723566,22.45945402;114.17678289,22.4553534;114.16339959,22.45056757;114.13110754,22.50714623;114.12410522,22.49372493;114.1349507,22.49338496;114.13845811,22.49632071;114.13864674,22.48179083;114.12403697,22.49430285;114.13499627,22.50342676;114.12760744,22.5106851;114.13245938,22.50435621;114.14302642,22.49331461;114.13150746,22.50272145;114.12815164,22.51091103;114.11147762,22.50183862;114.17527219,22.38015741?sources=0&destinations=1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25&annotations=duration,distance"
 };
