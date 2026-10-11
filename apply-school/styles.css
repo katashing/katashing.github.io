@@ -247,7 +247,7 @@ dialog::backdrop { background: rgb(27 43 32 / 44%); backdrop-filter: blur(3px); 
   .action-card { padding: 16px; gap: 10px; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
   body { font-size: 13px; }
   .topbar { min-height: 75px; gap: 12px; padding: 15px 20px; }
   .brand { gap: 9px; font-size: 16px; white-space: nowrap; }
@@ -422,7 +422,7 @@ td > .muted { display: block; font-size: 11px; margin-top: 4px; }
 .route-details summary { cursor: pointer; color: #315b4d; }
 .route-details div { margin: 6px 0; }
 .status-pill[data-status='已提交'], .status-pill[data-status='获邀笔试'], .status-pill[data-status='录取'] { color: #205f44; background: #dcefe3; }
-@media(max-width:700px) {
+@media(max-width:1000px) {
   main { padding-top: 12px; }
   table { min-width: 0; }
   .travel-cell { max-width: none; min-width: 0; }
@@ -449,16 +449,25 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
 .school-meta:empty, td > .muted:empty { display: none; }
 @media screen {
   main { width: calc(100% - 48px); max-width: 1720px; }
-  table { min-width: 1810px; }
-  td { padding: 15px 13px; min-width: 80px; font-size: 13px; color: #33443b; }
-  th { padding: 13px; font-size: 13px; color: #536557; }
-  th:first-child { min-width: 210px; width: 15%; }
-  .school-intro, .intro-head { min-width: 205px; width: 17%; }
+  table { min-width: 0; table-layout: fixed; }
+  .school-col { width: 14%; }
+  .region-col, .tier-col { width: 6%; }
+  .intro-col { width: 19%; }
+  .date-col, .travel-col { width: 14%; }
+  .progress-col { width: 9%; }
+  .teacher-route-col { width: 18%; }
+  td { padding: 14px 9px; min-width: 0; font-size: 13px; color: #33443b; overflow-wrap: anywhere; }
+  th { padding: 12px 9px; font-size: 13px; color: #536557; white-space: normal; }
+  th:first-child, td:first-child { padding-left: 14px; }
+  th:last-child, td:last-child { padding-right: 14px; }
+  th:first-child { min-width: 0; width: auto; }
+  .school-intro, .intro-head { min-width: 0; width: auto; }
   .school-intro { color: #405246; font-size: 13px; line-height: 1.7; }
-  .teacher-route, .teacher-route-head { min-width: 250px; width: 16%; }
+  .teacher-route, .teacher-route-head { min-width: 0; width: auto; }
   .teacher-route { color: #405246; font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
   .school-name { font-size: 15px; }
-  .source-date { min-width: 180px; }
+  .source-date { min-width: 0; }
+  .travel-cell { min-width: 0; max-width: none; }
   .date-main { font-size: 13px; }
   .source-date > small { font-size: 12px; }
   .pill, .tier, .selected-tag, .status-pill, .priority-tag { font-size: 11px; }
@@ -469,7 +478,7 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   .fact-box p > strong { display: block; margin-bottom: 2px; }
   .fact-box p > span { display: block; }
 }
-@media screen and (max-width:700px) {
+@media screen and (max-width:1000px) {
   main { width: calc(100% - 30px); }
   table { min-width: 0; }
   td { width: 50%; min-width: 0; padding: 12px 10px 3px 0; }
@@ -495,3 +504,39 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
 .detail-dialog[open] { display: flex; flex-direction: column; }
 .detail-dialog .dialog-head, .detail-dialog .dialog-footer { flex: 0 0 auto; }
 .detail-dialog .dialog-body { min-height: 0; overflow: auto; }
+
+/* 同类信息放在一格，桌面无需横向拖动。 */
+.followup { margin-top: 12px; line-height: 1.7; }
+.followup > small { display: block; margin-bottom: 3px; color: #758079; font-size: 11px; }
+.followup > strong, .followup > .muted { display: block; }
+.teacher-update { margin-top: 8px; color: #315b4d; font-size: 12px; line-height: 1.7; }
+.progress-cell > .route-link { display: block; margin-top: 12px; }
+.status-pill[data-status="待递交"] { color: #805222; background: #faf0dc; }
+.travel-option + .travel-option { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line-light); }
+.travel-label { display: block; margin-bottom: 3px; color: #647165; font-size: 11px; }
+.travel-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 4px; }
+.travel-heading > .route-link { margin: 0; font-size: 10px; }
+.travel-time { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 8px; }
+.travel-time > .route-link { margin: 0; font-size: 11px; }
+.travel-time > strong { font-size: 13px; }
+@media screen and (max-width:1000px) {
+  colgroup { display: none; }
+  th:first-child, td:first-child { padding-left: 0; }
+  td:last-child { padding-right: 0; }
+  .travel-cell { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; padding-bottom: 8px; }
+  .travel-cell::before { grid-column: 1 / -1; margin-bottom: 0; }
+  .travel-option + .travel-option { margin: 0; padding: 0; border: 0; }
+  .progress-cell { padding-bottom: 10px; }
+}
+@media screen and (max-width:520px) {
+  .travel-cell { grid-template-columns: 1fr; gap: 9px; }
+  .travel-option { display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: center; gap: 6px; }
+  .travel-label { margin: 0; }
+  .travel-heading { display: block; }
+  .travel-heading > .route-link { display: block; }
+}
+@media print {
+  .followup, .teacher-update, .travel-label, .travel-time > .route-link { font-size: 8px; }
+  .travel-time > strong { font-size: 9px; }
+  .travel-option + .travel-option { margin-top: 5px; padding-top: 5px; }
+}

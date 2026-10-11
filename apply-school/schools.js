@@ -121,7 +121,9 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "2026-12-04", assessmentDate: "", assessmentYear: 2027,
       dateNote: "2027年1月笔试，仅入选或获邀者；具体日期待学校确认。",
-      deadlineText: "12月4截止", assessmentText: "入选者1月笔试", actionText: "", alias: "东华三院马锦灿小学"
+      deadlineText: "12月4截止", assessmentText: "入选者1月笔试", actionText: "", alias: "东华三院马锦灿小学",
+      status: "待递交", followupText: "老师计划下周递交", updateReceivedAt: "2026-10-11",
+      notes: "老师消息：上水惠州小学已确定开放春季申请，下周我会递交东华三院马锦灿、凤溪第一小学和上水惠州。消息未标发送日期，保留“下周”原文。"
     }
   },
   {
@@ -133,7 +135,9 @@ window.SCHOOL_DATA = [
     plan: {
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "",
-      deadlineText: "", assessmentText: "", actionText: "明日待电话确认", alias: "上水惠州公立小学"
+      deadlineText: "", assessmentText: "", actionText: "明日待电话确认", alias: "上水惠州公立小学",
+      status: "待递交", followupText: "老师计划下周递交", teacherNote: "春季申请已开放（老师告知）", updateReceivedAt: "2026-10-11",
+      notes: "老师消息：上水惠州小学已确定开放春季申请，下周我会递交东华三院马锦灿、凤溪第一小学和上水惠州。消息未标发送日期，保留“下周”原文。"
     }
   },
   {
@@ -145,7 +149,9 @@ window.SCHOOL_DATA = [
     plan: {
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "2026-11-06", assessmentDate: "2026-11-21",
-      deadlineText: "11月6截止", assessmentText: "入选者11月21笔试", actionText: "", alias: ""
+      deadlineText: "11月6截止", assessmentText: "入选者11月21笔试", actionText: "", alias: "",
+      status: "待递交", followupText: "老师计划下周递交", updateReceivedAt: "2026-10-11",
+      notes: "老师消息：上水惠州小学已确定开放春季申请，下周我会递交东华三院马锦灿、凤溪第一小学和上水惠州。消息未标发送日期，保留“下周”原文。"
     }
   },
   {

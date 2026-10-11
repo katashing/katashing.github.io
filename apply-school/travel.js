@@ -22,13 +22,13 @@
     if(home==null||school==null)return null;
     return [home+school+settings.queueMin+settings.trafficBuffer,home+school+settings.queueMax+settings.trafficBuffer];
   }
-  function cell(label,range,note,link) { return `<td data-label="${esc(label)}" class="travel-cell">${timeMarkup(range)}${note?`<small class="travel-note">${esc(note)}</small>`:''}${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">导航 ↗</a>`:''}</td>`; }
+  function option(label,range,link) { return `<div class="travel-option"><div class="travel-heading"><span class="travel-label">${esc(label)}</span>${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">导航 ↗</a>`:''}</div><div class="travel-time">${timeMarkup(range)}</div></div>`; }
   window.renderSchoolTravelCells=(s,settings)=>{
-    const rec=TRAVEL.schools[s.id], pt=window.TRANSIT_DATA?.schools?.[s.id];
+    const rec=TRAVEL.schools[s.id];
     const publicLink=rec?.mapLinks?.directPublicTransport??(rec?.coordinates?`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent('深圳翰岭院')}&destination=${encodeURIComponent(rec.officialName+' '+rec.address)}&travelmode=transit`:null);
-    const publicCell=cell('地铁 / 公交',transit(s,settings),'',publicLink);
-    if(s.region==='深圳')return publicCell+cell('直接驾车',drive(s,'huanggang',settings),'深圳直达',rec?.mapLinks?.direct)+cell('莲塘驾车',null,'不经口岸',null).replace('<strong>待核对</strong>','<strong>—</strong>');
-    return publicCell+cell('新皇岗驾车',drive(s,'huanggang',settings),'',rec?.mapLinks?.huanggang)+cell('莲塘驾车',drive(s,'liantang',settings),'',rec?.mapLinks?.liantang);
+    const publicOption=option('地铁 / 公交',transit(s,settings),publicLink);
+    const driveOptions=s.region==='深圳'?option('直接驾车',drive(s,'huanggang',settings),rec?.mapLinks?.direct):option('新皇岗驾车',drive(s,'huanggang',settings),rec?.mapLinks?.huanggang)+option('莲塘驾车',drive(s,'liantang',settings),rec?.mapLinks?.liantang);
+    return `<td data-label="翰岭院出行" class="travel-cell">${publicOption}${driveOptions}</td>`;
   };
   window.renderSchoolTravel=(s,settings)=>{
     const rec=TRAVEL.schools[s.id], pt=window.TRANSIT_DATA?.schools?.[s.id];
