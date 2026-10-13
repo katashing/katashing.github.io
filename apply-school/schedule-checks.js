@@ -4,6 +4,7 @@ window.SCHEDULE_CHECK_DATA = {
   "schools": {
     "north06": {
       "status": "confirmed",
+      "checkedAt": "2026-10-13",
       "message": "截止日期及笔试月份与官网一致：2026年12月4日17:00截止，2027年1月入学试。有对应年级空缺时，12月28日前短信通知具体安排；小三学额需确认。",
       "sources": [
         {
@@ -57,7 +58,7 @@ window.SCHEDULE_CHECK_DATA = {
     "sz03": {
       "status": "followup",
       "issueLabel": "需跟进",
-      "message": "官网10月8日已公布春季申请开放；小三名额、截止及笔试日期需确认。",
+      "message": "官网10月8日已公布春季申请开放；老师新表列2026年11月14日开放日，该开放日日期尚待官方核实。小三名额、申请截止及笔试日期需确认。",
       "sources": [
         {
           "title": "普林云海官方公告",
@@ -75,7 +76,8 @@ window.SCHEDULE_CHECK_DATA = {
           "title": "春季插班通知（正文未能核实）",
           "url": "https://mp.weixin.qq.com/s/rB73apiTGh910WUnZzTmcw"
         }
-      ]
+      ],
+      "checkedAt": "2026-10-13"
     },
     "hk-extra01": {
       "status": "partial",
@@ -107,6 +109,66 @@ window.SCHEDULE_CHECK_DATA = {
         }
       ],
       "details": "官网通用办法未注明本次学年、截止或笔试日期；可在办公时间交校务处，或电邮info@waichow.edu.hk。查询电话2673 1183／2673 1246。“明日”是原跟进待办，无法据此确定实际联系日期。"
+    },
+    "north03": {
+      "status": "unverified",
+      "issueLabel": "安排待核实",
+      "message": "老师新表列2026年11月19日至12月3日申请、12月12日笔试；当前小三下学期申请窗口及考试日期尚待官方核实。",
+      "sources": [
+        {
+          "title": "嘉福荣真官网",
+          "url": "https://www.skhkfwc.edu.hk/"
+        }
+      ],
+      "checkedAt": "2026-10-13"
+    },
+    "north04": {
+      "status": "partial",
+      "issueLabel": "小三安排待确认",
+      "message": "官网接受小一至小五插班申请，当前表格与老师使用版本一致；小三下学期学位及测试时间、通知方式仍须确认。须附最近两个学年成绩与身份证明，资料一次交齐、不接受后补。",
+      "sources": [
+        {
+          "title": "靳茂生插班申请表与须知",
+          "url": "https://www.pgms.edu.hk/content.php?wid=15"
+        }
+      ],
+      "checkedAt": "2026-10-13"
+    },
+    "north05": {
+      "status": "partial",
+      "issueLabel": "通知方式需确认",
+      "message": "2026年10月12日官网最新须知为全年接受小一至小五申请；笔试以电邮通知、面试以电话通知，与老师表“待电话通知”需区分。操行B+或以上、中英数各80分或以上；小三下学期学位及测试时间仍须确认。",
+      "sources": [
+        {
+          "title": "于良发2026年10月12日最新申请须知",
+          "url": "https://www.pylfps.edu.hk/%E5%89%AF%E6%9C%AC-%E5%B0%8F%E4%B8%80%E5%85%A5%E5%AD%B8%E7%94%B3%E8%AB%8B"
+        }
+      ],
+      "checkedAt": "2026-10-13"
+    },
+    "tp04": {
+      "status": "unverified",
+      "issueLabel": "安排待核实",
+      "message": "老师新表列2026年11月开放；当前小三下学期具体开放日、截止及笔试安排尚待官方核实。",
+      "sources": [
+        {
+          "title": "大埔旧墟官网",
+          "url": "https://www.tpomps.edu.hk/"
+        }
+      ],
+      "checkedAt": "2026-10-13"
+    },
+    "tp01": {
+      "status": "unverified",
+      "issueLabel": "安排待核实",
+      "message": "老师新表列2026年11月开放；当前小三下学期具体开放日、截止及笔试安排尚待官方核实。",
+      "sources": [
+        {
+          "title": "大埔旧墟宝湖道官网",
+          "url": "https://www.tpompspc.edu.hk/"
+        }
+      ],
+      "checkedAt": "2026-10-13"
     }
   }
 };
