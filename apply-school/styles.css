@@ -540,3 +540,10 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   .travel-time > strong { font-size: 9px; }
   .travel-option + .travel-option { margin-top: 5px; padding-top: 5px; }
 }
+
+/* 已开始办理申请的学校在两张表与只读详情中同步标红。 */
+button.school-name.application-active,
+button.school-name.application-active:hover,
+button.school-name.application-active:focus-visible,
+#detail-title.application-active { color: #b3261e; font-weight: 750; }
+.selected-tag.application-active { color: #b3261e; background: #fff1ef; border-color: #efc5c1; }
