@@ -22,6 +22,8 @@
     if(sort==='followup'||sort==='deadline')rows.sort((a,b)=>(recordFor(a)[sort==='followup'?'followup':'deadline']||'9999').localeCompare(recordFor(b)[sort==='followup'?'followup':'deadline']||'9999'));
     if(sort==='commute')rows.sort((a,b)=>(window.schoolTravelSortMinutes?.(a,TRAVEL_SETTINGS)??a.commuteMinutes??999)-(window.schoolTravelSortMinutes?.(b,TRAVEL_SETTINGS)??b.commuteMinutes??999));
     if(scope==='selected'&&sort==='default'){const order=['north06','north08','north04','north05','north03','tp04','tp01','sz01','sz02','sz03','north07','hk-extra01'];rows.sort((a,b)=>{const ai=order.indexOf(a.id),bi=order.indexOf(b.id);return (ai<0?999:ai)-(bi<0?999:bi);});}
+    // 当前大陆学校均在深圳；稳定分组保留香港／大陆各组内的排序。
+    rows.sort((a,b)=>Number(a.region==='深圳')-Number(b.region==='深圳'));
     return rows;
   }
   function scheduleIssue(s){
