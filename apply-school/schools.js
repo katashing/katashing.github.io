@@ -281,8 +281,8 @@ window.SCHOOL_DATA = [
       type: "私立", gender: "男女", language: "英中", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "", openDayDate: "2026-11-14",
       deadlineText: "", assessmentText: "", actionText: "", alias: "",
-      status: "待确认", followupText: "确认11月14日开放日及春季小三申请安排", updateReceivedAt: "2026-10-13",
-      notes: "老师最新投递规划表：11月14日开放日；开放日不是申请截止或笔试日期。"
+      status: "暂缓报名", teacherNote: "随时可报名；报名后需交费（家长告知）", followupText: "尽量晚点报名；临近决定时确认学位及缴费安排", updateReceivedAt: "2026-10-14",
+      notes: "2026年10月14日家长安排：普林云海尽量晚点报名，随时可以报，报名后需要交费。老师投递规划表仍列11月14日开放日；开放日不是申请截止或笔试日期。"
     }
   }
 ];
