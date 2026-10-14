@@ -973,6 +973,19 @@ window.TRAVEL_DATA = {
       "roadSnapDistanceMeters": 38.7,
       "routingStatus": "success"
     },
+    "hk-extra02": {
+      "officialName": "曾梅千禧學校",
+      "englishName": "Tsang Mui Millennium School",
+      "address": "新界上水清城路1號",
+      "website": "https://www.tmms.edu.hk/",
+      "phone": "26703111",
+      "addressSourceUrl": "https://www.chsc.hk/psp2026/sch_detail.php?lang_id=2&sch_id=200",
+      "sourceUrl": "https://www.chsc.hk/psp2026/sch_detail.php?lang_id=2&sch_id=200",
+      "infoCheckedAt": "2026-10-14",
+      "huanggang": null,
+      "liantang": null,
+      "updateNote": "新增学校，已核对官方基本资料；出行时间尚待查询，不填推测数值。"
+    },
     "sz01": {
       "officialName": "深圳香港培侨书院龙华信义学校",
       "address": "深圳市龙华区致远北路1号",

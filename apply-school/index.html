@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="学校申请跟踪：已选与备选学校、进度、日期、备注、翰岭院出行时间。">
+  <meta name="description" content="学校申请跟踪：大陆学校、香港已选与备选学校、进度、日期、备注、翰岭院出行时间。">
   <title>学校申请跟踪</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20261014-hong-kong-first-v1">
-  <script src="schools.js?v=20261014-hong-kong-first-v1" defer></script>
-  <script src="travel-data.js?v=20261014-hong-kong-first-v1" defer></script>
-  <script src="transit-data.js?v=20261014-hong-kong-first-v1" defer></script>
-  <script src="travel.js?v=20261014-hong-kong-first-v1" defer></script>
-  <script src="schedule-checks.js?v=20261014-hong-kong-first-v1" defer></script>
-  <script src="app.js?v=20261014-hong-kong-first-v1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261014-mainland-sheet-v2">
+  <script src="schools.js?v=20261014-mainland-sheet-v2" defer></script>
+  <script src="travel-data.js?v=20261014-mainland-sheet-v2" defer></script>
+  <script src="transit-data.js?v=20261014-mainland-sheet-v2" defer></script>
+  <script src="travel.js?v=20261014-mainland-sheet-v2" defer></script>
+  <script src="schedule-checks.js?v=20261014-mainland-sheet-v2" defer></script>
+  <script src="app.js?v=20261014-mainland-sheet-v2" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -20,7 +20,7 @@
   </header>
   <main>
     <section class="workspace" aria-label="学校清单">
-      <nav class="tabs" aria-label="学校表页"><button data-scope="selected" class="active" aria-pressed="true">已选学校 <span id="tab-selected-count">12</span></button><button data-scope="candidates" aria-pressed="false">备选学校 <span id="tab-candidate-count">24</span></button></nav>
+      <nav class="tabs" aria-label="学校表页"><button data-scope="mainland" class="active" aria-pressed="true">大陆学校 <span id="tab-mainland-count">3</span></button><button data-scope="selected" aria-pressed="false">香港已选 <span id="tab-selected-count">9</span></button><button data-scope="candidates" aria-pressed="false">香港备选 <span id="tab-candidate-count">25</span></button></nav>
       <div class="filters">
         <label class="search"><span class="sr-only">搜索学校或备注</span><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索学校或备注…"></label>
         <label><span class="sr-only">地区</span><select id="region"><option value="">全部地区</option><option>北区</option><option>大埔</option><option>沙田</option><option>深圳</option></select></label>

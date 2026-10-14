@@ -2,28 +2,28 @@
 (() => {
   const DATA=window.SCHOOL_DATA;
   const TRAVEL_SETTINGS={queueMin:30,queueMax:60,trafficBuffer:15};
-  const STATUSES=['备选','待确认','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
+  const STATUSES=['备选','待确认','暂无学位','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
   const APPLYING_STATUSES=new Set(['准备材料','待递交','已提交','获邀笔试','已笔试','面试中','候补']);
   const isApplying=r=>r.selected&&APPLYING_STATUSES.has(r.status);
+  const isMainland=s=>s.region==='深圳';
   const $=id=>document.getElementById(id);
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
   const dateText=date=>date?date.replace(/-/g,'.'):'';
   const diffDays=date=>Math.round((new Date(date+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000);
   const reminder=date=>{const n=diffDays(date);return n<0?`已过 ${-n} 天`:n===0?'今天':`还有 ${n} 天`;};
-  let scope='selected';
+  let scope='mainland';
+  const inScope=s=>scope==='mainland'?isMainland(s):scope==='selected'?s.selected&&!isMainland(s):s.source!=='selected'&&!isMainland(s);
   const recordFor=s=>({selected:s.selected,status:s.plan?.status??(s.selected?'待确认':'备选'),applicationStart:s.plan?.applicationStartDate??'',deadline:s.plan?.deadlineDate??'',assessment:s.plan?.assessmentDate??'',openDay:s.plan?.openDayDate??'',followup:s.plan?.followupDate??'',followupText:s.plan?.followupText??'',teacherNote:s.plan?.teacherNote??'',contact:window.TRAVEL_DATA?.schools?.[s.id]?.phone??'',website:window.TRAVEL_DATA?.schools?.[s.id]?.website??'',notes:s.plan?.notes??''});
   const assessmentText=p=>{const text=p?.assessmentText?.replace(/^入选者/,'')??'';return text&&/[0-9]月/.test(text)?`${p.assessmentYear??p.year}年${text}`:text;};
   const introduction=s=>s.source==='selected'?[s.plan?.type,s.plan?.language,s.plan?.religion==='无'?'':s.plan?.religion].filter(Boolean).join(' · '):s.highlight;
   function getRows(){
     const query=$('search').value.trim().toLocaleLowerCase();
-    const rows=DATA.filter(s=>{const r=recordFor(s);return (scope==='selected'?r.selected:s.source!=='selected')&&(!$('region').value||s.region===$('region').value)&&(!$('tier').value||($('tier').value==='none'?!s.tier:s.tier===$('tier').value))&&(!$('status').value||r.status===$('status').value)&&(!query||[s.name,s.highlight,s.commute,s.plan?.alias,r.notes].join(' ').toLocaleLowerCase().includes(query));});
+    const rows=DATA.filter(s=>{const r=recordFor(s);return inScope(s)&&(!$('region').value||s.region===$('region').value)&&(!$('tier').value||($('tier').value==='none'?!s.tier:s.tier===$('tier').value))&&(!$('status').value||r.status===$('status').value)&&(!query||[s.name,s.highlight,s.commute,s.plan?.alias,r.notes].join(' ').toLocaleLowerCase().includes(query));});
     const sort=$('sort').value;
     if(sort==='followup'||sort==='deadline')rows.sort((a,b)=>(recordFor(a)[sort==='followup'?'followup':'deadline']||'9999').localeCompare(recordFor(b)[sort==='followup'?'followup':'deadline']||'9999'));
     if(sort==='commute')rows.sort((a,b)=>(window.schoolTravelSortMinutes?.(a,TRAVEL_SETTINGS)??a.commuteMinutes??999)-(window.schoolTravelSortMinutes?.(b,TRAVEL_SETTINGS)??b.commuteMinutes??999));
-    if(scope==='selected'&&sort==='default'){const order=['north06','north08','north04','north05','north03','tp04','tp01','sz01','sz02','sz03','north07','hk-extra01'];rows.sort((a,b)=>{const ai=order.indexOf(a.id),bi=order.indexOf(b.id);return (ai<0?999:ai)-(bi<0?999:bi);});}
-    // 当前大陆学校均在深圳；稳定分组保留香港／大陆各组内的排序。
-    rows.sort((a,b)=>Number(a.region==='深圳')-Number(b.region==='深圳'));
+    if(scope==='selected'&&sort==='default'){const order=['north06','north08','north04','north05','north03','tp04','tp01','north07','hk-extra01'];rows.sort((a,b)=>{const ai=order.indexOf(a.id),bi=order.indexOf(b.id);return (ai<0?999:ai)-(bi<0?999:bi);});}
     return rows;
   }
   function scheduleIssue(s){
@@ -44,8 +44,9 @@
     return (pieces.join('')||'<span class="muted">—</span>')+scheduleIssue(s);
   }
   function render(){
-    $('tab-selected-count').textContent=DATA.filter(s=>s.selected).length;
-    $('tab-candidate-count').textContent=DATA.filter(s=>s.source!=='selected').length;
+    $('tab-mainland-count').textContent=DATA.filter(isMainland).length;
+    $('tab-selected-count').textContent=DATA.filter(s=>s.selected&&!isMainland(s)).length;
+    $('tab-candidate-count').textContent=DATA.filter(s=>s.source!=='selected'&&!isMainland(s)).length;
     document.querySelectorAll('.tabs [data-scope]').forEach(b=>{b.classList.toggle('active',b.dataset.scope===scope);b.setAttribute('aria-pressed',String(b.dataset.scope===scope));});
     const rows=getRows();$('result-count').textContent=`显示 ${rows.length} 所学校`;$('empty-state').hidden=rows.length!==0;
     $('school-list').innerHTML=rows.map(s=>{
@@ -71,7 +72,7 @@
     $('detail-title').textContent=s.name;$('detail-subtitle').textContent=[s.region,s.net?'校网 '+s.net:'',s.tier].filter(Boolean).join(' · ');
     $('detail-title').classList.toggle('application-active',isApplying(r));
     const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart)]]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline)]]:p?.deadlineText?[['申请时间',p.deadlineText]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment)]]:p?.assessmentText?[['笔试安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':'')]]:[]),...(r.openDay?[['开放日',dateText(r.openDay)]]:[])];
-    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...dates,...(r.teacherNote?[['材料进度',r.teacherNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['老师更新',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
+    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...dates,...(r.teacherNote?[['老师告知',r.teacherNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['老师更新',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
     const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
     const checked=check?`<div class="schedule-check ${check.status==='confirmed'?'':'schedule-issue'}"><strong>日期核查 · ${esc(check.checkedAt??window.SCHEDULE_CHECK_DATA.checkedAt)}</strong><p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
     $('detail-facts').innerHTML=facts.map(([label,value])=>`<p><strong>${esc(label)}</strong><span>${esc(value)}</span></p>`).join('')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
@@ -80,7 +81,7 @@
   for(const status of STATUSES){const option=document.createElement('option');option.textContent=status;$('status').append(option);}
   document.addEventListener('click',event=>{
     const detail=event.target.closest('[data-detail]');if(detail)openDetail(detail.dataset.detail);
-    const group=event.target.closest('[data-scope]');if(group){scope=group.dataset.scope;render();document.querySelector('.table-wrap').scrollLeft=0;}
+    const group=event.target.closest('[data-scope]');if(group){scope=group.dataset.scope;if($('region').value&&!DATA.some(s=>inScope(s)&&s.region===$('region').value))$('region').value='';render();document.querySelector('.table-wrap').scrollLeft=0;}
     const close=event.target.closest('[data-close]');if(close)$(close.dataset.close).close();
   });
   for(const id of ['search','region','tier','status','sort'])$(id).addEventListener(id==='search'?'input':'change',render);

@@ -110,6 +110,22 @@ window.SCHEDULE_CHECK_DATA = {
       ],
       "details": "官网通用办法未注明本次学年、截止或笔试日期；可在办公时间交校务处，或电邮info@waichow.edu.hk。查询电话2673 1183／2673 1246。“明日”是原跟进待办，无法据此确定实际联系日期。"
     },
+    "hk-extra02": {
+      "status": "followup",
+      "issueLabel": "本学期申请安排待确认",
+      "message": "老师告知目前暂无学位；截图未见对本学期能否申请的回复。官方小学概览只确认学校基本资料，尚未核实本次小三下学期招生或空缺。",
+      "checkedAt": "2026-10-14",
+      "sources": [
+        {
+          "title": "官方小学概览2026（基本资料，不含本轮学位确认）",
+          "url": "https://www.chsc.hk/psp2026/sch_detail.php?lang_id=2&sch_id=200"
+        },
+        {
+          "title": "曾梅千禧学校官网",
+          "url": "https://www.tmms.edu.hk/"
+        }
+      ]
+    },
     "north03": {
       "status": "unverified",
       "issueLabel": "安排待核实",

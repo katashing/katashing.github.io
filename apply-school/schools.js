@@ -238,6 +238,19 @@ window.SCHOOL_DATA = [
     }
   },
   {
+    id: "hk-extra02", name: "曾梅千禧学校", region: "北区", rank: null, tier: "", net: "80",
+    highlight: "官方《小学概览2026》：2003年创校，李志达纪念基金有限公司办学；重视语文、品德及经历为本的课程，采用小班、合作学习，不设精英班。",
+    commuteMinutes: null, commute: "",
+    source: "family", selected: false,
+    plan: {
+      type: "资助", gender: "男女", language: "中文", religion: "不适用",
+      year: 2026, deadlineDate: "", assessmentDate: "",
+      deadlineText: "", assessmentText: "", actionText: "", alias: "曾梅千禧學校",
+      status: "暂无学位", teacherNote: "目前暂无学位（老师告知）", followupText: "确认本学期是否接收申请或候补，以及后续查询安排", updateReceivedAt: "2026-10-14",
+      notes: "家长新增考虑曾梅千禧学校。老师原话：‘考虑，周一已知电现在没位置’（保留截图原文）。家长追问本学期是否无法申请，截图未见老师回复；不据此认定本学期不能申请、申请被拒或取消申请。截图未标消息发送日期，保留‘周一’原文。"
+    }
+  },
+  {
     id: "sz01", name: "深圳培侨书院", region: "深圳", rank: null, tier: "", net: "",
     highlight: "已选深圳学校",
     commuteMinutes: null, commute: "",
