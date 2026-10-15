@@ -33,13 +33,14 @@
   }
   function dateCell(s,r){
     const p=s.plan,pieces=[];
-    if(r.applicationStart&&r.deadline)pieces.push(`<span class="date-main ${diffDays(r.deadline)<0?'overdue':''}">申请 ${dateText(r.applicationStart)}–${dateText(r.deadline)}</span>`);
+    const hasDate=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'');
+    if(r.applicationStart&&r.deadline)pieces.push(`<span class="date-main important-date ${diffDays(r.deadline)<0?'overdue':''}">申请 ${dateText(r.applicationStart)}–<strong class="deadline-date">${dateText(r.deadline)}</strong></span>`);
     else {
-      if(r.applicationStart)pieces.push(`<span class="date-main">申请开放 ${dateText(r.applicationStart)}</span>`);else if(p?.applicationStartText)pieces.push(`<span class="date-main">${esc(p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`)}</span>`);
-      if(r.deadline)pieces.push(`<span class="date-main ${diffDays(r.deadline)<0?'overdue':''}">截止 ${dateText(r.deadline)}</span>`);else if(p?.deadlineText)pieces.push(`<span class="date-main">${esc(p.deadlineText)}</span>`);
+      if(r.applicationStart)pieces.push(`<span class="date-main important-date">申请开放 ${dateText(r.applicationStart)}</span>`);else if(p?.applicationStartText)pieces.push(`<span class="date-main${hasDate(p.applicationStartText)?' important-date':''}">${esc(p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`)}</span>`);
+      if(r.deadline)pieces.push(`<span class="date-main important-date deadline-date ${diffDays(r.deadline)<0?'overdue':''}">截止 ${dateText(r.deadline)}</span>`);else if(p?.deadlineText)pieces.push(`<span class="date-main${hasDate(p.deadlineText)?' important-date'+(/截止/.test(p.deadlineText)?' deadline-date':''):''}">${esc(p.deadlineText)}</span>`);
     }
-    if(r.assessment)pieces.push(`<small>笔试 ${dateText(r.assessment)}</small>`);else if(p?.assessmentText)pieces.push(`<small>${esc(assessmentText(p))}${/[0-9]月/.test(p.assessmentText)?' · 日期待定':''}</small>`);
-    if(r.openDay)pieces.push(`<span class="date-main">开放日 ${dateText(r.openDay)}</span>`);
+    if(r.assessment)pieces.push(`<small class="important-date">笔试 ${dateText(r.assessment)}</small>`);else if(p?.assessmentText)pieces.push(`<small${hasDate(p.assessmentText)?' class="important-date"':''}>${esc(assessmentText(p))}${/[0-9]月/.test(p.assessmentText)?' · 日期待定':''}</small>`);
+    if(r.openDay)pieces.push(`<span class="date-main important-date">开放日 ${dateText(r.openDay)}</span>`);
     if(p?.actionText&&!r.followupText)pieces.push('<small>电话确认</small>');
     return (pieces.join('')||'<span class="muted">—</span>')+scheduleIssue(s);
   }
@@ -71,11 +72,12 @@
     const s=DATA.find(s=>s.id===id);if(!s)return;const r=recordFor(s),p=s.plan;
     $('detail-title').textContent=s.name;$('detail-subtitle').textContent=[s.region,s.net?'校网 '+s.net:'',s.tier].filter(Boolean).join(' · ');
     $('detail-title').classList.toggle('application-active',isApplying(r));
-    const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart)]]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline)]]:p?.deadlineText?[['申请时间',p.deadlineText]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment)]]:p?.assessmentText?[['笔试安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':'')]]:[]),...(r.openDay?[['开放日',dateText(r.openDay)]]:[])];
+    const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
+    const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment),'important-date']]:p?.assessmentText?[['笔试安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
     const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...dates,...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
     const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
     const checked=check?`<div class="schedule-check ${check.status==='confirmed'?'':'schedule-issue'}"><strong>日期核查 · ${esc(check.checkedAt??window.SCHEDULE_CHECK_DATA.checkedAt)}</strong><p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
-    $('detail-facts').innerHTML=facts.map(([label,value])=>`<p><strong>${esc(label)}</strong><span>${esc(value)}</span></p>`).join('')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
+    $('detail-facts').innerHTML=facts.map(([label,value,highlight])=>`<p><strong>${esc(label)}</strong><span${highlight?` class="${highlight}"`:''}>${esc(value)}</span></p>`).join('')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
     $('detail-dialog').showModal();
   }
   for(const status of STATUSES){const option=document.createElement('option');option.textContent=status;$('status').append(option);}

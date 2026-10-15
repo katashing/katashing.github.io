@@ -541,9 +541,59 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   .travel-option + .travel-option { margin-top: 5px; padding-top: 5px; }
 }
 
+/* 总时间与各段用时直接展示，路线范围随表格宽度换行。 */
+.travel-total-label { color: #657366; font-size: 11px; }
+.travel-legs { margin: 7px 0 0; color: #506054; font-size: 11px; line-height: 1.65; }
+.travel-leg { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 7px; margin: 5px 0; align-items: start; }
+.travel-leg dt { overflow-wrap: anywhere; }
+.travel-leg dd { margin: 0; white-space: nowrap; font-variant-numeric: tabular-nums; color: #425a3d; font-weight: 550; }
+.travel-rounding { margin-top: 5px; color: #758079; font-size: 10px; line-height: 1.5; }
+.travel-options-detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 20px; margin: 8px 0; }
+.travel-options-detail .travel-option + .travel-option { margin: 0; padding: 0; border: 0; }
+@media screen and (max-width: 520px) {
+  .travel-legs, .travel-rounding { grid-column: 1 / -1; }
+  .travel-options-detail { grid-template-columns: 1fr; gap: 18px; }
+}
+@media print {
+  .travel-legs, .travel-total-label { font-size: 8px; }
+  .travel-rounding { font-size: 7px; }
+  .travel-leg { gap: 1px 4px; margin: 3px 0; }
+}
+
 /* 已开始办理申请的学校在两张表与只读详情中同步标红。 */
 button.school-name.application-active,
 button.school-name.application-active:hover,
 button.school-name.application-active:focus-visible,
 #detail-title.application-active { color: #b3261e; font-weight: 750; }
 .selected-tag.application-active { color: #b3261e; background: #fff1ef; border-color: #efc5c1; }
+
+/* 申请、考试及开放日期统一高亮；没有时间的待办文字保持原样。 */
+.source-date .important-date,
+.fact-box .important-date {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 4px;
+  padding: 2px 5px;
+  border: 1px solid #f0d5ce;
+  border-radius: 4px;
+  color: #a12922;
+  background: #fff1ed;
+  font-weight: 650;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.source-date .deadline-date,
+.fact-box .deadline-date { color: #942019; font-weight: 800; }
+.source-date .important-date.deadline-date,
+.fact-box .important-date.deadline-date { border-color: #dfa296; background: #fde7e1; }
+@media print {
+  .source-date .important-date,
+  .fact-box .important-date {
+    padding: 1px 3px;
+    color: #942019;
+    border-color: #d5a097;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
