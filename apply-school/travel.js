@@ -4,6 +4,7 @@
   const huanggangPlanningNote=[TRAVEL.huanggangChange?.routeNote,TRAVEL.homeToHuanggangEstimate?.note].filter(Boolean).join(' ');
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const minutes=range=>range?`${range[0]===range[1]?range[0]:range.join('–')} 分`:'待核对';
+  const queueText=settings=>settings.queueMin===settings.queueMax?String(settings.queueMin):`${settings.queueMin}–${settings.queueMax}`;
   const timeMarkup=(range,tag='strong')=>`<${tag}${range?.[1]>50?' class="travel-over-limit" title="单程时间上限超过50分钟"':''}>${minutes(range)}</${tag}>`;
   function transit(s,settings) {
     const record=window.TRANSIT_DATA?.schools?.[s.id];
@@ -78,10 +79,10 @@
     return html+'</details>';
   };
   window.schoolTravelSortMinutes=(s,settings)=>transit(s,settings)?.[0]??9999;
-  window.schoolTravelCSV={headers:['出发地','公共交通总时间（规划）','新皇岗驾车总时间（规划，深圳为直达）','莲塘驾车总时间（规划）','通关预留（分钟）','驾车路况预留（分钟）','学校地址','时间说明','公共交通分段（规划）','新皇岗驾车分段（规划，深圳为直达）','莲塘驾车分段（规划）'],values(s,settings){const rec=TRAVEL.schools[s.id];return ['翰岭院',minutes(transit(s,settings)),minutes(drive(s,'huanggang',settings)),s.region==='深圳'?'不经口岸':minutes(drive(s,'liantang',settings)),s.region==='深圳'?'不经口岸':`${settings.queueMin}–${settings.queueMax}`,settings.trafficBuffer,rec?.address??'',s.region==='深圳'?'深圳直达，学校简称匹配校区待确认':(huanggangPlanningNote||'新皇岗规划估算，非实时路况或排队。'),segmentText(publicJourney(s,settings)),segmentText(drivingJourney(s,'huanggang',settings)),s.region==='深圳'?'不经口岸':segmentText(drivingJourney(s,'liantang',settings))];}};
+  window.schoolTravelCSV={headers:['出发地','公共交通总时间（规划）','新皇岗驾车总时间（规划，深圳为直达）','莲塘驾车总时间（规划）','通关预留（分钟）','驾车路况预留（分钟）','学校地址','时间说明','公共交通分段（规划）','新皇岗驾车分段（规划，深圳为直达）','莲塘驾车分段（规划）'],values(s,settings){const rec=TRAVEL.schools[s.id];return ['翰岭院',minutes(transit(s,settings)),minutes(drive(s,'huanggang',settings)),s.region==='深圳'?'不经口岸':minutes(drive(s,'liantang',settings)),s.region==='深圳'?'不经口岸':queueText(settings),settings.trafficBuffer,rec?.address??'',s.region==='深圳'?'深圳直达，学校简称匹配校区待确认':(huanggangPlanningNote||'新皇岗规划估算，非实时路况或排队。'),segmentText(publicJourney(s,settings)),segmentText(drivingJourney(s,'huanggang',settings)),s.region==='深圳'?'不经口岸':segmentText(drivingJourney(s,'liantang',settings))];}};
   window.renderTravelSettings=settings=>{
     const holder=document.getElementById('travel-settings');holder.hidden=false;
-    holder.innerHTML=`<strong>翰岭院出发</strong><span>单程估算 · 香港含通关预留 ${settings.queueMin}–${settings.queueMax} 分</span><span>驾车路况预留 ${settings.trafficBuffer} 分</span><span>皇岗按10/12新口岸估算</span>`;
+    holder.innerHTML=`<strong>翰岭院出发</strong><span>单程估算 · 香港含通关预留 ${queueText(settings)} 分</span><span>驾车路况预留 ${settings.trafficBuffer} 分</span><span>皇岗按10/12新口岸估算</span>`;
   };
   const notes=document.getElementById('travel-source-notes');
   if(notes){notes.innerHTML=`<p>翰岭院出发，右侧依次列总时间与各段用时，均为规划估算，含通关和路况预留。公共交通经福田口岸；香港驾车分别经新皇岗、莲塘，港段导航从口岸港方出发。公共交通明细由既有路线估算拆分，老师原文独立保留。</p><p>${esc(huanggangPlanningNote)}</p><p><a href="https://data.gov.hk/tc-data/dataset/hk-edb-schinfo-school-location-and-information" target="_blank" rel="noopener">官方校址</a> · <a href="https://www.mtr.com.hk/ch/customer/services/train_service_index.html" target="_blank" rel="noopener">港铁资料</a> · <a href="https://www.td.gov.hk/tc/transport_in_hong_kong/land_based_cross_boundary_transport/athp/index.html" target="_blank" rel="noopener">口岸安排</a></p>`;}

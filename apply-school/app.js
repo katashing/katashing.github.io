@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const DATA=window.SCHOOL_DATA;
-  const TRAVEL_SETTINGS={queueMin:30,queueMax:60,trafficBuffer:15};
+  const TRAVEL_SETTINGS={queueMin:15,queueMax:15,trafficBuffer:15};
   const STATUSES=['备选','待确认','暂无学位','暂缓报名','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
   const APPLYING_STATUSES=new Set(['准备材料','待递交','已提交','获邀笔试','已笔试','面试中','候补']);
   const isApplying=r=>r.selected&&APPLYING_STATUSES.has(r.status);
