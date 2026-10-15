@@ -9,8 +9,8 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "",
       applicationStartText: "11月开放", deadlineText: "", assessmentText: "", actionText: "", alias: "",
-      status: "待确认", followupText: "确认11月申请开放日期及小三学位", updateReceivedAt: "2026-10-13",
-      notes: "老师最新投递规划表：11月开放；具体开放日、截止和笔试安排待学校公布。"
+      status: "待确认", teacherNote: "老师共享表列为11月递交批次，具体日期待定", followupText: "11月递交日期待定；关注申请开放日期及小三学位", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月开放。历史记录：老师此前投递规划表列11月开放，具体开放日、截止和笔试安排待学校公布。尚无实际递交确认。"
     }
   },
   {
@@ -37,8 +37,8 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "",
       applicationStartText: "11月开放", deadlineText: "", assessmentText: "", actionText: "", alias: "",
-      status: "待确认", followupText: "确认11月申请开放日期及小三学位", updateReceivedAt: "2026-10-13",
-      notes: "老师最新投递规划表：11月开放；具体开放日、截止和笔试安排待学校公布。"
+      status: "待确认", teacherNote: "老师共享表列为11月递交批次，具体日期待定", followupText: "11月递交日期待定；关注申请开放日期及小三学位", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月开放。历史记录：老师此前投递规划表列11月开放，具体开放日、截止和笔试安排待学校公布。尚无实际递交确认。"
     }
   },
   {
@@ -114,8 +114,8 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "基督教",
       year: 2026, applicationStartDate: "2026-11-19", deadlineDate: "2026-12-03", assessmentDate: "2026-12-12",
       deadlineText: "11月19-12月3", assessmentText: "12月12笔试", actionText: "", alias: "",
-      status: "待确认", followupText: "确认申请窗口及小三笔试安排", updateReceivedAt: "2026-10-13",
-      notes: "老师最新投递规划表：11月19日至12月3日申请，12月12日笔试；尚未确认本轮递交批次。"
+      status: "待确认", teacherNote: "老师共享表列为11月递交批次，具体日期待定", followupText: "11月递交日期待定；确认申请窗口及小三笔试安排", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月19日至12月3日。历史记录：此前规划表列12月12日笔试，本次截图未重列笔试日期，保留原安排待学校确认。尚无实际递交确认。"
     }
   },
   {
@@ -128,8 +128,8 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "基督教",
       year: 2026, deadlineDate: "", assessmentDate: "",
       applicationStartText: "现可申", deadlineText: "", assessmentText: "待电话通知", actionText: "", alias: "",
-      status: "待递交", followupText: "老师计划本周四递交", teacherNote: "申请表已准备，待复核后递交", updateReceivedAt: "2026-10-13",
-      notes: "老师最新投递规划表：现可申，笔试待电话通知。老师消息：本周四会递交该四所学校；按规划表前四行对应马锦灿、凤溪第一、靳茂生、于良发。消息截图未标发送日期，保留“本周四”原文。已见申请表，不代表已递交。"
+      status: "待递交", followupDate: "2026-10-16", followupText: "老师计划2026年10月16日（周五）递交，待确认实际递交", teacherNote: "申请表已准备，待复核后按老师计划2026年10月16日（周五）递交", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：10月批次计划于2026年10月16日（周五）递交；现可申，入选者待电话通知测试安排。该日期为计划，尚无实际递交确认。历史记录：此前老师消息称“本周四”递交马锦灿、凤溪第一、靳茂生、于良发，原截图未标发送日期；现按共享表明确日期跟进。已见申请表，不代表已递交。"
     }
   },
   {
@@ -142,8 +142,8 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "基督教",
       year: 2026, deadlineDate: "", assessmentDate: "",
       applicationStartText: "现可申", deadlineText: "", assessmentText: "待电话通知", actionText: "", alias: "",
-      status: "待递交", followupText: "老师计划本周四递交", teacherNote: "申请表已准备，待复核后递交", updateReceivedAt: "2026-10-13",
-      notes: "老师最新投递规划表：现可申，笔试待电话通知。老师消息：本周四会递交该四所学校；按规划表前四行对应马锦灿、凤溪第一、靳茂生、于良发。消息截图未标发送日期，保留“本周四”原文。已见申请表，不代表已递交。"
+      status: "待递交", followupDate: "2026-10-16", followupText: "老师计划2026年10月16日（周五）递交，待确认实际递交", teacherNote: "申请表已准备，待复核后按老师计划2026年10月16日（周五）递交", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：10月批次计划于2026年10月16日（周五）递交；现可申，表内仍写入选者待电话通知测试安排，官方笔试电邮通知的差异保留在独立核查资料中。该日期为计划，尚无实际递交确认。历史记录：此前老师消息称“本周四”递交马锦灿、凤溪第一、靳茂生、于良发，原截图未标发送日期；现按共享表明确日期跟进。已见申请表，不代表已递交。"
     }
   },
   {
@@ -155,10 +155,10 @@ window.SCHOOL_DATA = [
     plan: {
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "2026-12-04", assessmentDate: "", assessmentYear: 2027,
-      dateNote: "2027年1月笔试，仅入选或获邀者；具体日期待学校确认。",
+      dateNote: "老师共享表：2026年12月28日前通知入选者。",
       deadlineText: "12月4截止", assessmentText: "入选者1月笔试", actionText: "", alias: "东华三院马锦灿小学",
-      status: "待递交", followupText: "老师计划本周四递交", teacherNote: "申请表已准备，待复核后递交", updateReceivedAt: "2026-10-13",
-      notes: "老师最新消息：本周四会递交该四所学校；按规划表前四行对应马锦灿、凤溪第一、靳茂生、于良发。消息截图未标发送日期，保留“本周四”原文。已见申请表，不代表已递交。历史记录：2026年10月11日收到老师计划下周递交马锦灿、凤溪第一及上水惠州的消息。"
+      status: "待递交", followupDate: "2026-10-16", followupText: "老师计划2026年10月16日（周五）递交，待确认实际递交", teacherNote: "申请表已准备，待复核后按老师计划2026年10月16日（周五）递交；12月28日前通知入选者", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：10月批次计划于2026年10月16日（周五）递交；2026年12月28日前通知入选者参加2027年1月笔试，具体笔试日期待学校确认。该递交日期为计划，尚无实际递交确认。已见申请表，不代表已递交。历史记录：此前老师消息称“本周四”递交马锦灿、凤溪第一、靳茂生、于良发，原截图未标发送日期；2026年10月11日另收到老师计划下周递交马锦灿、凤溪第一及上水惠州的消息。"
     }
   },
   {
@@ -185,8 +185,8 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "2026-11-06", assessmentDate: "2026-11-21",
       deadlineText: "11月6截止", assessmentText: "入选者11月21笔试", actionText: "", alias: "",
-      status: "待递交", followupText: "老师计划本周四递交", updateReceivedAt: "2026-10-13",
-      notes: "老师最新消息：本周四会递交该四所学校；按规划表前四行对应马锦灿、凤溪第一、靳茂生、于良发。消息截图未标发送日期，保留“本周四”原文。历史记录：2026年10月11日收到老师计划下周递交马锦灿、凤溪第一及上水惠州的消息。"
+      status: "待递交", followupDate: "2026-10-16", followupText: "老师计划2026年10月16日（周五）递交，待确认实际递交", teacherNote: "老师计划2026年10月16日（周五）递交，尚无实际递交确认", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：10月批次计划于2026年10月16日（周五）递交；报名截止和笔试日期与原记录一致。该递交日期为计划，尚无实际递交确认。历史记录：此前老师消息称“本周四”递交马锦灿、凤溪第一、靳茂生、于良发，原截图未标发送日期；2026年10月11日另收到老师计划下周递交马锦灿、凤溪第一及上水惠州的消息。"
     }
   },
   {
@@ -245,9 +245,9 @@ window.SCHOOL_DATA = [
     plan: {
       type: "资助", gender: "男女", language: "中文", religion: "不适用",
       year: 2026, deadlineDate: "", assessmentDate: "",
-      deadlineText: "", assessmentText: "", actionText: "", alias: "曾梅千禧學校",
-      status: "暂无学位", teacherNote: "目前暂无学位（老师告知）", followupText: "确认本学期是否接收申请或候补，以及后续查询安排", updateReceivedAt: "2026-10-14",
-      notes: "2026年10月14日家长确认加入已选学校，继续跟踪申请安排。老师原话：‘考虑，周一已知电现在没位置’（保留截图原文）。家长追问本学期是否无法申请，截图未见老师回复；不据此认定本学期不能申请、申请被拒或取消申请。截图未标消息发送日期，保留‘周一’原文。尚无实际递交凭据。"
+      deadlineText: "暂未开放", assessmentText: "", actionText: "", alias: "曾梅千禧學校",
+      status: "待开放", teacherNote: "最新共享表：暂未开放，电话反馈11月再关注官网；此前老师告知暂无学位，最新学位情况待确认", followupText: "11月再关注官网招生动态；申请及递交日期待定", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；报名暂未开放，老师电话联系学校后反馈11月再关注官网招生动态。本次反馈不能推定本学期不能申请或已进入候补。历史记录：2026年10月14日家长确认加入已选；此前老师告知目前暂无学位，原话‘考虑，周一已知电现在没位置’，原截图未标消息发送日期，保留‘周一’原文。最新学位情况待确认，不标拒绝或取消申请；尚无实际递交确认。"
     }
   },
   {
@@ -281,8 +281,9 @@ window.SCHOOL_DATA = [
       type: "私立", gender: "男女", language: "英中", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "", openDayDate: "2026-11-14",
       deadlineText: "", assessmentText: "", actionText: "", alias: "",
-      status: "暂缓报名", teacherNote: "随时可报名；报名后需交费（家长告知）", followupText: "尽量晚点报名；临近决定时确认学位及缴费安排", updateReceivedAt: "2026-10-14",
-      notes: "2026年10月14日家长安排：普林云海尽量晚点报名，随时可以报，报名后需要交费。老师投递规划表仍列11月14日开放日；开放日不是申请截止或笔试日期。"
+      applicationStartText: "现可申",
+      status: "暂缓报名", teacherNote: "家长要求尽量晚报、随时可报且报后需交费；老师表注明待家长确认并缴费1000，币种及费用性质未明", followupText: "保持暂缓；临近决定时确认学位、费用币种及性质、缴费和退费安排", updateReceivedAt: "2026-10-15",
+      notes: "2026年10月15日收到老师共享表截图：列入2026年10月16日（周五）计划递交批次，现可申，入选者待电话通知；备注为‘待家长确认并缴费1000’。家长尚未确认该批次，继续执行2026年10月14日尽量晚点报名的安排，保持暂缓报名；家长此前告知随时可报、报名后需交费。1000的币种、费用性质和具体缴费期限未明，不表示已确认报名、已递交或已付款。此前老师规划表列11月14日开放日，本次截图未重列；保留原开放日待核实，不能据此推定报名截止。"
     }
   }
 ];

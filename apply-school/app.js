@@ -2,7 +2,7 @@
 (() => {
   const DATA=window.SCHOOL_DATA;
   const TRAVEL_SETTINGS={queueMin:15,queueMax:15,trafficBuffer:15};
-  const STATUSES=['备选','待确认','暂无学位','暂缓报名','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
+  const STATUSES=['备选','待确认','待开放','暂无学位','暂缓报名','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
   const APPLYING_STATUSES=new Set(['准备材料','待递交','已提交','获邀笔试','已笔试','面试中','候补']);
   const isApplying=r=>r.selected&&APPLYING_STATUSES.has(r.status);
   const isMainland=s=>s.region==='深圳';
@@ -44,6 +44,7 @@
       if(r.deadline)pieces.push(`<span class="date-main important-date deadline-date ${diffDays(r.deadline)<0?'overdue':''}">截止 ${dateText(r.deadline)}</span>`);else if(p?.deadlineText)pieces.push(`<span class="date-main${hasDate(p.deadlineText)?' important-date'+(/截止/.test(p.deadlineText)?' deadline-date':''):''}">${esc(p.deadlineText)}</span>`);
     }
     if(r.assessment)pieces.push(`<small class="important-date">笔试 ${dateText(r.assessment)}</small>`);else if(p?.assessmentText)pieces.push(`<small${hasDate(p.assessmentText)?' class="important-date"':''}>${esc(assessmentText(p))}${/[0-9]月/.test(p.assessmentText)?' · 日期待定':''}</small>`);
+    if(p?.dateNote)pieces.push(`<small${hasDate(p.dateNote)?' class="important-date"':''}>${esc(p.dateNote)}</small>`);
     if(r.openDay)pieces.push(`<span class="date-main important-date">开放日 ${dateText(r.openDay)}</span>`);
     if(p?.actionText&&!r.followupText)pieces.push('<small>电话确认</small>');
     return (pieces.join('')||'<span class="muted">—</span>')+scheduleIssue(s);
@@ -78,7 +79,7 @@
     $('detail-title').classList.toggle('application-active',isApplying(r));
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
     const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment),'important-date']]:p?.assessmentText?[['笔试安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
-    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...dates,...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
+    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...dates,...(p?.dateNote?[['老师日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
     const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
     const checked=check?`<div class="schedule-check ${check.status==='confirmed'?'':'schedule-issue'}"><strong>日期核查 · ${esc(check.checkedAt??window.SCHEDULE_CHECK_DATA.checkedAt)}</strong><p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
     $('detail-facts').innerHTML=facts.map(([label,value,highlight])=>`<p><strong>${esc(label)}</strong><span${highlight?` class="${highlight}"`:''}>${esc(value)}</span></p>`).join('')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
@@ -95,8 +96,8 @@
   function download(name,text,type){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
   const csvValue=value=>'"'+String(value??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
   $('csv-button').addEventListener('click',()=>{
-    const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','申请开放日期','申请开放安排','申请截止','笔试/面试日期','笔试安排','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期'];
-    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,assessmentText(s.plan),r.openDay,r.followup||r.followupText,r.contact,r.website,r.notes,check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??''];});
+    const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','申请开放日期','申请开放安排','申请截止','笔试/面试日期','笔试安排','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期','老师日期说明'];
+    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,assessmentText(s.plan),r.openDay,r.followup||r.followupText,r.contact,r.website,r.notes,check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??'',s.plan?.dateNote??''];});
     if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(DATA[i],TRAVEL_SETTINGS)));}
     download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
   });
