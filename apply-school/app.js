@@ -17,6 +17,7 @@
   const recordFor=s=>({selected:s.selected,status:s.plan?.status??(s.selected?'待确认':'备选'),applicationStart:s.plan?.applicationStartDate??'',deadline:s.plan?.deadlineDate??'',assessment:s.plan?.assessmentDate??'',openDay:s.plan?.openDayDate??'',followup:s.plan?.followupDate??'',followupText:s.plan?.followupText??'',teacherNote:s.plan?.teacherNote??'',contact:window.TRAVEL_DATA?.schools?.[s.id]?.phone??'',website:window.TRAVEL_DATA?.schools?.[s.id]?.website??'',notes:s.plan?.notes??''});
   const assessmentText=p=>{const text=p?.assessmentText?.replace(/^入选者/,'')??'';return text&&/[0-9]月/.test(text)?`${p.assessmentYear??p.year}年${text}`:text;};
   const introduction=s=>s.source==='selected'?[s.plan?.type,s.plan?.language,s.plan?.religion==='无'?'':s.plan?.religion].filter(Boolean).join(' · '):s.highlight;
+  const applicationPriority=s=>isApplying(recordFor(s))?0:s.selected?1:2;
   function getRows(){
     const query=$('search').value.trim().toLocaleLowerCase();
     const rows=DATA.filter(s=>{const r=recordFor(s);return inScope(s)&&(!$('region').value||s.region===$('region').value)&&(!$('tier').value||($('tier').value==='none'?!s.tier:s.tier===$('tier').value))&&(!$('status').value||r.status===$('status').value)&&(!query||[s.name,s.highlight,s.commute,s.plan?.alias,r.notes].join(' ').toLocaleLowerCase().includes(query));});
@@ -24,6 +25,8 @@
     if(sort==='followup'||sort==='deadline')rows.sort((a,b)=>(recordFor(a)[sort==='followup'?'followup':'deadline']||'9999').localeCompare(recordFor(b)[sort==='followup'?'followup':'deadline']||'9999'));
     if(sort==='commute')rows.sort((a,b)=>(window.schoolTravelSortMinutes?.(a,TRAVEL_SETTINGS)??a.commuteMinutes??999)-(window.schoolTravelSortMinutes?.(b,TRAVEL_SETTINGS)??b.commuteMinutes??999));
     if(scope==='selected'&&sort==='default'){const order=['north06','north08','north04','north05','north03','tp04','tp01','north07','hk-extra01'];rows.sort((a,b)=>{const ai=order.indexOf(a.id),bi=order.indexOf(b.id);return (ai<0?999:ai)-(bi<0?999:bi);});}
+    // Stable sort keeps the chosen order within each application group.
+    rows.sort((a,b)=>applicationPriority(a)-applicationPriority(b));
     return rows;
   }
   function scheduleIssue(s){
