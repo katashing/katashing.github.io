@@ -447,6 +447,10 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
 .schedule-issue a { color: #a12922; }
 .schedule-check a { display: block; margin-top: 4px; }
 .school-meta:empty, td > .muted:empty { display: none; }
+.school-title-row { display: flex; align-items: flex-start; gap: 7px; }
+.school-title-row .school-name { flex: 1; min-width: 0; }
+.school-number { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-width: 23px; height: 23px; padding: 0 3px; border: 1px solid #dce4dc; border-radius: 4px; background: #f0f4ee; color: #50634e; font-size: 11px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+@media print { .school-title-row { gap: 4px; } .school-number { min-width: 17px; height: 17px; padding: 0 2px; font-size: 8px; } }
 @media screen {
   main { width: calc(100% - 48px); max-width: 1720px; }
   table { min-width: 0; table-layout: fixed; }

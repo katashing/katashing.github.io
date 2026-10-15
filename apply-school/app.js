@@ -17,6 +17,7 @@
   const recordFor=s=>({selected:s.selected,status:s.plan?.status??(s.selected?'待确认':'备选'),applicationStart:s.plan?.applicationStartDate??'',deadline:s.plan?.deadlineDate??'',assessment:s.plan?.assessmentDate??'',openDay:s.plan?.openDayDate??'',followup:s.plan?.followupDate??'',followupText:s.plan?.followupText??'',teacherNote:s.plan?.teacherNote??'',contact:window.TRAVEL_DATA?.schools?.[s.id]?.phone??'',website:window.TRAVEL_DATA?.schools?.[s.id]?.website??'',notes:s.plan?.notes??''});
   const assessmentText=p=>{const text=p?.assessmentText?.replace(/^入选者/,'')??'';return text&&/[0-9]月/.test(text)?`${p.assessmentYear??p.year}年${text}`:text;};
   const introduction=s=>s.source==='selected'?[s.plan?.type,s.plan?.language,s.plan?.religion==='无'?'':s.plan?.religion].filter(Boolean).join(' · '):s.highlight;
+  const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
   const applicationPriority=s=>isApplying(recordFor(s))?0:s.selected?1:2;
   function getRows(){
     const query=$('search').value.trim().toLocaleLowerCase();
@@ -59,7 +60,7 @@
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,TRAVEL_SETTINGS):'<td class="travel-cell" data-label="翰岭院出行">查询中</td>';
       const followup=r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
       return `<tr>
-        <td data-label="学校"><button class="school-name${applying?' application-active':''}" data-detail="${s.id}">${esc(s.name)}</button><div class="school-meta">${r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}</div></td>
+        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}</div></td>
         <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):''}</span></td>
         <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
         <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
@@ -73,7 +74,7 @@
   }
   function openDetail(id){
     const s=DATA.find(s=>s.id===id);if(!s)return;const r=recordFor(s),p=s.plan;
-    $('detail-title').textContent=s.name;$('detail-subtitle').textContent=[s.region,s.net?'校网 '+s.net:'',s.tier].filter(Boolean).join(' · ');
+    $('detail-title').textContent=s.name;$('detail-subtitle').textContent=['学校编号 '+schoolNumber(s),s.region,s.net?'校网 '+s.net:'',s.tier].filter(Boolean).join(' · ');
     $('detail-title').classList.toggle('application-active',isApplying(r));
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
     const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment),'important-date']]:p?.assessmentText?[['笔试安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
@@ -94,8 +95,8 @@
   function download(name,text,type){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
   const csvValue=value=>'"'+String(value??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
   $('csv-button').addEventListener('click',()=>{
-    const head=['学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','申请开放日期','申请开放安排','申请截止','笔试/面试日期','笔试安排','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期'];
-    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,assessmentText(s.plan),r.openDay,r.followup||r.followupText,r.contact,r.website,r.notes,check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??''];});
+    const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','申请开放日期','申请开放安排','申请截止','笔试/面试日期','笔试安排','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期'];
+    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,assessmentText(s.plan),r.openDay,r.followup||r.followupText,r.contact,r.website,r.notes,check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??''];});
     if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(DATA[i],TRAVEL_SETTINGS)));}
     download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
   });
