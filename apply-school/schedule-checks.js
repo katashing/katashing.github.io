@@ -39,6 +39,14 @@ window.SCHEDULE_CHECK_DATA = {
         {
           "title": "9月旧轮公告（不作为当前日期）",
           "url": "https://www.puikiuxinyi.com/notice/884.html"
+        },
+        {
+          "title": "历史参考：2025/26二月插班申请须知（香港课程）",
+          "url": "https://www.puikiuxinyi.com/notice/795.html"
+        },
+        {
+          "title": "历史参考：2024/25二月插班申请须知（含香港课程）",
+          "url": "https://www.puikiuxinyi.com/notice/642.html"
         }
       ]
     },
