@@ -2,7 +2,7 @@
 (() => {
   const DATA=window.SCHOOL_DATA;
   const TRAVEL_SETTINGS={queueMin:15,queueMax:15,trafficBuffer:15};
-  const STATUSES=['备选','待确认','待开放','暂无学位','暂缓报名','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
+  const STATUSES=['备选','待确认','待开放','已开放，待报名','暂无学位','暂缓报名','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
   const APPLYING_STATUSES=new Set(['准备材料','待递交','已提交','获邀笔试','已笔试','面试中','候补']);
   const isApplying=r=>r.selected&&APPLYING_STATUSES.has(r.status);
   const isMainland=s=>s.region==='深圳';
@@ -14,7 +14,7 @@
   const reminder=date=>{const n=diffDays(date);return n<0?`已过 ${-n} 天`:n===0?'今天':`还有 ${n} 天`;};
   let scope='mainland';
   const inScope=s=>scope==='mainland'?isMainland(s):scope==='selected'?s.selected&&!isMainland(s):s.source!=='selected'&&!isMainland(s);
-  const recordFor=s=>({selected:s.selected,status:s.plan?.status??(s.selected?'待确认':'备选'),applicationStart:s.plan?.applicationStartDate??'',deadline:s.plan?.deadlineDate??'',assessment:s.plan?.assessmentDate??'',openDay:s.plan?.openDayDate??'',followup:s.plan?.followupDate??'',followupText:s.plan?.followupText??'',teacherNote:s.plan?.teacherNote??'',contact:window.TRAVEL_DATA?.schools?.[s.id]?.phone??'',website:window.TRAVEL_DATA?.schools?.[s.id]?.website??'',notes:s.plan?.notes??''});
+  const recordFor=s=>({selected:s.selected,status:s.plan?.status??(s.selected?'待确认':'备选'),applicationStart:s.plan?.applicationStartDate??'',deadline:s.plan?.deadlineDate??'',assessment:s.plan?.assessmentDate??'',openDay:s.plan?.openDayDate??'',followup:s.plan?.followupDate??'',followupText:s.plan?.followupText??'',teacherNote:s.plan?.teacherNote??'',officialNote:s.plan?.officialNote??'',applicationUrl:s.plan?.applicationUrl??'',contact:window.TRAVEL_DATA?.schools?.[s.id]?.phone??'',website:window.TRAVEL_DATA?.schools?.[s.id]?.website??'',notes:s.plan?.notes??''});
   const assessmentText=p=>{const text=p?.assessmentText?.replace(/^入选者/,'')??'';return text&&/[0-9]月/.test(text)?`${p.assessmentYear??p.year}年${text}`:text;};
   const introduction=s=>s.source==='selected'?[s.plan?.type,s.plan?.language,s.plan?.religion==='无'?'':s.plan?.religion].filter(Boolean).join(' · '):s.highlight;
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
@@ -76,7 +76,7 @@
         <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
         <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
         <td data-label="重要日期" class="source-date">${dateCell(s,r)}</td>
-        <td data-label="报名进度 / 下次跟进" class="progress-cell"><span class="status-pill" data-status="${esc(r.status)}">${esc(r.status)}</span>${r.teacherNote?`<p class="teacher-update">${esc(r.teacherNote)}</p>`:''}<div class="followup"><small>下次跟进</small>${followup}</div>${r.website?`<a href="${esc(r.website)}" class="route-link" target="_blank" rel="noopener">官网 ↗</a>`:''}</td>
+        <td data-label="报名进度 / 下次跟进" class="progress-cell"><span class="status-pill" data-status="${esc(r.status)}">${esc(r.status)}</span>${r.teacherNote?`<p class="teacher-update">${esc(r.teacherNote)}</p>`:''}${r.officialNote?`<p class="teacher-update">${esc(r.officialNote)}</p>`:''}<div class="followup"><small>下次跟进</small>${followup}</div>${r.applicationUrl?`<a href="${esc(r.applicationUrl)}" class="route-link" target="_blank" rel="noopener">官方报名 ↗</a>`:''}${r.website?`<a href="${esc(r.website)}" class="route-link" target="_blank" rel="noopener">官网 ↗</a>`:''}</td>
         <td data-label="老师路程（原文）" class="teacher-route">${esc(s.commute)||'<span class="muted">—</span>'}</td>
         ${travel}
       </tr>`;
@@ -90,11 +90,11 @@
     const opening=pendingOpening(s,r);
     $('detail-title').classList.toggle('application-pending',Boolean(opening));
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
-    const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment),'important-date']]:p?.assessmentText?[['笔试安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
-    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...(opening?[['申请开放状态',opening,'opening-pending-text']]:[]),...dates,...(p?.dateNote?[['老师日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
+    const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment),'important-date']]:p?.assessmentText?[['笔试/评估安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
+    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...(opening?[['申请开放状态',opening,'opening-pending-text']]:[]),...dates,...(p?.dateNote?[['日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.officialNote?[['官方说明',r.officialNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
     const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
     const checked=check?`<div class="schedule-check ${check.status==='confirmed'?'':'schedule-issue'}"><strong>日期核查 · ${esc(check.checkedAt??window.SCHEDULE_CHECK_DATA.checkedAt)}</strong><p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
-    $('detail-facts').innerHTML=facts.map(([label,value,highlight])=>`<p><strong>${esc(label)}</strong><span${highlight?` class="${highlight}"`:''}>${esc(value)}</span></p>`).join('')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
+    $('detail-facts').innerHTML=facts.map(([label,value,highlight])=>`<p><strong>${esc(label)}</strong><span${highlight?` class="${highlight}"`:''}>${esc(value)}</span></p>`).join('')+(r.applicationUrl?`<p><strong>报名入口</strong><a href="${esc(r.applicationUrl)}" target="_blank" rel="noopener">官方报名 ↗</a></p>`:'')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
     $('detail-dialog').showModal();
   }
   for(const status of STATUSES){const option=document.createElement('option');option.textContent=status;$('status').append(option);}
@@ -108,8 +108,8 @@
   function download(name,text,type){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
   const csvValue=value=>'"'+String(value??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
   $('csv-button').addEventListener('click',()=>{
-    const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','申请开放日期','申请开放安排','申请截止','笔试/面试日期','笔试安排','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期','老师日期说明'];
-    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,assessmentText(s.plan),r.openDay,r.followup||r.followupText,r.contact,r.website,r.notes,check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??'',s.plan?.dateNote??''];});
+    const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','申请开放日期','申请开放安排','申请截止','笔试/面试日期','笔试/评估安排','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期','日期说明','官方说明','官方报名入口'];
+    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,assessmentText(s.plan),r.openDay,r.followup||r.followupText,r.contact,r.website,r.notes,check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??'',s.plan?.dateNote??'',r.officialNote,r.applicationUrl];});
     if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(DATA[i],TRAVEL_SETTINGS)));}
     download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
   });

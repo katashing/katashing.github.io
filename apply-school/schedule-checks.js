@@ -30,15 +30,15 @@ window.SCHEDULE_CHECK_DATA = {
     "sz01": {
       "status": "confirmed",
       "checkedAt": "2026-10-19",
-      "message": "2026年10月19日核查官方招生入口：2026/27学年二月插班报名仍暂未开放（含香港课程）。小三名额、开放日、截止及评估安排待公布；九月入学轮已截止，不能用该轮日期作本次申请期限。",
+      "message": "学校2026年10月19日新公告已确认：小学及香港课程于2026年10月19日至11月16日接受申请，2027年2月入学。香港课程面向1–10年级；部分合适申请人获邀参加综合评估／体验课，具体日期待通知。此前“待开放”已由此公告更新。",
       "sources": [
         {
-          "title": "培侨信义官方招生入口",
-          "url": "https://www.puikiuxinyi.com/zhaosheng/"
+          "title": "培侨信义2026/27二月插班官方公告（10月19日）",
+          "url": "https://mp.weixin.qq.com/s/56uGeCthL9zRMx5ejyjf8g"
         },
         {
-          "title": "9月旧轮公告（不作为当前日期）",
-          "url": "https://www.puikiuxinyi.com/notice/884.html"
+          "title": "香港课程官方报名入口",
+          "url": "https://admission.puikiuxinyi.edu.hk/event/tc/3090"
         },
         {
           "title": "历史参考：2025/26二月插班申请须知（香港课程）",
