@@ -571,6 +571,39 @@ button.school-name.application-active:focus-visible,
 #detail-title.application-active { color: #b3261e; font-weight: 750; }
 .selected-tag.application-active { color: #b3261e; background: #fff1ef; border-color: #efc5c1; }
 
+/* 尚未开放的学校与未来开放排期使用橙色，保留文字说明。 */
+button.school-name.application-pending,
+button.school-name.application-pending:hover,
+button.school-name.application-pending:focus-visible,
+#detail-title.application-pending { color: #935000; font-weight: 750; }
+.application-pending-row > td:first-child { box-shadow: inset 3px 0 #d58a17; }
+.opening-pending-tag,
+.source-date .opening-pending-text,
+.fact-box .opening-pending-text {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 6px;
+  border: 1px solid #e2ac48;
+  border-radius: 4px;
+  color: #935000;
+  background: #fff0ca;
+  font-weight: 750;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.opening-pending-tag { font-size: 11px; }
+.status-pill[data-status="待开放"] { color: #935000; background: #fff0ca; border-color: #e2ac48; font-weight: 750; }
+.status-legend { margin-left: 12px; color: #935000; font-size: 11px; }
+@media print {
+  .opening-pending-tag,
+  .source-date .opening-pending-text,
+  .fact-box .opening-pending-text,
+  .status-pill[data-status="待开放"] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
 /* 申请、考试及开放日期统一高亮；没有时间的待办文字保持原样。 */
 .source-date .important-date,
 .fact-box .important-date {
