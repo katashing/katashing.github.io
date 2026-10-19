@@ -993,7 +993,7 @@ window.TRAVEL_DATA = {
       "sourceUrl": "https://www.puikiuxinyi.com/contact/",
       "website": "https://www.puikiuxinyi.com/",
       "phone": null,
-      "nameNote": "按老师简称“深圳培侨书院”暂匹配龙华信义学校；需核对意向校区。",
+      "nameNote": "老师原表简称“深圳培侨书院”；网页使用官网正式名称“深圳香港培侨书院龙华信义学校”，地址为深圳市龙华区致远北路1号。招生核查及出行资料均对应这所深圳学校。",
       "huanggang": null,
       "liantang": null,
       "direct": 10,

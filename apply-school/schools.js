@@ -251,14 +251,14 @@ window.SCHOOL_DATA = [
     }
   },
   {
-    id: "sz01", schoolNumber: 27, name: "深圳培侨书院", region: "深圳", rank: null, tier: "", net: "",
+    id: "sz01", schoolNumber: 27, name: "深圳香港培侨书院龙华信义学校", region: "深圳", rank: null, tier: "", net: "",
     highlight: "已选深圳学校",
     commuteMinutes: null, commute: "",
     source: "selected", selected: true,
     plan: {
       type: "私立", gender: "男女", language: "英中", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "",
-      deadlineText: "待开放", assessmentText: "", actionText: "", alias: "",
+      deadlineText: "待开放", assessmentText: "", actionText: "", alias: "老师原表简称：深圳培侨书院",
       followupText: "留意2026/27学年二月插班新公告。历史开放日：2025年10月15日、2024年10月16日，仅供参考，不作为本轮开放日期。",
       notes: "二月插班历年申请窗口（学校官方公告，2026年10月19日核查）：2025/26学年香港课程于2025年10月15日至11月10日报名，对应2026年2月入学；2024/25学年香港课程于2024年10月16日至11月17日报名，对应2025年2月入学。两年均在10月中旬开放，仅供历史参考；本轮2026/27学年二月插班（2027年2月入学）仍待开放，开放、截止及评估日期以学校新公告为准。上述为申请开始日，官网刊登日分别为2025年10月16日及2024年10月17日。历史官方来源见日期核查。"
     }
