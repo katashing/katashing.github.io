@@ -593,6 +593,16 @@ button.school-name.application-open:focus-visible,
 .opening-open-tag { font-size: 11px; }
 .status-pill[data-status="已开放，待报名"] { color: #b3261e; background: #fff1ef; border-color: #efc5c1; font-weight: 750; }
 
+/* 普林当前暂缓期间用绿色，仍显示学校已开放报名。 */
+button.school-name.application-deferred,
+button.school-name.application-deferred:hover,
+button.school-name.application-deferred:focus-visible,
+#detail-title.application-deferred { color: #2f6b48; font-weight: 750; }
+.application-deferred-row .opening-open-tag,
+.application-deferred-row .opening-open-text,
+.application-deferred-row .status-pill,
+.fact-box .opening-deferred-text { color: #2f6b48; background: #e8f3e8; border-color: #b9d6c0; }
+
 /* 尚未开放的学校与未来开放排期使用橙色，保留文字说明。 */
 button.school-name.application-pending,
 button.school-name.application-pending:hover,
@@ -617,7 +627,10 @@ button.school-name.application-pending:focus-visible,
 .status-pill[data-status="待开放"] { color: #935000; background: #fff0ca; border-color: #e2ac48; font-weight: 750; }
 .status-legend { margin-left: 12px; color: #935000; font-size: 11px; }
 .status-legend-open { color: #b3261e; }
+.status-legend-deferred { color: #2f6b48; }
 @media print {
+  .fact-box .opening-deferred-text,
+  .application-deferred-row .status-pill,
   .opening-open-tag,
   .source-date .opening-open-text,
   .fact-box .opening-open-text,

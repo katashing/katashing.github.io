@@ -5,6 +5,7 @@
   const STATUSES=['备选','待确认','待开放','已开放，待报名','暂无学位','暂缓报名','准备材料','待递交','已提交','获邀笔试','已笔试','面试中','录取','候补','未录取','不再申请'];
   const APPLYING_STATUSES=new Set(['准备材料','待递交','已提交','获邀笔试','已笔试','面试中','候补']);
   const isApplying=r=>r.selected&&APPLYING_STATUSES.has(r.status);
+  const isDeferred=(s,r)=>s.id==='sz03'&&r.status==='暂缓报名';
   const isMainland=s=>s.region==='深圳';
   const $=id=>document.getElementById(id);
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -74,10 +75,11 @@
       const applying=isApplying(r);
       const opening=pendingOpening(s,r);
       const open=registrationOpen(s,r);
+      const deferred=isDeferred(s,r);
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,TRAVEL_SETTINGS):'<td class="travel-cell" data-label="翰岭院出行">查询中</td>';
       const followup=r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
-      return `<tr${opening?' class="application-pending-row"':''}>
-        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open?' application-open':''}${opening?' application-pending':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?'<span class="opening-open-tag">已开放报名</span>':''}</div></td>
+      return `<tr${opening?' class="application-pending-row"':deferred?' class="application-deferred-row"':''}>
+        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open&&!deferred?' application-open':''}${deferred?' application-deferred':''}${opening?' application-pending':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?`<span class="opening-open-tag">${deferred?'已开放 · 暂缓报名':'已开放报名'}</span>`:''}</div></td>
         <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):''}</span></td>
         <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
         <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
@@ -96,10 +98,12 @@
     const opening=pendingOpening(s,r);
     $('detail-title').classList.toggle('application-pending',Boolean(opening));
     const open=registrationOpen(s,r);
-    $('detail-title').classList.toggle('application-open',open);
+    const deferred=isDeferred(s,r);
+    $('detail-title').classList.toggle('application-open',open&&!deferred);
+    $('detail-title').classList.toggle('application-deferred',deferred);
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
     const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(r.assessment?[['笔试日期',dateText(r.assessment),'important-date']]:p?.assessmentText?[['笔试/评估安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
-    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...(opening?[['申请开放状态',opening,'opening-pending-text']]:open?[['申请开放状态','已开放报名','opening-open-text']]:[]),...dates,...(p?.dateNote?[['日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.officialNote?[['官方说明',r.officialNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
+    const facts=[['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...(opening?[['申请开放状态',opening,'opening-pending-text']]:open?[['申请开放状态',deferred?'已开放报名 · 暂缓报名':'已开放报名',deferred?'opening-open-text opening-deferred-text':'opening-open-text']]:[]),...dates,...(p?.dateNote?[['日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.officialNote?[['官方说明',r.officialNote]]:[]),...(r.followup||r.followupText?[['下次跟进',r.followup?dateText(r.followup):r.followupText]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
     const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
     const checked=check?`<div class="schedule-check ${check.status==='confirmed'?'':'schedule-issue'}"><strong>日期核查 · ${esc(check.checkedAt??window.SCHEDULE_CHECK_DATA.checkedAt)}</strong><p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
     $('detail-facts').innerHTML=facts.map(([label,value,highlight])=>`<p><strong>${esc(label)}</strong><span${highlight?` class="${highlight}"`:''}>${esc(value)}</span></p>`).join('')+(r.applicationUrl?`<p><strong>报名入口</strong><a href="${esc(r.applicationUrl)}" target="_blank" rel="noopener">官方报名 ↗</a></p>`:'')+checked+(window.renderSchoolTravel?`<p><strong>翰岭院出发</strong><span>${window.renderSchoolTravel(s,TRAVEL_SETTINGS)}</span></p>`:'');
