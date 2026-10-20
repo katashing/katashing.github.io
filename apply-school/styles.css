@@ -644,8 +644,9 @@ button.school-name.application-pending:focus-visible,
   }
 }
 
-/* 申请、考试及开放日期统一高亮；没有时间的待办文字保持原样。 */
+/* 申请、递交、考试及开放日期统一高亮；没有时间的待办文字保持原样。 */
 .source-date .important-date,
+.progress-cell .important-date,
 .fact-box .important-date {
   display: block;
   width: fit-content;
@@ -666,6 +667,7 @@ button.school-name.application-pending:focus-visible,
 .fact-box .important-date.deadline-date { border-color: #dfa296; background: #fde7e1; }
 @media print {
   .source-date .important-date,
+  .progress-cell .important-date,
   .fact-box .important-date {
     padding: 1px 3px;
     color: #942019;
