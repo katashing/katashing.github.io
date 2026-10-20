@@ -665,6 +665,28 @@ button.school-name.application-pending:focus-visible,
 .fact-box .deadline-date { color: #942019; font-weight: 800; }
 .source-date .important-date.deadline-date,
 .fact-box .important-date.deadline-date { border-color: #dfa296; background: #fde7e1; }
+
+/* 已确认的笔试时间置顶，赴考信息直接展示。 */
+.assessment-notice { margin-bottom: 9px; }
+.source-date .assessment-priority,
+.fact-box .assessment-priority {
+  margin-top: 0;
+  padding: 6px 7px;
+  border: 2px solid #b3261e;
+  color: #a11c15;
+  background: #ffe1d8;
+  font-size: 15px;
+  font-weight: 850;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+.assessment-detail { display: block; margin-top: 4px; color: #405246; font-size: 12px; line-height: 1.7; }
+.assessment-detail b { color: #a12922; font-weight: 700; }
+.followup > .followup-text { display: block; margin-top: 4px; }
+@media screen and (max-width:1000px) {
+  .source-date:has(.assessment-notice) { width: 100%; }
+  .source-date .assessment-priority { font-size: 16px; }
+}
 @media print {
   .source-date .important-date,
   .progress-cell .important-date,
@@ -675,4 +697,8 @@ button.school-name.application-pending:focus-visible,
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+  .source-date .assessment-priority,
+  .fact-box .assessment-priority { border: 2px solid #b3261e; padding: 3px 4px; color: #a11c15; background: #ffe1d8; font-size: 10px; font-weight: 850; }
+  .assessment-notice { margin-bottom: 5px; break-inside: avoid; }
+  .assessment-detail { font-size: 8px; line-height: 1.5; }
 }
