@@ -571,6 +571,28 @@ button.school-name.application-active:focus-visible,
 #detail-title.application-active { color: #b3261e; font-weight: 750; }
 .selected-tag.application-active { color: #b3261e; background: #fff1ef; border-color: #efc5c1; }
 
+/* 报名开放情况独立于家长申请进度。 */
+button.school-name.application-open,
+button.school-name.application-open:hover,
+button.school-name.application-open:focus-visible,
+#detail-title.application-open { color: #b3261e; font-weight: 750; }
+.opening-open-tag,
+.source-date .opening-open-text,
+.fact-box .opening-open-text {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 6px;
+  border: 1px solid #efc5c1;
+  border-radius: 4px;
+  color: #b3261e;
+  background: #fff1ef;
+  font-weight: 750;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.opening-open-tag { font-size: 11px; }
+.status-pill[data-status="已开放，待报名"] { color: #b3261e; background: #fff1ef; border-color: #efc5c1; font-weight: 750; }
+
 /* 尚未开放的学校与未来开放排期使用橙色，保留文字说明。 */
 button.school-name.application-pending,
 button.school-name.application-pending:hover,
@@ -594,7 +616,12 @@ button.school-name.application-pending:focus-visible,
 .opening-pending-tag { font-size: 11px; }
 .status-pill[data-status="待开放"] { color: #935000; background: #fff0ca; border-color: #e2ac48; font-weight: 750; }
 .status-legend { margin-left: 12px; color: #935000; font-size: 11px; }
+.status-legend-open { color: #b3261e; }
 @media print {
+  .opening-open-tag,
+  .source-date .opening-open-text,
+  .fact-box .opening-open-text,
+  .status-pill[data-status="已开放，待报名"],
   .opening-pending-tag,
   .source-date .opening-pending-text,
   .fact-box .opening-pending-text,
