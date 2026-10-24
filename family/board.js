@@ -169,13 +169,13 @@
     return match ? Date.UTC(+match[1], +match[2] - 1, +match[3], +match[4] - 8, +match[5]) : NaN;
   }
   function topLine() {
-    var en = english(), bits = currentDay.split('-'), value = en ? dateLabel(currentDay, true, true) + ' ' + bits[0] : bits[0] + '年' + (+bits[1]) + '月' + (+bits[2]) + '日 ' + dateLabel(currentDay, false, true).split(' ')[1];
+    var en = english(), value = currentDay;
     var lunar = calendar.dates && calendar.dates[currentDay], age = new Date().getTime() - weatherTime(weather.observedAt);
-    text(el('lunar-line'), lunar ? (en ? lunar.textEn : '农历' + lunar.text) : '');
-    visible(el('lunar-line'), !!lunar);
     var traditionalDay = almanac.dates && almanac.dates[currentDay];
-    text(el('almanac-line'), traditionalDay ? (en ? traditionalDay.textEn : traditionalDay.text) : '');
-    visible(el('almanac-line'), !!traditionalDay);
+    var suitable = !en && traditionalDay && array(traditionalDay.yi) && traditionalDay.yi.length ? '宜' + traditionalDay.yi.slice(0, 2).join('、') : '';
+    text(el('lunar-text'), '');
+    text(el('almanac-line'), suitable);
+    visible(el('almanac-line'), !!suitable); visible(el('lunar-line'), !!suitable);
     text(el('top-line'), value);
     var weatherLine = el('weather-line'); clear(weatherLine); visible(weatherLine, false);
     if (typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000) {
@@ -263,13 +263,13 @@
   }
   function renderChild(view, en) {
     var target = el('entries'), plan = dayPlan(), source = view.page.sourceId ? pageById(view.page.sourceId) : view.page;
-    var label = dateLabel(selectedDay, en, true);
+    var dateBits = selectedDay.split('-'), dateValue = new Date(Date.UTC(+dateBits[0], +dateBits[1] - 1, +dateBits[2]));
+    var label = en ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dateValue.getUTCDay()] : '周' + '日一二三四五六'.charAt(dateValue.getUTCDay());
     var context = selectedDay === shiftDate(currentDay, 1) ? (en ? 'Tomorrow’s schedule' : '明日课表') : selectedDay === currentDay ? (en ? 'Today’s schedule' : '今日课表') : (en ? 'Schedule' : '课表');
     text(el('day-context'), context);
-    if (selectedDay.slice(0, 4) !== currentDay.slice(0, 4)) { label = en ? label + ' ' + selectedDay.slice(0, 4) : selectedDay.slice(0, 4) + '年' + label; }
     text(el('heading'), label);
     text(el('day-prev'), en ? 'Prev day' : '前一天'); text(el('day-next'), en ? 'Next day' : '后一天');
-    el('day-today').setAttribute('aria-label', label + (en ? ', back to tomorrow' : '，回到明天'));
+    el('day-today').setAttribute('aria-label', selectedDay + ' ' + label + (en ? ', back to tomorrow' : '，回到明天'));
     el('day-today').setAttribute('title', en ? 'Back to tomorrow' : '回到明天');
     el('day-nav').setAttribute('aria-label', en ? 'Choose a date' : '查看日期');
     selected(el('day-today'), selectedDay === shiftDate(currentDay, 1));

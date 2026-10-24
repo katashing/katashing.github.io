@@ -10,7 +10,7 @@ menu-handwriting.ttf
 
 menu-english.ttf
 - 字体：EB Garamond Regular，正体（非斜体）。
-- 用途：英文菜单、待办、孩子课程及全部资料正文；以清晰端正的餐厅衬线字替代手写字体。日期与时段中的英文单词也使用该字体，仅数字及数字符号使用 UI Rounded。
+- 用途：英文菜单、待办、孩子课程及全部资料正文；以清晰端正的餐厅衬线字替代手写字体。日期与时段中的英文单词也使用该字体，仅数字及数字符号使用 UI Numerals。
 - 来源：https://fonts.google.com/specimen/EB+Garamond
 - 官方项目：https://github.com/octaviopardo/EBGaramond12
 - 许可：menu-english-OFL.txt（SIL Open Font License）
@@ -22,12 +22,14 @@ menu-english.ttf
 
 控件手写标签已覆盖早餐、待办、孩子、语言、轮播、资料、前后翻日、分页及家务分类；补齐停、列、播、读、资、轮、返，保留之前全部字形。
 
-ui-rounded.ttf
-- 字体：Nunito SemiBold（600），圆润清晰的数字。
-- 用途：课表时间、顶部日期/天气、日期按钮和 1–7 星期按钮中的数字及数字符号；已移除字母字形，中文文字回退 Menu Handwriting，英文文字回退 Menu English，避免时段与正文混用字体。
-- 来源：https://fonts.google.com/specimen/Nunito
-- 许可：ui-rounded-OFL.txt（SIL Open Font License）
-- 格式：以 Google Fonts 官方接口提供的 TrueType 文件再次生成数字子集，5,564 字节；保留原字形轮廓及指标。
+ui-numerals.ttf
+- 字体：LXGW WenKai TC Regular，与中文正文相同的手写数字，逻辑名 UI Numerals。
+- 用途：中英文课表时间、顶部日期/天气、日期按钮和 1–7 星期按钮中的数字及数字符号；中文文字回退 Menu Handwriting，英文文字回退 Menu English。
+- 来源：与 menu-handwriting.ttf 相同的官方 LXGW WenKai TC 完整源字体，经 fontTools 提取数字子集。
+- 许可：ui-numerals-OFL.txt（SIL Open Font License，与菜单中文字体许可相同）。
+- 格式：TrueType，19,156 字节；保留原字形轮廓、原生 Regular 字重和所有指标，不合成粗体。
 - 覆盖：22 个字符：0–9、空格、百分号、正负号、长短横线、句点、逗号、斜杠、冒号和度数符号。
-- 0–9 的原生 hmtx advance 均为 600，未修改字体指标，无需 font-feature-settings 或 tabular-nums 即可对齐时间数字。
-部署时也须保留 ui-rounded.ttf 与其 OFL 许可。
+- 0–9 的原生 hmtx advance 均为 600（unitsPerEm 1000）；无需 font-feature-settings 或 tabular-nums 即可对齐时间数字。
+- “17:45 – 18:45”按 16px 为 107.2px，适合小屏 112px 时间列；按 19px 为 127.3px，适合正常 134px 时间列。
+当前页面不再引用 Nunito 或 ui-rounded.ttf；旧 ui-rounded.ttf 和许可仅保留为历史文件。
+部署时保留 ui-numerals.ttf 与 ui-numerals-OFL.txt。

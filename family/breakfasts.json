@@ -111,7 +111,7 @@
       "textEn": "Beef noodles",
       "detail": "煎蛋、青菜",
       "detailEn": "Fried egg and greens",
-      "image": "images/breakfast/b05-menu.png",
+      "image": "images/breakfast/b05-menu-v2.png",
       "imageSource": "generated-menu-reference",
       "crop": {
         "sourceWidth": 1774,
@@ -137,7 +137,7 @@
       "textEn": "Tomato & egg noodles",
       "detail": "青菜",
       "detailEn": "Greens",
-      "image": "images/breakfast/b06-menu.png",
+      "image": "images/breakfast/b06-menu-v2.png",
       "imageSource": "generated-menu-reference",
       "crop": {
         "sourceWidth": 1774,
