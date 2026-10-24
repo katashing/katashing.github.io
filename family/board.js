@@ -175,7 +175,7 @@
     var suitable = !en && traditionalDay && array(traditionalDay.yi) && traditionalDay.yi.length ? '宜' + traditionalDay.yi.slice(0, 2).join('、') : '';
     text(el('lunar-text'), '');
     text(el('almanac-line'), suitable);
-    visible(el('almanac-line'), !!suitable); visible(el('lunar-line'), !!suitable);
+    visible(el('almanac-line'), !!suitable); visible(el('lunar-line'), true);
     text(el('top-line'), value);
     var weatherLine = el('weather-line'); clear(weatherLine); visible(weatherLine, false);
     if (typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000) {
