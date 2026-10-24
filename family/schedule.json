@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 2,
+  "timezone": "Asia/Shanghai",
+  "validFrom": "2026-10-19",
+  "validThrough": "2026-10-25",
+  "source": {
+    "kind": "user-image",
+    "file": "docs/sources/课程表_20261019-20261025.png",
+    "description": "下午及晚间按用户课程表图片录入；上午没有课程，活动为用户允许补充的示例。",
+    "dateBasis": "原图标注10月19日至10月25日及星期，按当前2026年对应周录入。",
+    "weekly": "用户另行确认：自2026年10月24日起，每周三、四、五17:45–18:45上体育课，其余日期同一时间为户外活动。weeklyItems独立于原图单周有效期，其他课程不按周重复。"
+  },
+  "weeklyItems": [
+    {
+      "id": "weekly-pe",
+      "weekdays": [
+        3,
+        4,
+        5
+      ],
+      "startDate": "2026-10-24",
+      "start": "17:45",
+      "end": "18:45",
+      "text": "体育课",
+      "textEn": "PE class",
+      "kind": "lesson",
+      "example": false
+    },
+    {
+      "id": "weekly-outdoors",
+      "weekdays": [
+        0,
+        1,
+        2,
+        6
+      ],
+      "startDate": "2026-10-24",
+      "start": "17:45",
+      "end": "18:45",
+      "text": "户外活动",
+      "textEn": "Outdoor activities",
+      "kind": "activity",
+      "example": false
+    }
+  ],
+  "days": [
+    {
+      "date": "2026-10-19",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-19-morning-reading",
+          "start": "09:00",
+          "end": "09:20",
+          "text": "阅读",
+          "textEn": "Reading",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-19-morning-free-time",
+          "start": "09:30",
+          "end": "10:00",
+          "text": "自由活动",
+          "textEn": "Free time",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-19-afternoon-1",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-19-afternoon-2",
+          "start": "15:30",
+          "end": "16:30",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-10-19-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-20",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-20-morning-reading",
+          "start": "09:00",
+          "end": "09:20",
+          "text": "阅读",
+          "textEn": "Reading",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-20-morning-free-time",
+          "start": "09:30",
+          "end": "10:00",
+          "text": "自由活动",
+          "textEn": "Free time",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-20-afternoon-1",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "中文",
+          "textEn": "Chinese",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-20-afternoon-2",
+          "start": "15:30",
+          "end": "17:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-20-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-21",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-21-morning-reading",
+          "start": "09:00",
+          "end": "09:20",
+          "text": "阅读",
+          "textEn": "Reading",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-21-morning-free-time",
+          "start": "09:30",
+          "end": "10:00",
+          "text": "自由活动",
+          "textEn": "Free time",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-21-afternoon-1",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "数学",
+          "textEn": "Maths",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-21-afternoon-2",
+          "start": "15:30",
+          "end": "16:30",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-10-21-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-22-morning-reading",
+          "start": "09:00",
+          "end": "09:20",
+          "text": "阅读",
+          "textEn": "Reading",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-22-morning-free-time",
+          "start": "09:30",
+          "end": "10:00",
+          "text": "自由活动",
+          "textEn": "Free time",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-22-afternoon-1",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "数学",
+          "textEn": "Maths",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-22-afternoon-2",
+          "start": "15:30",
+          "end": "16:30",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-10-22-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-23-morning-reading",
+          "start": "09:00",
+          "end": "09:20",
+          "text": "阅读",
+          "textEn": "Reading",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-23-morning-free-time",
+          "start": "09:30",
+          "end": "10:00",
+          "text": "自由活动",
+          "textEn": "Free time",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-23-afternoon-1",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "中文",
+          "textEn": "Chinese",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-23-afternoon-2",
+          "start": "15:30",
+          "end": "16:30",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-10-23-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-24-morning-reading",
+          "start": "09:00",
+          "end": "09:20",
+          "text": "阅读",
+          "textEn": "Reading",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-24-morning-free-time",
+          "start": "09:30",
+          "end": "10:00",
+          "text": "自由活动",
+          "textEn": "Free time",
+          "example": true,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-24-afternoon-1",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "测试或自习",
+          "textEn": "Test or self-study",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-10-24-afternoon-2",
+          "start": "15:30",
+          "end": "17:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-10-24-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-10-25-morning-play",
+          "period": "morning",
+          "text": "玩耍",
+          "textEn": "Play",
+          "example": false,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-10-25-afternoon-reading-crafts",
+          "period": "afternoon",
+          "text": "自由阅读/手工",
+          "textEn": "Free reading / Crafts",
+          "example": false,
+          "kind": "activity"
+        }
+      ]
+    }
+  ]
+}

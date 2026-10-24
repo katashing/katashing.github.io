@@ -1,0 +1,34 @@
+button,.all-data,.top-nav a{border:1.5px solid #333;border-radius:16px;background:#fff;color:#222;line-height:1.25}
+button:before,.all-data:before,.top-nav a:before{content:"";display:inline-block;width:1.15em;height:1.15em;margin-right:.3em;vertical-align:-.16em;background:url("images/paw-dark.svg") center/contain no-repeat}
+button.selected,.footer-row button.selected,.top-nav a.selected,button:active{background:#333;color:#fff;border-color:#333}
+button.selected:before,.top-nav a.selected:before,button:active:before{background-image:url("images/paw-light.svg")}
+.day-nav .date-step button:before,.week-days button:before{width:1.05em;height:1.05em;margin-right:.25em}.footer-row .all-data{line-height:41px}.switches button{min-height:48px}.week-days button{border-radius:14px}.top-nav a{padding-top:10px;padding-bottom:10px}
+@media(max-width:420px){button:before,.all-data:before,.top-nav a:before{width:1.1em;height:1.1em;margin-right:.25em}.footer-row button,.footer-row .all-data{font-size:13px;padding-left:1px;padding-right:1px}.day-nav .date-step button{padding-left:1px;padding-right:1px}.day-nav .date-step button:before{width:1em;height:1em;margin-right:.2em}.week-days button{padding-left:1px;padding-right:1px}.week-days button:before{width:1em;height:1em;margin-right:.2em}}
+
+#home:before{background-image:url("images/bowl-dark.svg?v=solid")}#home.selected:before,#home:active:before{background-image:url("images/bowl-light.svg?v=solid")}#child:before{background-image:url("images/heart-dark.svg")}#child.selected:before,#child:active:before{background-image:url("images/heart-light.svg")}
+
+#en:before,#all-data:before{background-image:url("images/fishbone-dark.svg")}#en.selected:before,#en:active:before,#all-data:active:before{background-image:url("images/fishbone-light.svg")}
+
+button,.all-data,.top-nav a,.reference-toggle{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal}.switches button{font-weight:normal}html[lang="en"] button,html[lang="en"] .all-data,html[lang="en"] .top-nav a,html[lang="en"] .reference-toggle,#en,#language-en{font-family:"Menu English","Menu Handwriting",Georgia,serif;font-weight:normal}#zh,#language-zh{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif}
+
+/* Keep the information-page controls playful without repeating one icon. */
+.top-nav a:active,.all-data:active{background:#333;color:#fff;border-color:#333}
+.top-nav a:active:before,.all-data:active:before{background-image:url("images/paw-light.svg")}
+#back-board:before,#language-en:before,#section-schedule:before,.all-board .week-days>div:nth-child(even) button:before,.all-board .menu-next:before,.all-board .week-next:before,.household-reference>.reference-group:nth-of-type(even)>.reference-toggle:before{background-image:url("images/fishbone-dark.svg")}
+#back-board.selected:before,#back-board:active:before,#language-en.selected:before,#language-en:active:before,#section-schedule.selected:before,#section-schedule:active:before,.all-board .week-days>div:nth-child(even) button.selected:before,.all-board .week-days>div:nth-child(even) button:active:before,.all-board .menu-next.selected:before,.all-board .menu-next:active:before,.all-board .week-next.selected:before,.all-board .week-next:active:before,.household-reference>.reference-group:nth-of-type(even)>.reference-toggle.selected:before,.household-reference>.reference-group:nth-of-type(even)>.reference-toggle:active:before{background-image:url("images/fishbone-light.svg")}
+#language-zh:before,#section-breakfasts:before,.all-board .week-days>div:nth-child(odd) button:before,.all-board .menu-prev:before,.all-board .week-prev:before,.household-reference>.reference-group:nth-of-type(odd)>.reference-toggle:before{background-image:url("images/paw-dark.svg")}
+#language-zh.selected:before,#language-zh:active:before,#section-breakfasts.selected:before,#section-breakfasts:active:before,.all-board .week-days>div:nth-child(odd) button.selected:before,.all-board .week-days>div:nth-child(odd) button:active:before,.all-board .menu-prev.selected:before,.all-board .menu-prev:active:before,.all-board .week-prev.selected:before,.all-board .week-prev:active:before,.household-reference>.reference-group:nth-of-type(odd)>.reference-toggle.selected:before,.household-reference>.reference-group:nth-of-type(odd)>.reference-toggle:active:before{background-image:url("images/paw-light.svg")}
+
+/* Both task entry points use one icon in every language and state. */
+#tasks:before,#section-household:before{background-image:url("images/checklist-dark.svg?v=20261024-unified")}
+#tasks.selected:before,#tasks:active:before,#section-household.selected:before,#section-household:active:before{background-image:url("images/checklist-light.svg?v=20261024-unified")}
+
+/* One compact date rule: clear text, equal-height controls and a dark selection. */
+.day-nav button{height:48px;min-height:48px;font-weight:normal;vertical-align:middle}
+.day-nav #day-today{height:48px;min-height:48px;padding:2px 4px;border:1.5px solid #333;border-radius:15px;background:#fff;color:#222;font-size:20px;font-weight:normal;line-height:1.05;white-space:normal}
+.day-nav #day-today.selected,.day-nav #day-today:active{background:#333;color:#fff;border-color:#333}
+.day-nav #day-today:before{display:none}
+.day-nav .day-context{display:inline-block;margin:0 6px 0 0;font-size:17px;font-weight:normal;line-height:1.05;vertical-align:middle;white-space:nowrap}
+.day-nav #heading{display:inline-block;font-size:20px;font-weight:normal;line-height:1.05;vertical-align:middle;white-space:nowrap}
+@media(max-width:420px){.day-nav .day-context{margin-right:0}}
+@media(max-width:360px){.day-nav .day-context{font-size:15px}.day-nav #heading{font-size:18px}}

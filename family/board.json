@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 2,
+  "demo": false,
+  "updatedAt": "2026-10-24",
+  "settings": {
+    "intervalSeconds": 120,
+    "autoRotate": true,
+    "controlVersion": 2,
+    "showPage": ""
+  },
+  "breakfasts": [],
+  "pages": [
+    {
+      "id": "family",
+      "label": "早餐",
+      "lang": "zh-CN",
+      "title": "早餐",
+      "reminders": [],
+      "items": [
+        {
+          "id": "daily-floors-bathrooms",
+          "weekdays": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "拖地、清洁卫生间和地垫",
+          "textEn": "Mop floors; clean bathrooms and mat",
+          "done": false,
+          "detail": "全屋地板、两个卫生间（含马桶）、客厅地垫",
+          "detailEn": "All floors, both bathrooms including toilets, and the living room floor mat",
+          "group": "cleaning",
+          "fullText": "拖全屋地板；清洁两卫（含马桶）、客厅地垫",
+          "fullTextEn": "Mop all floors; clean both bathrooms, toilets and living room mat"
+        },
+        {
+          "id": "daily-water-plants",
+          "weekdays": [
+            6
+          ],
+          "text": "浇花",
+          "textEn": "Water plants",
+          "done": false,
+          "detail": "苔藓、兰花",
+          "detailEn": "Moss and orchids",
+          "group": "other",
+          "period": "morning"
+        },
+        {
+          "id": "clean-kitchen",
+          "weekdays": [
+            1
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "清洁厨房",
+          "textEn": "Clean kitchen",
+          "done": false,
+          "group": "cleaning"
+        },
+        {
+          "id": "clean-master-bathrooms",
+          "weekdays": [
+            2
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "清洁主卧、书房和卫浴",
+          "textEn": "Clean master, study and bathrooms",
+          "done": false,
+          "detail": "主卧、书房、主卫、次卫",
+          "detailEn": "Master bedroom, study, main bathroom and second bathroom",
+          "group": "cleaning",
+          "fullText": "清洁主卧、书房、主卫、次卫",
+          "fullTextEn": "Clean master bedroom, study and both bathrooms"
+        },
+        {
+          "id": "clean-grandma-kids-balcony",
+          "weekdays": [
+            3,
+            6
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "清洁老人房、儿童房和阳台",
+          "textEn": "Clean Grandma’s/kids’ rooms and balcony",
+          "done": false,
+          "group": "cleaning"
+        },
+        {
+          "id": "clean-living-entry",
+          "weekdays": [
+            4,
+            0
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "清洁客餐厅、玄关和门外",
+          "textEn": "Clean living/dining, entry and outside",
+          "done": false,
+          "group": "cleaning"
+        },
+        {
+          "id": "clean-master-study",
+          "weekdays": [
+            5
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "清洁主卧和书房",
+          "textEn": "Clean master bedroom and study",
+          "done": false,
+          "group": "cleaning"
+        },
+        {
+          "id": "wash-cushion-covers",
+          "weekdays": [
+            1
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "洗坐垫、靠垫套",
+          "textEn": "Wash cushions and covers",
+          "done": false,
+          "group": "cleaning"
+        },
+        {
+          "id": "linen-master",
+          "weekdays": [
+            2
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "换洗床单 · 主卧",
+          "textEn": "Change & wash sheets · Master bedroom",
+          "done": false,
+          "note": "洗净后先晾晒，再烘至完全干透，归位。",
+          "noteEn": "Wash, air-dry, then tumble-dry until fully dry and put away.",
+          "detail": "枕巾、毛巾、干发帽",
+          "detailEn": "Pillow towels, towels and hair-drying caps",
+          "group": "linen"
+        },
+        {
+          "id": "linen-wryan",
+          "weekdays": [
+            3
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "换洗床单 · 启启",
+          "textEn": "Change & wash sheets · Wryan",
+          "done": false,
+          "note": "洗净后先晾晒，再烘至完全干透，归位。",
+          "noteEn": "Wash, air-dry, then tumble-dry until fully dry and put away.",
+          "detail": "枕巾、浴巾、干发帽",
+          "detailEn": "Pillow towels, bath towels and hair-drying caps",
+          "group": "linen"
+        },
+        {
+          "id": "linen-grandma",
+          "weekdays": [
+            4
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "换洗床单 · 奶奶",
+          "textEn": "Change & wash sheets · Grandma",
+          "done": false,
+          "note": "洗净后先晾晒，再烘至完全干透，归位。",
+          "noteEn": "Wash, air-dry, then tumble-dry until fully dry and put away.",
+          "group": "linen"
+        },
+        {
+          "id": "linen-chengcheng",
+          "weekdays": [
+            5
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "换洗床单 · 橙橙",
+          "textEn": "Change & wash sheets · Chengcheng",
+          "done": false,
+          "note": "洗净后先晾晒，再烘至完全干透，归位。",
+          "noteEn": "Wash, air-dry, then tumble-dry until fully dry and put away.",
+          "group": "linen"
+        },
+        {
+          "id": "flowers-irrigation",
+          "weekdays": [
+            6
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "检查灌溉",
+          "textEn": "Check irrigation",
+          "done": false,
+          "group": "other",
+          "detail": "确认自动灌溉水龙头已打开",
+          "detailEn": "Confirm the automatic irrigation tap is open"
+        },
+        {
+          "id": "feed-turtle",
+          "weekdays": [
+            0
+          ],
+          "start": "15:00",
+          "end": "17:00",
+          "text": "喂乌龟",
+          "textEn": "Feed the turtle",
+          "done": false,
+          "group": "other"
+        }
+      ]
+    },
+    {
+      "id": "family_en",
+      "label": "Breakfast",
+      "lang": "en",
+      "sourceId": "family",
+      "title": "Breakfast",
+      "items": []
+    },
+    {
+      "id": "tasks",
+      "label": "待办",
+      "lang": "zh-CN",
+      "sourceId": "family",
+      "title": "待办事项",
+      "items": []
+    },
+    {
+      "id": "tasks_en",
+      "label": "Tasks",
+      "lang": "en",
+      "sourceId": "family",
+      "title": "To do",
+      "items": []
+    },
+    {
+      "id": "child",
+      "label": "孩子",
+      "lang": "zh-CN",
+      "title": "今天的安排",
+      "items": []
+    },
+    {
+      "id": "child_en",
+      "label": "Child",
+      "lang": "en",
+      "sourceId": "child",
+      "title": "Today’s plan",
+      "items": []
+    }
+  ],
+  "breakfastRotation": {
+    "enabled": true,
+    "startDate": "2026-10-25",
+    "mealIds": [
+      "b01",
+      "b02",
+      "b03",
+      "b04",
+      "b05",
+      "b06",
+      "b07"
+    ],
+    "strategy": "shuffle-bag",
+    "seed": 4069039000,
+    "noodleIds": [
+      "b05",
+      "b06"
+    ],
+    "weekendNoodles": true
+  }
+}

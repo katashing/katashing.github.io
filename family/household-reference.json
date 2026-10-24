@@ -1,0 +1,353 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "file": "../helper-schedule/启橙之家工作日程表.html",
+    "title": "每周工作安排表（暑假）及周期任务表",
+    "scope": "工作日与周末家务、常规照护、周期任务；与family.items的清洁和床单规则共用展示，不重复复制。",
+    "overrides": [
+      "原表每日浇花按本次用户要求改为周六上午，保留在family.items。",
+      "旧暑假体育、辅导、接回运动与学习时段不作为当前课表；相关照护职责按当前孩子安排执行。",
+      "周期任务只记录频率，没有锚定日期，不推算到期日。",
+      "用户已删除插花；family.items保留稳定ID flowers-irrigation，仅表示检查灌溉，仅在完整资料显示，主待办不显示。"
+    ],
+    "sections": "主HTML第321–371、403–413、423–456行；必要完成标准来自同文件。"
+  },
+  "sections": [
+    {
+      "id": "weekday-routine",
+      "title": "常规家务",
+      "titleEn": "Regular chores",
+      "weekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "items": [
+        {
+          "id": "routine-laundry",
+          "text": "洗晾收衣",
+          "textEn": "Laundry",
+          "detail": "含袜子；衣物干透后叠好归位。",
+          "detailEn": "Include socks; fold and put away once fully dry."
+        },
+        {
+          "id": "routine-breakfast",
+          "text": "准备早餐",
+          "textEn": "Prepare breakfast",
+          "detail": "爸妈早餐上桌或打包；启启早餐上桌。",
+          "detailEn": "Serve or pack the parents’ breakfast; serve Wryan’s at the table."
+        },
+        {
+          "id": "routine-cups",
+          "text": "水杯换温水",
+          "textEn": "Refresh drinking water",
+          "detail": "洗净水杯，换新鲜温水。",
+          "detailEn": "Wash cups and fill with fresh warm water."
+        },
+        {
+          "id": "routine-groceries",
+          "text": "买菜",
+          "textEn": "Buy groceries",
+          "detail": "按清单购买。",
+          "detailEn": "Follow the shopping list."
+        },
+        {
+          "id": "routine-lunchbox",
+          "text": "启启午饭便当",
+          "textEn": "Wryan’s lunchbox"
+        },
+        {
+          "id": "routine-meal-cleanup",
+          "text": "餐后清洁",
+          "textEn": "After-meal cleanup",
+          "detail": "餐具、厨房、餐厅洗净整理，按需消毒碗筷。",
+          "detailEn": "Clean dishes, kitchen and dining area; disinfect tableware as needed."
+        },
+        {
+          "id": "routine-air-beds",
+          "text": "通风、整理床铺",
+          "textEn": "Air rooms and make beds"
+        },
+        {
+          "id": "routine-lunch",
+          "text": "准备午餐",
+          "textEn": "Prepare lunch"
+        },
+        {
+          "id": "routine-screens",
+          "text": "夏季关纱门窗",
+          "textEn": "Close screens in summer"
+        },
+        {
+          "id": "routine-dinner",
+          "text": "准备晚餐",
+          "textEn": "Prepare dinner"
+        },
+        {
+          "id": "routine-fruit",
+          "text": "准备水果",
+          "textEn": "Prepare fruit"
+        },
+        {
+          "id": "routine-master-water",
+          "text": "主卧水壶",
+          "textEn": "Bedroom water jug",
+          "detail": "洗净水壶，装新鲜冷水，放回主卧。",
+          "detailEn": "Wash the jug, fill with fresh cool water and return it to the master bedroom."
+        },
+        {
+          "id": "routine-rubbish",
+          "text": "倒垃圾、换袋",
+          "textEn": "Take out rubbish",
+          "detail": "倒净垃圾，换好垃圾袋。",
+          "detailEn": "Empty rubbish and replace the bin bag."
+        },
+        {
+          "id": "routine-night-bathroom",
+          "text": "次卫拖地",
+          "textEn": "Mop second bathroom",
+          "detail": "晚间再清洁。",
+          "detailEn": "Clean again in the evening."
+        },
+        {
+          "id": "routine-lock-door",
+          "text": "锁大门",
+          "textEn": "Lock main door"
+        }
+      ]
+    },
+    {
+      "id": "weekday-care",
+      "title": "照护",
+      "titleEn": "Care",
+      "weekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "items": [
+        {
+          "id": "care-cheng-morning",
+          "text": "橙橙晨间照护",
+          "textEn": "Chengcheng’s morning care",
+          "detail": "起床后换尿片、喝奶、维D。",
+          "detailEn": "Diaper, milk and vitamin D after waking."
+        },
+        {
+          "id": "care-cheng-meals",
+          "text": "橙橙三餐",
+          "textEn": "Chengcheng’s meals",
+          "detail": "早餐、午餐、晚餐。",
+          "detailEn": "Breakfast, lunch and dinner."
+        },
+        {
+          "id": "care-cheng-play",
+          "text": "看护陪玩",
+          "textEn": "Supervised play",
+          "detail": "橙橙，奶奶可协助。",
+          "detailEn": "Chengcheng; Grandma can help."
+        },
+        {
+          "id": "care-cheng-nap",
+          "text": "午睡看护",
+          "textEn": "Nap care",
+          "detail": "橙橙，奶奶可协助。",
+          "detailEn": "Chengcheng; Grandma can help."
+        },
+        {
+          "id": "care-cheng-fruit",
+          "text": "橙橙水果",
+          "textEn": "Chengcheng’s fruit",
+          "detail": "洗净切好，陪同吃水果。",
+          "detailEn": "Wash, cut and serve the fruit."
+        },
+        {
+          "id": "care-cheng-garden",
+          "text": "花园玩耍",
+          "textEn": "Garden play",
+          "detail": "橙橙，下午和晚间；奶奶可协助。",
+          "detailEn": "Chengcheng, afternoon and evening; Grandma can help."
+        },
+        {
+          "id": "care-cheng-bedtime",
+          "text": "橙橙睡前照护",
+          "textEn": "Chengcheng’s bedtime care",
+          "detail": "洗澡、喝奶、刷牙，照看入睡。",
+          "detailEn": "Bath, milk and teeth, then settle to sleep."
+        },
+        {
+          "id": "care-cheng-tidy",
+          "text": "玩具、奶瓶、九斗柜",
+          "textEn": "Toys, bottles and chest",
+          "detail": "玩具归位，奶瓶清洗消毒，柜面擦净。",
+          "detailEn": "Put toys away, wash and sterilize bottles, and wipe the chest."
+        },
+        {
+          "id": "care-wryan-travel",
+          "text": "接送启启、陪运动",
+          "textEn": "Wryan’s transport and exercise",
+          "detail": "按当前孩子安排接送体育课和辅导、接回陪运动；带齐学习用品、便当、手表和水杯。",
+          "detailEn": "Follow the current child schedule for PE, tutoring, pickup and exercise; bring study materials, lunchbox, watch and water bottle."
+        },
+        {
+          "id": "care-wryan-study",
+          "text": "学习陪伴、反馈",
+          "textEn": "Study support and feedback",
+          "detail": "按当前孩子安排陪伴学习，当天反馈完成情况。",
+          "detailEn": "Follow the current child schedule for study support and share progress that day."
+        },
+        {
+          "id": "care-wryan-bath",
+          "text": "启启洗澡准备",
+          "textEn": "Wryan’s bath preparation",
+          "detail": "备好毛巾、睡衣、干发帽，监督洗澡。",
+          "detailEn": "Prepare towel, pajamas and hair cap; supervise shower."
+        }
+      ]
+    },
+    {
+      "id": "weekend",
+      "title": "周末事项",
+      "titleEn": "Weekend tasks",
+      "weekdays": [
+        6,
+        0
+      ],
+      "items": [
+        {
+          "id": "weekend-breakfast",
+          "text": "爸妈早餐",
+          "textEn": "Parents’ breakfast",
+          "detail": "上桌或打包。",
+          "detailEn": "Serve or pack."
+        },
+        {
+          "id": "weekend-meals",
+          "text": "午晚餐、家庭外出",
+          "textEn": "Meals or family outing",
+          "detail": "在家准备午餐、晚餐，或按家庭外出安排调整。",
+          "detailEn": "Prepare lunch and dinner at home, or follow the family outing plan."
+        },
+        {
+          "id": "weekend-wryan",
+          "text": "陪伴启启",
+          "textEn": "Care for Wryan",
+          "detail": "按当前孩子安排上课或玩耍。",
+          "detailEn": "Follow the current child schedule for classes or play."
+        },
+        {
+          "id": "weekend-cheng",
+          "text": "照护橙橙",
+          "textEn": "Care for Chengcheng",
+          "detail": "按平时照护安排。",
+          "detailEn": "Follow his usual care routine."
+        }
+      ]
+    },
+    {
+      "id": "fortnightly",
+      "title": "每两周",
+      "titleEn": "Every two weeks",
+      "frequency": "每两周一次",
+      "frequencyEn": "Every two weeks",
+      "items": [
+        {
+          "id": "periodic-bathrooms",
+          "text": "深洁两间卫生间",
+          "textEn": "Deep clean both bathrooms"
+        },
+        {
+          "id": "periodic-supplies",
+          "text": "检查补充日用品",
+          "textEn": "Check and restock supplies"
+        }
+      ]
+    },
+    {
+      "id": "monthly",
+      "title": "每月",
+      "titleEn": "Monthly",
+      "frequency": "每月一次",
+      "frequencyEn": "Monthly",
+      "items": [
+        {
+          "id": "periodic-hood-stove",
+          "text": "油烟机、灶台去油",
+          "textEn": "Degrease hood and stove"
+        },
+        {
+          "id": "periodic-deep-dust",
+          "text": "柜顶、踢脚线除尘",
+          "textEn": "Dust cabinet tops and skirting"
+        },
+        {
+          "id": "periodic-mattresses",
+          "text": "床垫除螨、防螨套",
+          "textEn": "Mattresses and mite covers",
+          "detail": "爸爸妈妈、哥哥弟弟的床垫除螨，防螨套洗净干透后铺回床品最底层。",
+          "detailEn": "Vacuum the parents’ and both boys’ mattresses; wash and fully dry mite covers, then replace beneath the bedding."
+        },
+        {
+          "id": "periodic-dining",
+          "text": "清洁餐桌椅",
+          "textEn": "Clean dining table and chairs"
+        },
+        {
+          "id": "periodic-high-chair",
+          "text": "深洁橙橙餐椅",
+          "textEn": "Deep clean Chengcheng’s high chair"
+        },
+        {
+          "id": "periodic-shoes",
+          "text": "刷洗鞋子",
+          "textEn": "Scrub shoes"
+        }
+      ]
+    },
+    {
+      "id": "bimonthly",
+      "title": "每两个月",
+      "titleEn": "Every two months",
+      "frequency": "每两个月一次",
+      "frequencyEn": "Every two months",
+      "items": [
+        {
+          "id": "periodic-screens",
+          "text": "洗纱窗",
+          "textEn": "Wash window screens"
+        },
+        {
+          "id": "periodic-ac",
+          "text": "清洗空调滤网",
+          "textEn": "Clean A/C filters"
+        },
+        {
+          "id": "periodic-clothes",
+          "text": "整理孩子衣物",
+          "textEn": "Sort children’s clothes",
+          "detail": "整理小码、破损、不合季节的衣物，交家长确认。",
+          "detailEn": "Set aside outgrown, damaged and off-season clothes for the parents to check."
+        },
+        {
+          "id": "periodic-curtains",
+          "text": "清洗窗帘",
+          "textEn": "Wash curtains"
+        },
+        {
+          "id": "periodic-washer",
+          "text": "清洗洗衣机槽",
+          "textEn": "Clean washing machine drum"
+        },
+        {
+          "id": "periodic-fridge",
+          "text": "清洁冰箱",
+          "textEn": "Clean fridge"
+        }
+      ]
+    }
+  ]
+}
