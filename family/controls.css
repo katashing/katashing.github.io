@@ -35,3 +35,22 @@ button,.all-data,.top-nav a,.reference-toggle{font-family:"Menu Handwriting","Ka
 #day-prev:before,#day-next:before{background-image:url("images/fishbone-dark.svg?v=20261025-dates")}
 #day-prev.selected:before,#day-next.selected:before,#day-prev:active:before,#day-next:active:before{background-image:url("images/fishbone-light.svg?v=20261025-dates")}
 @media(max-width:420px){.day-nav #day-today,.day-nav .day-context,.day-nav #heading{font-size:18px}.day-nav .day-context{margin-right:0}}
+
+/* Reserve one icon column so translations and selected states never move it. */
+.switches button,.footer-row button,.footer-row .all-data,.top-nav a,.sections button,.week-days button,.menu-pager button,.week-nav button,.reference-toggle,.more-items,.more,.retry{position:relative;padding-left:1.8em;padding-right:.3em}
+.switches button:before,.footer-row button:before,.footer-row .all-data:before,.top-nav a:before,.sections button:before,.week-days button:before,.menu-pager button:before,.week-nav button:before,.reference-toggle:before,.more-items:before,.more:before,.retry:before{display:block;position:absolute;left:.35em;top:50%;margin:-.575em 0 0;vertical-align:middle}
+.switches button,.top-nav a,.sections button{height:48px;min-height:48px;padding-top:0;padding-bottom:0;line-height:45px;white-space:nowrap}
+.all-board .top-nav{margin-bottom:8px}
+.footer-row button,.footer-row .all-data{height:44px;min-height:44px;padding-top:0;padding-bottom:0;font-size:17px;line-height:41px;white-space:nowrap}
+.week-days button:before{margin-top:-.525em}
+@media(max-width:420px){
+  .switches button,.top-nav a,.sections button{padding-left:1.65em;padding-right:.15em}
+  .footer-row button,.footer-row .all-data{font-size:13px;padding-left:1.65em;padding-right:.1em}
+  .switches button:before,.footer-row button:before,.footer-row .all-data:before,.top-nav a:before,.sections button:before,.menu-pager button:before,.week-nav button:before,.reference-toggle:before,.more-items:before,.more:before,.retry:before{margin-top:-.55em}
+  .week-days button{padding-left:1.2em;padding-right:0}
+  .week-days button:before{left:.12em;margin-top:-.5em}
+  .day-nav .date-step{width:48px}
+  .day-nav .date-step button{position:relative;font-size:0;padding:0}
+  .day-nav .date-step button:before{position:absolute;left:50%;top:50%;width:21px;height:21px;margin:-10.5px 0 0 -10.5px}
+  .day-nav .day-context{margin-right:6px}
+}

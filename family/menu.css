@@ -40,3 +40,11 @@ html[lang="en"] .time,html[lang="en"] .top-line,html[lang="en"] .lunar-line,html
 html[lang="en"] #page .entry-title,html[lang="en"] #page .detail,html[lang="en"] #page .day-note,html[lang="en"] #page .sample,html[lang="en"] #page .bring,html[lang="en"] #page .scope,html[lang="en"] #page .empty,html[lang="en"] #page .missing,html[lang="en"] .day-nav .day-context,html[lang="en"] .all-board .entry-title,html[lang="en"] .all-board .detail,html[lang="en"] .all-board .day-note,html[lang="en"] .all-board .sample,html[lang="en"] .all-board .scope,html[lang="en"] .all-board .empty,html[lang="en"] .all-board .household-day h3{font-family:"Menu English","Menu Handwriting",Georgia,serif;font-style:normal;font-weight:normal}
 
 .menu-page-count,.part,.scope{font-family:"UI Numerals","Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal}html[lang="en"] .menu-page-count,html[lang="en"] .part,html[lang="en"] .scope{font-family:"UI Numerals","Menu English","Menu Handwriting",Georgia,serif;font-weight:normal}
+
+/* Use matching bilingual metrics; each menu row keeps its picture in place. */
+.breakfast-page .menu-title h2,html[lang="en"] .breakfast-page .menu-title h2{text-transform:none;white-space:nowrap}
+.breakfast-page .breakfast-detail,html[lang="en"] .breakfast-page .breakfast-detail,.breakfast-page .breakfast-note,html[lang="en"] .breakfast-page .breakfast-note{font-size:20px;line-height:1.45}
+.menu-view .meal-description .detail,html[lang="en"] .menu-view .meal-description .detail,.menu-view .meal-description .meal-note,html[lang="en"] .menu-view .meal-description .meal-note,.meal-drinks,html[lang="en"] .meal-drinks{font-size:18px;line-height:1.4;font-weight:normal}
+.menu-view .meal-row{height:104px;min-height:104px}
+.mark,html[lang="en"] .mark{font-family:Arial,sans-serif;font-weight:normal;font-style:normal}
+@media(max-width:420px){.breakfast-page .breakfast-detail,html[lang="en"] .breakfast-page .breakfast-detail,.breakfast-page .breakfast-note,html[lang="en"] .breakfast-page .breakfast-note{font-size:18px}}

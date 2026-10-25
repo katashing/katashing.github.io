@@ -77,7 +77,9 @@
     var keys = ['breakfasts', 'schedule', 'household'], failures = [];
     for (var i = 0; i < keys.length; i++) {
       var button = el('section-' + keys[i]);
-      text(button, label(keys[i]));
+      var compactLabels = { breakfasts: 'Breakfasts', schedule: 'Schedule', household: 'Household' };
+      text(button, en ? compactLabels[keys[i]] : label(keys[i]));
+      button.setAttribute('aria-label', label(keys[i]));
       button.className = section === keys[i] ? 'selected' : '';
       button.setAttribute('aria-pressed', section === keys[i] ? 'true' : 'false');
       if (errors[keys[i]]) { failures.push(label(keys[i])); }

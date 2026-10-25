@@ -1,12 +1,12 @@
 {
   "location": "深圳",
   "locationEn": "Shenzhen",
-  "temperatureC": 26.7,
+  "temperatureC": 30.0,
   "lowC": 21.2,
   "highC": 31.0,
-  "condition": "晴",
-  "conditionEn": "Clear",
-  "observedAt": "2026-10-25T10:00:00+08:00",
+  "condition": "晴间少云",
+  "conditionEn": "Mostly clear",
+  "observedAt": "2026-10-25T12:00:00+08:00",
   "source": "Open-Meteo",
   "sourceUrl": "https://open-meteo.com/"
 }
