@@ -5,5 +5,5 @@
 地址：https://katashing.github.io/family/
 
 本目录包含全部前端代码、日程 JSON、字体与菜单参考图片。修改数据后提交并等待 GitHub Pages 发布。
-天气由 weather-client.js 在浏览器请求深圳天气，黄历为离线传统历法资料。
+天气由 weather-client.js 在浏览器请求深圳天气，农历、两地节日与传统黄历采用独立离线资料。
 本页面不收集登录信息，也不提供浏览器写入接口。图片是经用户确认的生成菜单参考图。

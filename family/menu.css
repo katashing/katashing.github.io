@@ -1,4 +1,4 @@
-@font-face{font-family:"Menu Handwriting";src:url("fonts/menu-handwriting.ttf?v=20261024-almanac2") format("truetype");font-style:normal;font-weight:normal}
+@font-face{font-family:"Menu Handwriting";src:url("fonts/menu-handwriting.ttf?v=20261025-festivals-family") format("truetype");font-style:normal;font-weight:normal}
 @font-face{font-family:"Menu English";src:url("fonts/menu-english.ttf?v=20261024-regular") format("truetype");font-style:normal;font-weight:normal}
 .menu-title h2{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif;font-size:24px;color:#555;font-weight:normal;letter-spacing:2px;line-height:1.4}
 .breakfast-text,.breakfast-detail,.breakfast-note,.meal-name,.meal-description .detail,.meal-description .meal-note,.menu-view h1,.meal-drinks{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal;letter-spacing:0}

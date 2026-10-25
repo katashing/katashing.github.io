@@ -1,0 +1,1086 @@
+{
+  "schemaVersion": 1,
+  "timezone": "Asia/Shanghai",
+  "validFrom": "2026-01-01",
+  "validThrough": "2027-12-31",
+  "sources": [
+    {
+      "id": "lunar-python-1.4.8",
+      "name": "6tail lunar-python",
+      "url": "https://github.com/6tail/lunar-python",
+      "version": "1.4.8",
+      "license": "MIT",
+      "licenseText": "MIT License\n\nCopyright (c) 2020 6tail\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+      "documentationUrls": [
+        "https://6tail.cn/calendar/lunar.festivals.html",
+        "https://6tail.cn/calendar/solar.festivals.html",
+        "https://6tail.cn/calendar/lunar.ymd.html",
+        "https://6tail.cn/calendar/lunar.jieqi.html"
+      ],
+      "method": "Selected Solar/Lunar.getFestivals(), positive lunar month/day and Qingming/Winter Solstice solar terms. Mother's Day uses the library's second Sunday in May; Father's Day uses its third Sunday in June."
+    },
+    {
+      "id": "mainland-holiday-law-2024",
+      "name": "全国年节及纪念日放假办法（2024年修订）",
+      "url": "https://www.gov.cn/zhengce/content/202411/content_6986380.htm",
+      "verifiedMirrorUrl": "https://rsj.gz.gov.cn/zcfg/flfg/content/post_10803356.html",
+      "effectiveFrom": "2025-01-01",
+      "verifiedOn": "2026-10-25",
+      "scope": "Selected festival identities, including New Year's Eve, Lunar New Year days 1–3 and Article 3's four partial-population holidays; not a complete mainland public-holiday calendar."
+    },
+    {
+      "id": "mainland-teachers-day-law",
+      "name": "教育部：教师节日期与教师法第六条",
+      "url": "https://www.moe.gov.cn/jyb_xxgk/xxgk_jyta/jyta_jiaoshisi/201812/t20181214_363613.html",
+      "verifiedOn": "2026-10-25",
+      "scope": "Mainland Teachers' Day is September 10; a festival label does not imply a day off."
+    },
+    {
+      "id": "mainland-holiday-notice-2026",
+      "name": "国务院办公厅关于2026年部分节假日安排的通知",
+      "url": "https://www.gov.cn/zhengce/content/202511/content_7047090.htm",
+      "verifiedMirrorUrl": "https://www.beijing.gov.cn/cs/gncs/zcwj/202603/t20260327_4568275.html",
+      "publishedOn": "2025-11-04",
+      "verifiedOn": "2026-10-25",
+      "scope": "Cross-check of 2026 festival dates; bridging leave and adjusted workdays are deliberately not imported."
+    },
+    {
+      "id": "hk-general-holidays-2026",
+      "name": "2026年香港公众假期",
+      "url": "https://www.info.gov.hk/gia/general/202505/16/P2025051300354.htm",
+      "urlEn": "https://www.info.gov.hk/gia/general/202505/16/P2025051300353p.htm",
+      "publishedOn": "2025-05-16",
+      "verifiedOn": "2026-10-25",
+      "fixtureSha256": "cc67469c5800adddb8def5483c71b8bccf4bea30d27f9a67ea6547c074a7705a",
+      "easterSundayRule": "The Sunday preceding official Easter Monday; use the original date when Monday's holiday is moved.",
+      "scope": "17 official dated general holidays; recurring Sundays excluded; statutory-holiday subset not implied."
+    },
+    {
+      "id": "hk-general-holidays-2027",
+      "name": "2027年香港公众假期",
+      "url": "https://www.info.gov.hk/gia/general/202605/15/P2026051400304.htm",
+      "urlEn": "https://www.info.gov.hk/gia/general/202605/15/P2026051400300.htm",
+      "publishedOn": "2026-05-15",
+      "verifiedOn": "2026-10-25",
+      "fixtureSha256": "cc67469c5800adddb8def5483c71b8bccf4bea30d27f9a67ea6547c074a7705a",
+      "easterSundayRule": "The Sunday preceding official Easter Monday; use the original date when Monday's holiday is moved.",
+      "scope": "17 official dated general holidays; recurring Sundays excluded; statutory-holiday subset not implied."
+    }
+  ],
+  "scope": {
+    "regionMeaning": "Regions identify the intended mainland/Hong Kong festival coverage; a festival does not imply a day off in every listed region.",
+    "mainland": "Common festivals, Lunar New Year days 1–3, Women's/Youth/Children's/Army/Teachers' Days, Mother's/Father's Days and Winter Solstice; no bridging leave, adjusted workdays, or nationwide-day-off implication.",
+    "hongKong": "Common festivals plus officially published 2026/2027 dated general holidays, with substitute holidays explicitly distinguished.",
+    "mainland2027": "Festival dates are calendar calculations; no 2027 annual mainland leave/workday arrangement is asserted."
+  },
+  "dates": {
+    "2026-01-01": [
+      {
+        "id": "new_year",
+        "text": "元旦",
+        "textEn": "New Year's Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-02-16": [
+      {
+        "id": "lunar_new_year_eve",
+        "text": "除夕",
+        "textEn": "Lunar New Year's Eve",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-02-17": [
+      {
+        "id": "lunar_new_year",
+        "text": "春节",
+        "textEn": "Lunar New Year",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-02-18": [
+      {
+        "id": "lunar_new_year_day_2",
+        "text": "春节初二",
+        "textEn": "Lunar New Year: day 2",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-02-19": [
+      {
+        "id": "lunar_new_year_day_3",
+        "text": "春节初三",
+        "textEn": "Lunar New Year: day 3",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-03-03": [
+      {
+        "id": "lantern_festival",
+        "text": "元宵节",
+        "textEn": "Lantern Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-03-08": [
+      {
+        "id": "womens_day",
+        "text": "妇女节",
+        "textEn": "Women's Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2026-04-03": [
+      {
+        "id": "good_friday",
+        "text": "耶稣受难节",
+        "textEn": "Good Friday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      }
+    ],
+    "2026-04-04": [
+      {
+        "id": "day_after_good_friday",
+        "text": "受难节翌日",
+        "textEn": "Day after Good Friday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      }
+    ],
+    "2026-04-05": [
+      {
+        "id": "easter_sunday",
+        "text": "复活节",
+        "textEn": "Easter Sunday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      },
+      {
+        "id": "qingming",
+        "text": "清明节",
+        "textEn": "Ching Ming Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-04-06": [
+      {
+        "id": "qingming_substitute",
+        "text": "清明节补假",
+        "textEn": "Ching Ming holiday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "substitute_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ],
+        "substitutionFor": {
+          "festivalId": "qingming",
+          "date": "2026-04-05",
+          "reason": "清明節適逢星期日，翌日訂為補假。"
+        }
+      }
+    ],
+    "2026-04-07": [
+      {
+        "id": "easter_monday_substitute",
+        "text": "复活节补假",
+        "textEn": "Easter holiday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "substitute_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ],
+        "substitutionFor": {
+          "festivalId": "easter_monday",
+          "date": "2026-04-06",
+          "reason": "清明節翌日與復活節星期一同日，下一個並非公眾假期的日子訂為增補公眾假期。"
+        }
+      }
+    ],
+    "2026-05-01": [
+      {
+        "id": "labour_day",
+        "text": "劳动节",
+        "textEn": "Labour Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-05-04": [
+      {
+        "id": "youth_day",
+        "text": "青年节",
+        "textEn": "Youth Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2026-05-10": [
+      {
+        "id": "mothers_day",
+        "text": "母亲节",
+        "textEn": "Mother's Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-05-24": [
+      {
+        "id": "buddha_birthday",
+        "text": "佛诞",
+        "textEn": "Buddha's Birthday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-05-25": [
+      {
+        "id": "buddha_birthday_substitute",
+        "text": "佛诞补假",
+        "textEn": "Buddha's Birthday holiday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "substitute_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ],
+        "substitutionFor": {
+          "festivalId": "buddha_birthday",
+          "date": "2026-05-24",
+          "reason": "佛誕適逢星期日，翌日訂為補假。"
+        }
+      }
+    ],
+    "2026-06-01": [
+      {
+        "id": "childrens_day",
+        "text": "儿童节",
+        "textEn": "Children's Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2026-06-19": [
+      {
+        "id": "dragon_boat",
+        "text": "端午节",
+        "textEn": "Dragon Boat Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-06-21": [
+      {
+        "id": "fathers_day",
+        "text": "父亲节",
+        "textEn": "Father's Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-07-01": [
+      {
+        "id": "hk_establishment",
+        "text": "香港回归纪念日",
+        "textEn": "HKSAR Day",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      }
+    ],
+    "2026-08-01": [
+      {
+        "id": "army_day",
+        "text": "建军节",
+        "textEn": "Army Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2026-08-19": [
+      {
+        "id": "qixi",
+        "text": "七夕",
+        "textEn": "Qixi Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-09-10": [
+      {
+        "id": "teachers_day",
+        "text": "教师节",
+        "textEn": "Teachers' Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-teachers-day-law"
+        ]
+      }
+    ],
+    "2026-09-25": [
+      {
+        "id": "mid_autumn",
+        "text": "中秋节",
+        "textEn": "Mid-Autumn Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-09-26": [
+      {
+        "id": "day_after_mid_autumn",
+        "text": "中秋节翌日",
+        "textEn": "Day after Mid-Autumn",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      }
+    ],
+    "2026-10-01": [
+      {
+        "id": "national_day",
+        "text": "国庆节",
+        "textEn": "National Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024",
+          "mainland-holiday-notice-2026"
+        ]
+      }
+    ],
+    "2026-10-18": [
+      {
+        "id": "double_ninth",
+        "text": "重阳节",
+        "textEn": "Chung Yeung Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-10-19": [
+      {
+        "id": "double_ninth_substitute",
+        "text": "重阳节补假",
+        "textEn": "Chung Yeung holiday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "substitute_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ],
+        "substitutionFor": {
+          "festivalId": "double_ninth",
+          "date": "2026-10-18",
+          "reason": "重陽節適逢星期日，翌日訂為補假。"
+        }
+      }
+    ],
+    "2026-12-22": [
+      {
+        "id": "winter_solstice",
+        "text": "冬至",
+        "textEn": "Winter Solstice",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2026-12-25": [
+      {
+        "id": "christmas",
+        "text": "圣诞节",
+        "textEn": "Christmas Day",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      }
+    ],
+    "2026-12-26": [
+      {
+        "id": "first_weekday_after_christmas",
+        "text": "圣诞节翌日",
+        "textEn": "Day after Christmas",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2026"
+        ]
+      }
+    ],
+    "2027-01-01": [
+      {
+        "id": "new_year",
+        "text": "元旦",
+        "textEn": "New Year's Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-02-05": [
+      {
+        "id": "lunar_new_year_eve",
+        "text": "除夕",
+        "textEn": "Lunar New Year's Eve",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-02-06": [
+      {
+        "id": "lunar_new_year",
+        "text": "春节",
+        "textEn": "Lunar New Year",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-02-07": [
+      {
+        "id": "lunar_new_year_day_2",
+        "text": "春节初二",
+        "textEn": "Lunar New Year: day 2",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-02-08": [
+      {
+        "id": "lunar_new_year_day_3",
+        "text": "春节初三",
+        "textEn": "Lunar New Year: day 3",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-02-09": [
+      {
+        "id": "lunar_new_year_day_4_substitute",
+        "text": "春节初四补假",
+        "textEn": "Lunar New Year holiday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "substitute_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ],
+        "substitutionFor": {
+          "festivalId": "lunar_new_year_day_2",
+          "date": "2027-02-07",
+          "reason": "農曆年初二適逢星期日，農曆年初四訂為補假。"
+        }
+      }
+    ],
+    "2027-02-20": [
+      {
+        "id": "lantern_festival",
+        "text": "元宵节",
+        "textEn": "Lantern Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-03-08": [
+      {
+        "id": "womens_day",
+        "text": "妇女节",
+        "textEn": "Women's Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-03-26": [
+      {
+        "id": "good_friday",
+        "text": "耶稣受难节",
+        "textEn": "Good Friday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-03-27": [
+      {
+        "id": "day_after_good_friday",
+        "text": "受难节翌日",
+        "textEn": "Day after Good Friday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-03-28": [
+      {
+        "id": "easter_sunday",
+        "text": "复活节",
+        "textEn": "Easter Sunday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-03-29": [
+      {
+        "id": "easter_monday",
+        "text": "复活节星期一",
+        "textEn": "Easter Monday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-04-05": [
+      {
+        "id": "qingming",
+        "text": "清明节",
+        "textEn": "Ching Ming Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-05-01": [
+      {
+        "id": "labour_day",
+        "text": "劳动节",
+        "textEn": "Labour Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-05-04": [
+      {
+        "id": "youth_day",
+        "text": "青年节",
+        "textEn": "Youth Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-05-09": [
+      {
+        "id": "mothers_day",
+        "text": "母亲节",
+        "textEn": "Mother's Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-05-13": [
+      {
+        "id": "buddha_birthday",
+        "text": "佛诞",
+        "textEn": "Buddha's Birthday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-06-01": [
+      {
+        "id": "childrens_day",
+        "text": "儿童节",
+        "textEn": "Children's Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-06-09": [
+      {
+        "id": "dragon_boat",
+        "text": "端午节",
+        "textEn": "Dragon Boat Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-06-20": [
+      {
+        "id": "fathers_day",
+        "text": "父亲节",
+        "textEn": "Father's Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-07-01": [
+      {
+        "id": "hk_establishment",
+        "text": "香港回归纪念日",
+        "textEn": "HKSAR Day",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-08-01": [
+      {
+        "id": "army_day",
+        "text": "建军节",
+        "textEn": "Army Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-08-08": [
+      {
+        "id": "qixi",
+        "text": "七夕",
+        "textEn": "Qixi Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-09-10": [
+      {
+        "id": "teachers_day",
+        "text": "教师节",
+        "textEn": "Teachers' Day",
+        "regions": [
+          "mainland"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-teachers-day-law"
+        ]
+      }
+    ],
+    "2027-09-15": [
+      {
+        "id": "mid_autumn",
+        "text": "中秋节",
+        "textEn": "Mid-Autumn Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-09-16": [
+      {
+        "id": "day_after_mid_autumn",
+        "text": "中秋节翌日",
+        "textEn": "Day after Mid-Autumn",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-10-01": [
+      {
+        "id": "national_day",
+        "text": "国庆节",
+        "textEn": "National Day",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8",
+          "mainland-holiday-law-2024"
+        ]
+      }
+    ],
+    "2027-10-08": [
+      {
+        "id": "double_ninth",
+        "text": "重阳节",
+        "textEn": "Chung Yeung Festival",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027",
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-12-22": [
+      {
+        "id": "winter_solstice",
+        "text": "冬至",
+        "textEn": "Winter Solstice",
+        "regions": [
+          "mainland",
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "lunar-python-1.4.8"
+        ]
+      }
+    ],
+    "2027-12-25": [
+      {
+        "id": "christmas",
+        "text": "圣诞节",
+        "textEn": "Christmas Day",
+        "regions": [
+          "hk"
+        ],
+        "kind": "festival",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ],
+    "2027-12-27": [
+      {
+        "id": "first_weekday_after_christmas",
+        "text": "圣诞节后假日",
+        "textEn": "Christmas holiday",
+        "regions": [
+          "hk"
+        ],
+        "kind": "public_holiday",
+        "sourceIds": [
+          "hk-general-holidays-2027"
+        ]
+      }
+    ]
+  }
+}

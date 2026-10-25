@@ -63,7 +63,7 @@
     return item.start + ' – ' + item.end;
   }
   function itemOrder(item) { return item.start || { morning: '00:00', afternoon: '12:00', evening: '18:00' }[item.period] || ''; }
-  var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac');
+  var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
   var views = [], current = 0, playing = true, timer = null, lastControl = null;
   var touched = false, synced = false, errors = {}, payloads = {}, currentDay = today(), selectedDay = shiftDate(currentDay, 1), followDefault = true;
   function pageById(id) {
@@ -173,8 +173,15 @@
     var lunar = calendar.dates && calendar.dates[currentDay], age = new Date().getTime() - weatherTime(weather.observedAt);
     var traditionalDay = almanac.dates && almanac.dates[currentDay];
     var suitable = !en && traditionalDay && array(traditionalDay.yi) && traditionalDay.yi.length ? '宜' + traditionalDay.yi.slice(0, 2).join('、') : '';
-    text(el('lunar-text'), '');
-    text(el('almanac-line'), suitable);
+    var events = festivals.dates && festivals.dates[currentDay] || [], names = [], seenNames = {};
+    for (var h = 0; h < events.length; h++) {
+      var name = en ? events[h].textEn || events[h].text : events[h].text;
+      if (name && !seenNames[name]) { names.push(name); seenNames[name] = true; }
+    }
+    var lunarLabel = names.length ? names.join(' · ') : lunar ? (en ? lunar.textEn : lunar.text) : '';
+    text(el('lunar-text'), lunarLabel);
+    text(el('almanac-line'), suitable ? (lunarLabel ? ' · ' : '') + suitable : '');
+    el('lunar-line').setAttribute('title', lunarLabel + (suitable ? (lunarLabel ? ' · ' : '') + suitable : ''));
     visible(el('almanac-line'), !!suitable); visible(el('lunar-line'), true);
     text(el('top-line'), value);
     var weatherLine = el('weather-line'); clear(weatherLine); visible(weatherLine, false);
@@ -350,6 +357,18 @@
     }
     return true;
   }
+  function validFestivals(next) {
+    if (!next || !next.dates || typeof next.dates !== 'object' || array(next.dates) || !/^\d{4}-\d{2}-\d{2}$/.test(next.validFrom || '') || !/^\d{4}-\d{2}-\d{2}$/.test(next.validThrough || '') || next.validFrom > next.validThrough) { return false; }
+    for (var date in next.dates) {
+      if (!Object.prototype.hasOwnProperty.call(next.dates, date)) { continue; }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date < next.validFrom || date > next.validThrough || !array(next.dates[date])) { return false; }
+      for (var i = 0; i < next.dates[date].length; i++) {
+        var item = next.dates[date][i];
+        if (!item || typeof item.id !== 'string' || typeof item.text !== 'string' || !item.text || (typeof item.textEn !== 'undefined' && typeof item.textEn !== 'string')) { return false; }
+      }
+    }
+    return true;
+  }
   function validSchedule(next) {
     if (!next || !array(next.days) || !/^\d{4}-\d{2}-\d{2}$/.test(next.validFrom || '') || !/^\d{4}-\d{2}-\d{2}$/.test(next.validThrough || '') || next.validFrom > next.validThrough) { return false; }
     var dates = {};
@@ -488,6 +507,10 @@
   pollJson('almanac.json', 86400000, 'almanac', function (next) {
     if (!next || !next.dates || !next.validFrom || !next.validThrough) { return false; }
     almanac = next; topLine(); return true;
+  });
+  pollJson('festivals.json', 86400000, 'festivals', function (next) {
+    if (!validFestivals(next)) { return false; }
+    festivals = next; topLine(); return true;
   });
   if (/(^|\.)github\.io$/.test(location.hostname || '') && typeof WeatherClient !== 'undefined') {
     WeatherClient.start({ onWeather: function (next) {
