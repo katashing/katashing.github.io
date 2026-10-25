@@ -1,14 +1,19 @@
 {
   "schemaVersion": 2,
   "demo": false,
-  "updatedAt": "2026-10-24",
+  "updatedAt": "2026-10-25",
   "settings": {
     "intervalSeconds": 120,
     "autoRotate": true,
     "controlVersion": 2,
     "showPage": ""
   },
-  "breakfasts": [],
+  "breakfasts": [
+    {
+      "date": "2026-10-26",
+      "mealId": "b06"
+    }
+  ],
   "pages": [
     {
       "id": "family",
