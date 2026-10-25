@@ -83,8 +83,8 @@
       "id": "b04",
       "text": "吐司",
       "textEn": "Toast",
-      "detail": "玉米、鸡蛋、小米/燕麦粥",
-      "detailEn": "Corn, egg and millet or oat porridge",
+      "detail": "（包子）、玉米、鸡蛋、小米/燕麦粥",
+      "detailEn": "(Bao), corn, egg and millet or oat porridge",
       "image": "images/breakfast/b04-menu.png",
       "crop": {
         "sourceWidth": 1774,
