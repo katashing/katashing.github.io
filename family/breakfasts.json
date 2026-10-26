@@ -7,14 +7,14 @@
       "textEn": "Tangyuan",
       "detail": "（包子）、玉米、鸡蛋",
       "detailEn": "(Bao), corn and egg",
-      "image": "images/breakfast/b01-menu.png",
+      "image": "images/breakfast/b01-menu-kindle-324d88637fdc.png",
       "crop": {
-        "sourceWidth": 1774,
-        "sourceHeight": 887,
+        "sourceWidth": 600,
+        "sourceHeight": 300,
         "x": 0,
         "y": 0,
-        "width": 1774,
-        "height": 887
+        "width": 600,
+        "height": 300
       },
       "originalImage": "images/breakfast/b01.jpg",
       "originalCrop": {
@@ -25,7 +25,16 @@
         "width": 1360,
         "height": 680.0
       },
-      "imageSource": "generated-menu-reference"
+      "imageSource": "generated-menu-reference",
+      "displaySourceImage": "images/breakfast/b01-menu.png",
+      "displaySourceCrop": {
+        "sourceWidth": 1774,
+        "sourceHeight": 887,
+        "x": 0,
+        "y": 0,
+        "width": 1774,
+        "height": 887
+      }
     },
     {
       "id": "b02",
@@ -33,14 +42,14 @@
       "textEn": "Dumplings",
       "detail": "玉米、鸡蛋、小米/燕麦粥",
       "detailEn": "Corn, egg and millet or oat porridge",
-      "image": "images/breakfast/b02-menu.png",
+      "image": "images/breakfast/b02-menu-kindle-8059be0ca324.png",
       "crop": {
-        "sourceWidth": 1774,
-        "sourceHeight": 887,
+        "sourceWidth": 600,
+        "sourceHeight": 300,
         "x": 0,
         "y": 0,
-        "width": 1774,
-        "height": 887
+        "width": 600,
+        "height": 300
       },
       "originalImage": "images/breakfast/b02.jpg",
       "originalCrop": {
@@ -51,7 +60,17 @@
         "width": 1490,
         "height": 745.0
       },
-      "imageSource": "generated-menu-reference"
+      "imageSource": "generated-menu-reference",
+      "displaySourceImage": "images/breakfast/b02-menu.png",
+      "displaySourceCrop": {
+        "sourceWidth": 1774,
+        "sourceHeight": 887,
+        "x": 0,
+        "y": 0,
+        "width": 1774,
+        "height": 887
+      },
+      "porridge": true
     },
     {
       "id": "b03",
@@ -59,14 +78,14 @@
       "textEn": "Bao",
       "detail": "玉米、鹌鹑蛋、小米/燕麦粥",
       "detailEn": "Corn, quail eggs and millet or oat porridge",
-      "image": "images/breakfast/b03-menu.png",
+      "image": "images/breakfast/b03-menu-kindle-123e7d721e4f.png",
       "crop": {
-        "sourceWidth": 1774,
-        "sourceHeight": 887,
+        "sourceWidth": 600,
+        "sourceHeight": 300,
         "x": 0,
         "y": 0,
-        "width": 1774,
-        "height": 887
+        "width": 600,
+        "height": 300
       },
       "originalImage": "images/breakfast/b03.jpg",
       "originalCrop": {
@@ -77,7 +96,17 @@
         "width": 1590,
         "height": 795.0
       },
-      "imageSource": "generated-menu-reference"
+      "imageSource": "generated-menu-reference",
+      "displaySourceImage": "images/breakfast/b03-menu.png",
+      "displaySourceCrop": {
+        "sourceWidth": 1774,
+        "sourceHeight": 887,
+        "x": 0,
+        "y": 0,
+        "width": 1774,
+        "height": 887
+      },
+      "porridge": true
     },
     {
       "id": "b04",
@@ -85,14 +114,14 @@
       "textEn": "Toast",
       "detail": "（包子）、玉米、鸡蛋、小米/燕麦粥",
       "detailEn": "(Bao), corn, egg and millet or oat porridge",
-      "image": "images/breakfast/b04-menu.png",
+      "image": "images/breakfast/b04-menu-kindle-47c943523d9a.png",
       "crop": {
-        "sourceWidth": 1774,
-        "sourceHeight": 887,
+        "sourceWidth": 600,
+        "sourceHeight": 300,
         "x": 0,
         "y": 0,
-        "width": 1774,
-        "height": 887
+        "width": 600,
+        "height": 300
       },
       "originalImage": "images/breakfast/b04.jpg",
       "originalCrop": {
@@ -103,17 +132,9 @@
         "width": 1200,
         "height": 600.0
       },
-      "imageSource": "generated-menu-reference"
-    },
-    {
-      "id": "b05",
-      "text": "牛肉面",
-      "textEn": "Beef noodles",
-      "detail": "煎蛋、青菜",
-      "detailEn": "Fried egg and greens",
-      "image": "images/breakfast/b05-menu-v2.png",
       "imageSource": "generated-menu-reference",
-      "crop": {
+      "displaySourceImage": "images/breakfast/b04-menu.png",
+      "displaySourceCrop": {
         "sourceWidth": 1774,
         "sourceHeight": 887,
         "x": 0,
@@ -121,8 +142,35 @@
         "width": 1774,
         "height": 887
       },
+      "porridge": true
+    },
+    {
+      "id": "b05",
+      "text": "牛肉面",
+      "textEn": "Beef noodles",
+      "detail": "煎蛋、青菜",
+      "detailEn": "Fried egg and greens",
+      "image": "images/breakfast/b05-menu-v2-kindle-7b29f6049188.png",
+      "imageSource": "generated-menu-reference",
+      "crop": {
+        "sourceWidth": 600,
+        "sourceHeight": 300,
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 300
+      },
       "originalImage": "images/breakfast/b05-reference.png",
       "originalCrop": {
+        "sourceWidth": 1774,
+        "sourceHeight": 887,
+        "x": 0,
+        "y": 0,
+        "width": 1774,
+        "height": 887
+      },
+      "displaySourceImage": "images/breakfast/b05-menu-v2.png",
+      "displaySourceCrop": {
         "sourceWidth": 1774,
         "sourceHeight": 887,
         "x": 0,
@@ -137,9 +185,18 @@
       "textEn": "Tomato & egg noodles",
       "detail": "青菜",
       "detailEn": "Greens",
-      "image": "images/breakfast/b06-menu-v2.png",
+      "image": "images/breakfast/b06-menu-v2-kindle-f2f186e51d76.png",
       "imageSource": "generated-menu-reference",
       "crop": {
+        "sourceWidth": 600,
+        "sourceHeight": 300,
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 300
+      },
+      "originalImage": "images/breakfast/b06-reference.png",
+      "originalCrop": {
         "sourceWidth": 1774,
         "sourceHeight": 887,
         "x": 0,
@@ -147,8 +204,8 @@
         "width": 1774,
         "height": 887
       },
-      "originalImage": "images/breakfast/b06-reference.png",
-      "originalCrop": {
+      "displaySourceImage": "images/breakfast/b06-menu-v2.png",
+      "displaySourceCrop": {
         "sourceWidth": 1774,
         "sourceHeight": 887,
         "x": 0,
@@ -163,15 +220,15 @@
       "textEn": "Flaky pancake",
       "detail": "玉米、鸡蛋、小米/燕麦粥",
       "detailEn": "Corn, egg and millet or oat porridge",
-      "image": "images/breakfast/b07-menu.png",
+      "image": "images/breakfast/b07-menu-kindle-1d5f5685479a.png",
       "imageSource": "generated-menu-reference",
       "crop": {
-        "sourceWidth": 1774,
-        "sourceHeight": 887,
+        "sourceWidth": 600,
+        "sourceHeight": 300,
         "x": 0,
         "y": 0,
-        "width": 1774,
-        "height": 887
+        "width": 600,
+        "height": 300
       },
       "originalImage": "images/breakfast/b07-reference.png",
       "originalCrop": {
@@ -181,7 +238,17 @@
         "y": 0,
         "width": 1774,
         "height": 887
-      }
+      },
+      "displaySourceImage": "images/breakfast/b07-menu.png",
+      "displaySourceCrop": {
+        "sourceWidth": 1774,
+        "sourceHeight": 887,
+        "x": 0,
+        "y": 0,
+        "width": 1774,
+        "height": 887
+      },
+      "porridge": true
     }
   ],
   "drinks": [
@@ -204,5 +271,18 @@
       "text": "淡柠檬水",
       "textEn": "Light lemon water"
     }
-  ]
+  ],
+  "porridgeRotation": {
+    "startDate": "2026-10-26",
+    "items": [
+      {
+        "text": "小米粥",
+        "textEn": "millet porridge"
+      },
+      {
+        "text": "燕麦粥",
+        "textEn": "oat porridge"
+      }
+    ]
+  }
 }

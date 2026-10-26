@@ -133,7 +133,12 @@
       if ((i - mealPage * size) % 2 === 0) { pair = node('div', 'meal-pair'); menu.appendChild(pair); }
       var meal = meals[i], row = node('div', 'meal-row' + (meal.image ? '' : ' no-photo')), content = node('div', 'meal-description');
       content.appendChild(node('div', 'meal-name', localized(meal, false)));
-      if (localized(meal, true)) { content.appendChild(node('div', 'detail', (en ? 'With ' : '搭配：') + localized(meal, true))); }
+      var detail = localized(meal, true);
+      if (meal.porridge === true && data.breakfasts.porridgeRotation && detail) {
+        detail = detail.replace(en ? /millet or oat porridge/gi : /小米\/燕麦粥/g,
+          en ? 'millet or oat porridge (alternate days)' : '小米/燕麦粥（轮换）');
+      }
+      if (detail) { content.appendChild(node('div', 'detail', (en ? 'With ' : '搭配：') + detail)); }
       row.appendChild(content); appendPhoto(row, meal); pair.appendChild(row);
     }
     if (meals.length) { target.appendChild(menu); }

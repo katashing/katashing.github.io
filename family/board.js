@@ -2,8 +2,8 @@
   'use strict';
   function el(id) { return document.getElementById(id); }
   function text(target, value) {
-    if ('textContent' in target) { target.textContent = value; }
-    else { target.innerText = value; }
+    var property = 'textContent' in target ? 'textContent' : 'innerText';
+    if (target[property] !== value) { target[property] = value; }
   }
   function initial(id) {
     var target = el(id);
@@ -66,6 +66,7 @@
   var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
   var views = [], current = 0, playing = true, timer = null, lastControl = null;
   var touched = false, synced = false, errors = {}, payloads = {}, currentDay = today(), selectedDay = shiftDate(currentDay, 1), followDefault = true;
+  var topLineKey = null, photoCropKey = null, photoFailed = false;
   function pageById(id) {
     for (var i = 0; i < data.pages.length; i++) { if (data.pages[i].id === id) { return data.pages[i]; } }
     return null;
@@ -179,24 +180,30 @@
       if (name && !seenNames[name]) { names.push(name); seenNames[name] = true; }
     }
     var lunarLabel = names.length ? names.join(' · ') : lunar ? (en ? lunar.textEn : lunar.text) : '';
+    var showWeather = typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000;
+    var condition = (weather.condition || '') + ' ' + (weather.conditionEn || ''), icon = 'cloud';
+    var weatherLabel = en ? weather.conditionEn || weather.condition : weather.condition;
+    if (/雷|Thunder/i.test(condition)) { icon = 'cloud-lightning'; }
+    else if (/雪|Snow/i.test(condition)) { icon = 'snowflake'; }
+    else if (/雨|Rain|Drizzle/i.test(condition)) { icon = 'cloud-rain'; }
+    else if (/多云|Partly/i.test(condition)) { icon = 'cloud-sun'; }
+    else if (/晴|Clear/i.test(condition)) { icon = 'sun'; }
+    var key = JSON.stringify([value, !!en, lunarLabel, suitable, showWeather ? [icon, weatherLabel, Math.round(weather.temperatureC)] : null]);
+    // Polling still checks freshness, but unchanged content should not repaint the e-ink header.
+    if (key === topLineKey) { return; }
+    topLineKey = key;
     text(el('lunar-text'), lunarLabel);
     text(el('almanac-line'), suitable ? (lunarLabel ? ' · ' : '') + suitable : '');
     el('lunar-line').setAttribute('title', lunarLabel + (suitable ? (lunarLabel ? ' · ' : '') + suitable : ''));
     visible(el('almanac-line'), !!suitable); visible(el('lunar-line'), true);
     text(el('top-line'), value);
     var weatherLine = el('weather-line'); clear(weatherLine); visible(weatherLine, false);
-    if (typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000) {
-      var condition = (weather.condition || '') + ' ' + (weather.conditionEn || ''), icon = 'cloud';
-      if (/雷|Thunder/i.test(condition)) { icon = 'cloud-lightning'; }
-      else if (/雪|Snow/i.test(condition)) { icon = 'snowflake'; }
-      else if (/雨|Rain|Drizzle/i.test(condition)) { icon = 'cloud-rain'; }
-      else if (/多云|Partly/i.test(condition)) { icon = 'cloud-sun'; }
-      else if (/晴|Clear/i.test(condition)) { icon = 'sun'; }
-      var picture = node('img', 'weather-icon'); picture.src = 'images/weather/' + icon + '.svg'; picture.alt = en ? weather.conditionEn || weather.condition : weather.condition;
-      picture.onerror = function () { this.style.display = 'none'; };
+    if (showWeather) {
+      var picture = node('img', 'weather-icon'); picture.src = 'images/weather/' + icon + '.svg'; picture.alt = weatherLabel;
+      picture.onerror = function () { this.style.display = 'none'; topLineKey = null; };
       visible(weatherLine, true); weatherLine.appendChild(picture);
       weatherLine.appendChild(node('span', '', ' ' + Math.round(weather.temperatureC) + '°C'));
-      weatherLine.setAttribute('aria-label', (en ? weather.conditionEn || weather.condition : weather.condition) + ' ' + Math.round(weather.temperatureC) + '°C');
+      weatherLine.setAttribute('aria-label', weatherLabel + ' ' + Math.round(weather.temperatureC) + '°C');
     }
   }
   function addRow(target, item, en, timed, concise) {
@@ -230,30 +237,44 @@
     visible(el('breakfast-visual'), !!(recipe && recipe.image));
     if (recipe && recipe.image) {
       var photo = el('breakfast-photo'), visual = el('breakfast-visual'), cropBox = el('breakfast-crop'), crop = recipe.crop;
-      visual.className = 'breakfast-visual cropped'; visual.style.paddingBottom = '50%';
-      photo.alt = name; photo.onload = null;
-      photo.onerror = function () { visible(visual, false); };
+      var sourceChanged = photo.getAttribute('src') !== recipe.image;
+      var cropKey = JSON.stringify(crop || null);
+      photo.alt = name;
+      photo.onerror = function () { photoFailed = true; visible(visual, false); };
       var fitCrop = function (sw, x, y, width, height) {
         var scale = Math.min(1 / width, 0.5 / height);
         cropBox.style.width = (width * scale * 100) + '%'; cropBox.style.paddingBottom = (height * scale * 100) + '%';
         cropBox.style.left = ((1 - width * scale) * 50) + '%'; cropBox.style.marginTop = ((0.5 - height * scale) * 50) + '%';
         photo.style.width = (sw / width * 100) + '%'; photo.style.left = (-x / width * 100) + '%'; photo.style.marginTop = (-y / width * 100) + '%'; photo.style.top = '0';
       };
-      if (crop && crop.sourceWidth > 0 && crop.sourceHeight > 0 && crop.width > 0 && crop.height > 0 && crop.x >= 0 && crop.y >= 0 && crop.x + crop.width <= crop.sourceWidth && crop.y + crop.height <= crop.sourceHeight) {
-        fitCrop(crop.sourceWidth, crop.x, crop.y, crop.width, crop.height);
-      } else {
-        cropBox.style.width = '100%'; cropBox.style.paddingBottom = '50%'; cropBox.style.left = '0'; cropBox.style.marginTop = '0';
-        photo.style.width = '100%'; photo.style.left = '0'; photo.style.marginTop = '0'; photo.style.top = '0';
-        photo.onload = function () {
-          var width = photo.naturalWidth || photo.width, height = photo.naturalHeight || photo.height;
-          if (width > 0 && height > 0) { fitCrop(width, 0, 0, width, height); }
-        };
+      if (sourceChanged || cropKey !== photoCropKey) {
+        photoCropKey = cropKey;
+        visual.className = 'breakfast-visual cropped'; visual.style.paddingBottom = '50%';
+        photo.onload = null;
+        if (crop && crop.sourceWidth > 0 && crop.sourceHeight > 0 && crop.width > 0 && crop.height > 0 && crop.x >= 0 && crop.y >= 0 && crop.x + crop.width <= crop.sourceWidth && crop.y + crop.height <= crop.sourceHeight) {
+          fitCrop(crop.sourceWidth, crop.x, crop.y, crop.width, crop.height);
+        } else {
+          cropBox.style.width = '100%'; cropBox.style.paddingBottom = '50%'; cropBox.style.left = '0'; cropBox.style.marginTop = '0';
+          photo.style.width = '100%'; photo.style.left = '0'; photo.style.marginTop = '0'; photo.style.top = '0';
+          photo.onload = function () {
+            var width = photo.naturalWidth || photo.width, height = photo.naturalHeight || photo.height;
+            if (width > 0 && height > 0) { fitCrop(width, 0, 0, width, height); }
+          };
+        }
+        if (!sourceChanged && photo.complete && photo.onload) { photo.onload(); }
       }
-      photo.src = recipe.image;
-      if (photo.complete && photo.onload) { photo.onload(); }
+      // Reassigning an unchanged src can revalidate and decode a large PNG on old Kindle browsers.
+      if (sourceChanged || photoFailed) {
+        photoFailed = false; photo.src = recipe.image;
+        if (photo.complete && photo.onload) { photo.onload(); }
+      }
     }
     var detailSource = meal && meal.detail ? meal : recipe;
     var detail = detailSource ? (en ? detailSource.detailEn || detailSource.detail : detailSource.detail) : '';
+    if (recipe && recipe.porridge === true && typeof BreakfastPlanner !== 'undefined') {
+      var porridge = BreakfastPlanner.porridgeForDate(date, menus.porridgeRotation, en);
+      if (porridge && detail) { detail = detail.replace(en ? /millet or oat porridge/gi : /小米\/燕麦粥/g, porridge); }
+    }
     var drink = breakfastDrink(date, en);
     if (drink) { detail = detail ? detail + (en ? '; ' : '、') + drink : drink; }
     visible(el('breakfast-detail'), !!detail); text(el('breakfast-detail'), detail ? (en ? 'With ' : '搭配：') + detail : '');
@@ -493,7 +514,7 @@
     return true;
   });
   pollJson('breakfasts.json', 60000, 'breakfasts', function (next) {
-    if (!next || !array(next.items) || !validDrinks(next.drinks)) { return false; }
+    if (!next || !array(next.items) || !validDrinks(next.drinks) || (typeof BreakfastPlanner !== 'undefined' && !BreakfastPlanner.validPorridgeRotation(next.porridgeRotation))) { return false; }
     for (var i = 0; i < next.items.length; i++) {
       var meal = next.items[i];
       if (!meal || typeof meal.id !== 'string' || typeof meal.text !== 'string' || (meal.image && !/^images\/breakfast\/[a-zA-Z0-9_.-]+\.(jpg|jpeg|png|webp)$/.test(meal.image))) { return false; }

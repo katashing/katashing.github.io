@@ -9,6 +9,12 @@ button.selected:before,.top-nav a.selected:before,button:active:before{backgroun
 
 #en:before,#all-data:before{background-image:url("images/fishbone-dark.svg")}#en.selected:before,#en:active:before,#all-data:active:before{background-image:url("images/fishbone-light.svg")}
 
+/* Paired paws frame the rotation label in both play states and languages. */
+#play{position:relative;padding-left:1.8em;padding-right:1.8em}
+#play:after{content:"";display:block;position:absolute;right:.35em;top:50%;width:1.15em;height:1.15em;margin-top:-.575em;background:url("images/paw-dark.svg") center/contain no-repeat}
+#play:active:after,#play.selected:after{background-image:url("images/paw-light.svg")}
+@media(max-width:420px){#play{padding-left:1.65em;padding-right:1.65em}#play:after{width:1.1em;height:1.1em;margin-top:-.55em}}
+
 button,.all-data,.top-nav a,.reference-toggle{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal}.switches button{font-weight:normal}html[lang="en"] button,html[lang="en"] .all-data,html[lang="en"] .top-nav a,html[lang="en"] .reference-toggle,#en,#language-en{font-family:"Menu English","Menu Handwriting",Georgia,serif;font-weight:normal}#zh,#language-zh{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif}
 
 /* Keep the information-page controls playful without repeating one icon. */

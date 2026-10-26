@@ -90,5 +90,23 @@
     }
     return cache.meals[offset];
   }
-  return { mealForDate: mealForDate, deterministic: true };
+  function validPorridgeRotation(config) {
+    if (typeof config === 'undefined') { return true; }
+    if (!config || dayNumber(config.startDate) === null || !array(config.items) || config.items.length !== 2) { return false; }
+    for (var i = 0; i < config.items.length; i++) {
+      var item = config.items[i];
+      if (!item || typeof item.text !== 'string' || !item.text || typeof item.textEn !== 'string' || !item.textEn) { return false; }
+    }
+    return true;
+  }
+  function porridgeForDate(date, config, en) {
+    var day = dayNumber(date);
+    if (day === null || !config || !validPorridgeRotation(config)) { return null; }
+    var start = dayNumber(config.startDate);
+    if (day < start) { return null; }
+    var item = config.items[(day - start) % config.items.length];
+    return en ? item.textEn : item.text;
+  }
+  return { mealForDate: mealForDate, porridgeForDate: porridgeForDate,
+    validPorridgeRotation: validPorridgeRotation, deterministic: true };
 }));
