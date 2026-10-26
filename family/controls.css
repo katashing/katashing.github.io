@@ -31,16 +31,16 @@ button,.all-data,.top-nav a,.reference-toggle{font-family:"Menu Handwriting","Ka
 
 /* Equal-size date text, paired paws, and fishbones for previous/next day. */
 .day-nav button{height:48px;min-height:48px;font-weight:normal;font-synthesis:none;vertical-align:middle}
-.day-nav #day-today{position:relative;height:48px;min-height:48px;padding:2px 1.05em;border:1.5px solid #333;border-radius:15px;background:#fff;color:#222;font-size:20px;font-weight:normal;line-height:1.05;white-space:normal}
+.day-nav #day-today{position:relative;height:48px;min-height:48px;padding:2px 1.4em;border:1.5px solid #333;border-radius:15px;background:#fff;color:#222;font-size:20px;font-weight:normal;line-height:1.05;white-space:normal}
 .day-nav #day-today.selected,.day-nav #day-today:active{background:#333;color:#fff;border-color:#333}
-.day-nav #day-today:before,.day-nav #day-today:after{content:"";display:block;position:absolute;top:50%;width:.75em;height:.75em;margin:-.375em 0 0;vertical-align:middle;background:url("images/paw-dark.svg?v=20261025-dates") center/contain no-repeat}
-.day-nav #day-today:before{left:.16em}.day-nav #day-today:after{right:.16em}
+.day-nav #day-today:before,.day-nav #day-today:after{content:"";display:block;position:absolute;top:50%;width:1.15em;height:1.15em;margin:-.575em 0 0;vertical-align:middle;background:url("images/paw-dark.svg?v=20261025-dates") center/contain no-repeat}
+.day-nav #day-today:before{left:.12em}.day-nav #day-today:after{right:.12em}
 .day-nav #day-today.selected:before,.day-nav #day-today.selected:after,.day-nav #day-today:active:before,.day-nav #day-today:active:after{background-image:url("images/paw-light.svg?v=20261025-dates")}
 .day-nav .day-context,.day-nav #heading{display:inline-block;font-size:20px;font-weight:normal;line-height:1.05;vertical-align:middle;white-space:nowrap}
 .day-nav .day-context{margin:0 6px 0 0}
 #day-prev:before,#day-next:before{background-image:url("images/fishbone-dark.svg?v=20261025-dates")}
 #day-prev.selected:before,#day-next.selected:before,#day-prev:active:before,#day-next:active:before{background-image:url("images/fishbone-light.svg?v=20261025-dates")}
-@media(max-width:420px){.day-nav #day-today,.day-nav .day-context,.day-nav #heading{font-size:18px}.day-nav .day-context{margin-right:0}}
+@media(max-width:420px){.day-nav #day-today,.day-nav .day-context,.day-nav #heading{font-size:18px}.day-nav #day-today{padding-left:1.1em;padding-right:1.1em}.day-nav #day-today:before,.day-nav #day-today:after{width:1.1em;height:1.1em;margin-top:-.55em}.day-nav #day-today:before{left:.08em}.day-nav #day-today:after{right:.08em}.day-nav .day-context{margin-right:0}}
 
 /* Reserve one icon column so translations and selected states never move it. */
 .switches button,.footer-row button,.footer-row .all-data,.top-nav a,.sections button,.week-days button,.menu-pager button,.week-nav button,.reference-toggle,.more-items,.more,.retry{position:relative;padding-left:1.8em;padding-right:.3em}
