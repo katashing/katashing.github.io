@@ -178,28 +178,38 @@
   function weatherBatchDate() {
     return shiftDate(today(), shanghaiNow().getUTCHours() < 6 ? -1 : 0);
   }
+  function weatherCycle() {
+    var date = today(), hour = shanghaiNow().getUTCHours(), batchDate = hour < 6 ? shiftDate(date, -1) : date;
+    var batchHour = hour >= 6 && hour < 18 ? '06' : '18';
+    var start = weatherTime(batchDate + 'T' + batchHour + ':00:00+08:00');
+    return { start: start, next: start + 43200000, forecastDate: batchHour === '18' ? shiftDate(batchDate, 1) : batchDate };
+  }
   function dailyWeatherValid(value) {
-    if (!value || value.refreshMode !== 'daily-morning' || !/^\d{4}-\d{2}-\d{2}$/.test(value.forecastDate || '') || shiftDate(value.forecastDate, 0) !== value.forecastDate) { return false; }
-    if (value.forecastDate !== weatherBatchDate() || typeof value.lowC !== 'number' || !isFinite(value.lowC) || typeof value.highC !== 'number' || !isFinite(value.highC) || value.lowC > value.highC) { return false; }
+    if (!value || (value.refreshMode !== 'daily-morning' && value.refreshMode !== 'twice-daily') || !/^\d{4}-\d{2}-\d{2}$/.test(value.forecastDate || '') || shiftDate(value.forecastDate, 0) !== value.forecastDate) { return false; }
+    if (typeof value.lowC !== 'number' || !isFinite(value.lowC) || typeof value.highC !== 'number' || !isFinite(value.highC) || value.lowC > value.highC) { return false; }
+    if (value.refreshMode === 'twice-daily') {
+      var cycle = weatherCycle(), fetched = morningWeatherTime(value.refreshedAt), observation = morningWeatherTime(value.observedAt);
+      return value.forecastDate === cycle.forecastDate && isFinite(fetched) && fetched >= cycle.start && fetched < cycle.next && fetched <= new Date().getTime() + 60000 && isFinite(observation) && observation >= fetched - 10800000 && observation <= fetched + 60000 && typeof value.temperatureC === 'number' && isFinite(value.temperatureC) && typeof value.condition === 'string' && !!value.condition && typeof value.conditionEn === 'string' && !!value.conditionEn;
+    }
+    if (value.forecastDate !== weatherBatchDate()) { return false; }
     var start = weatherTime(value.forecastDate + 'T06:00:00+08:00'), refreshed = morningWeatherTime(value.refreshedAt), observed = morningWeatherTime(value.observedAt);
     return isFinite(refreshed) && refreshed >= start && String(value.refreshedAt).slice(0, 10) === value.forecastDate && refreshed < start + 86400000 && refreshed <= new Date().getTime() + 60000 && isFinite(observed) && String(value.observedAt).slice(0, 10) === value.forecastDate && typeof value.condition === 'string' && typeof value.conditionEn === 'string';
   }
   function acceptWeather(next) {
     if (!next) { return false; }
-    if (next.refreshMode === 'daily-morning') {
+    if (next.refreshMode === 'daily-morning' || next.refreshMode === 'twice-daily') {
       if (!dailyWeatherValid(next)) { return false; }
-      if (!dailyWeatherValid(weather) || morningWeatherTime(next.refreshedAt) >= morningWeatherTime(weather.refreshedAt)) { weather = next; }
+      if (dailyWeatherValid(weather) && weather.refreshMode === 'twice-daily' && next.refreshMode !== 'twice-daily') { return true; }
+      if (!dailyWeatherValid(weather) || (next.refreshMode === 'twice-daily' && weather.refreshMode !== 'twice-daily') || morningWeatherTime(next.refreshedAt) >= morningWeatherTime(weather.refreshedAt)) { weather = next; }
       return true;
     }
     if (next.refreshMode || typeof next.temperatureC !== 'number' || !isFinite(next.temperatureC) || !isFinite(weatherTime(next.observedAt))) { return false; }
-    // A frequently updated legacy snapshot must not replace a valid morning forecast.
+    // A frequently updated legacy snapshot must not replace a valid forecast.
     if (!dailyWeatherValid(weather) && (!isFinite(weatherTime(weather.observedAt)) || weatherTime(next.observedAt) >= weatherTime(weather.observedAt))) { weather = next; }
     return true;
   }
-  function nextWeatherMorning() {
-    var now = new Date().getTime(), date = today(), due = weatherTime(date + 'T06:00:00+08:00');
-    if (due <= now) { due += 86400000; }
-    return due - now;
+  function nextWeatherRefresh() {
+    return weatherCycle().next - new Date().getTime();
   }
   function scheduleWeatherPoll(delay) {
     if (weatherPollTimer !== null) { clearTimeout(weatherPollTimer); }
@@ -214,7 +224,7 @@
     function finish(ok) {
       if (finished) { return; }
       finished = true; clearTimeout(timeout); weatherPending = false; errors.weather = !ok; topLine();
-      var delay = shanghaiNow().getUTCHours() < 6 || (ok && dailyWeatherValid(weather)) ? nextWeatherMorning() : 120000;
+      var delay = ok && weather.refreshMode === 'twice-daily' && dailyWeatherValid(weather) ? nextWeatherRefresh() : 120000;
       scheduleWeatherPoll(delay);
     }
     xhr.onreadystatechange = function () {
@@ -247,8 +257,10 @@
     var lunarLabel = names.length ? names.join(' · ') : lunar ? (en ? lunar.textEn : lunar.text) : '';
     var daily = dailyWeatherValid(weather);
     var showWeather = daily || (!weather.refreshMode && typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000);
+    var tomorrow = daily && weather.forecastDate === shiftDate(today(), 1);
     var temperatureLabel = daily ? Math.round(weather.lowC) + '–' + Math.round(weather.highC) + '°C' : Math.round(weather.temperatureC) + '°C';
-    var forecastLabel = daily ? (en ? weather.forecastDate + ' daily forecast, updated ' + weather.refreshedAt.slice(11, 16) + ', daily at 06:00 Beijing time' : weather.forecastDate + ' 日预报，' + weather.refreshedAt.slice(11, 16) + '更新，每日06:00刷新') : '';
+    var periodLabel = tomorrow ? (en ? ' (Tmr)' : '（明）') : '';
+    var forecastLabel = daily ? (en ? weather.forecastDate + ' daily forecast, updated ' + weather.refreshedAt.slice(11, 16) + ', refresh at 06:00 and 18:00 Beijing time' : weather.forecastDate + ' 日预报，' + weather.refreshedAt.slice(11, 16) + '更新，每日06:00和18:00刷新') : '';
     var condition = (weather.condition || '') + ' ' + (weather.conditionEn || ''), icon = 'cloud';
     var weatherLabel = en ? weather.conditionEn || weather.condition : weather.condition;
     if (/雷|Thunder/i.test(condition)) { icon = 'cloud-lightning'; }
@@ -256,7 +268,7 @@
     else if (/雨|Rain|Drizzle/i.test(condition)) { icon = 'cloud-rain'; }
     else if (/多云|Partly/i.test(condition)) { icon = 'cloud-sun'; }
     else if (/晴|Clear/i.test(condition)) { icon = 'sun'; }
-    var key = JSON.stringify([value, !!en, lunarLabel, suitable, showWeather ? [icon, weatherLabel, temperatureLabel, forecastLabel] : null]);
+    var key = JSON.stringify([value, !!en, lunarLabel, suitable, showWeather ? [icon, weatherLabel, temperatureLabel, periodLabel, forecastLabel] : null]);
     // Polling still checks freshness, but unchanged content should not repaint the e-ink header.
     if (key === topLineKey) { return; }
     topLineKey = key;
@@ -271,7 +283,8 @@
       picture.onerror = function () { this.style.display = 'none'; topLineKey = null; };
       visible(weatherLine, true); weatherLine.appendChild(picture);
       weatherLine.appendChild(node('span', '', ' ' + temperatureLabel));
-      weatherLine.setAttribute('aria-label', weatherLabel + ' ' + temperatureLabel + (forecastLabel ? ', ' + forecastLabel : ''));
+      if (periodLabel) { weatherLine.appendChild(node('span', 'weather-period', periodLabel)); }
+      weatherLine.setAttribute('aria-label', (tomorrow ? (en ? 'Tomorrow’s weather, ' : '明日天气，') : '') + weatherLabel + ' ' + temperatureLabel + (forecastLabel ? ', ' + forecastLabel : ''));
       weatherLine.setAttribute('title', forecastLabel || weatherLabel + ' ' + temperatureLabel);
     }
   }
@@ -603,7 +616,7 @@
   if (/(^|\.)github\.io$/.test(location.hostname || '') && typeof WeatherClient !== 'undefined') {
     weatherClient = WeatherClient.start({ initialWeather: weather, onWeather: function (next) {
       acceptWeather(next); topLine();
-      if (dailyWeatherValid(weather) && !weatherPending) { scheduleWeatherPoll(nextWeatherMorning()); }
+      if (dailyWeatherValid(weather) && !weatherPending) { scheduleWeatherPoll(nextWeatherRefresh()); }
     } });
   }
   setTimeout(tick, 60000);
