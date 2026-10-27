@@ -67,6 +67,7 @@
   var views = [], current = 0, playing = true, timer = null, lastControl = null;
   var touched = false, synced = false, errors = {}, payloads = {}, currentDay = today(), selectedDay = shiftDate(currentDay, 1), followDefault = true;
   var topLineKey = null, photoCropKey = null, photoFailed = false;
+  var weatherClient = null, weatherPollTimer = null, weatherPending = false, weatherNextDue = 0;
   function pageById(id) {
     for (var i = 0; i < data.pages.length; i++) { if (data.pages[i].id === id) { return data.pages[i]; } }
     return null;
@@ -169,6 +170,70 @@
     var match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(value || '');
     return match ? Date.UTC(+match[1], +match[2] - 1, +match[3], +match[4] - 8, +match[5]) : NaN;
   }
+  function morningWeatherTime(value) {
+    var match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})\+08:00$/.exec(value || '');
+    if (!match || shiftDate(match[1], 0) !== match[1] || +match[2] > 23 || +match[3] > 59 || +match[4] > 59) { return NaN; }
+    return weatherTime(match[1] + 'T' + match[2] + ':' + match[3]) + (+match[4] * 1000);
+  }
+  function weatherBatchDate() {
+    return shiftDate(today(), shanghaiNow().getUTCHours() < 6 ? -1 : 0);
+  }
+  function dailyWeatherValid(value) {
+    if (!value || value.refreshMode !== 'daily-morning' || !/^\d{4}-\d{2}-\d{2}$/.test(value.forecastDate || '') || shiftDate(value.forecastDate, 0) !== value.forecastDate) { return false; }
+    if (value.forecastDate !== weatherBatchDate() || typeof value.lowC !== 'number' || !isFinite(value.lowC) || typeof value.highC !== 'number' || !isFinite(value.highC) || value.lowC > value.highC) { return false; }
+    var start = weatherTime(value.forecastDate + 'T06:00:00+08:00'), refreshed = morningWeatherTime(value.refreshedAt), observed = morningWeatherTime(value.observedAt);
+    return isFinite(refreshed) && refreshed >= start && String(value.refreshedAt).slice(0, 10) === value.forecastDate && refreshed < start + 86400000 && refreshed <= new Date().getTime() + 60000 && isFinite(observed) && String(value.observedAt).slice(0, 10) === value.forecastDate && typeof value.condition === 'string' && typeof value.conditionEn === 'string';
+  }
+  function acceptWeather(next) {
+    if (!next) { return false; }
+    if (next.refreshMode === 'daily-morning') {
+      if (!dailyWeatherValid(next)) { return false; }
+      if (!dailyWeatherValid(weather) || morningWeatherTime(next.refreshedAt) >= morningWeatherTime(weather.refreshedAt)) { weather = next; }
+      return true;
+    }
+    if (next.refreshMode || typeof next.temperatureC !== 'number' || !isFinite(next.temperatureC) || !isFinite(weatherTime(next.observedAt))) { return false; }
+    // A frequently updated legacy snapshot must not replace a valid morning forecast.
+    if (!dailyWeatherValid(weather) && (!isFinite(weatherTime(weather.observedAt)) || weatherTime(next.observedAt) >= weatherTime(weather.observedAt))) { weather = next; }
+    return true;
+  }
+  function nextWeatherMorning() {
+    var now = new Date().getTime(), date = today(), due = weatherTime(date + 'T06:00:00+08:00');
+    if (due <= now) { due += 86400000; }
+    return due - now;
+  }
+  function scheduleWeatherPoll(delay) {
+    if (weatherPollTimer !== null) { clearTimeout(weatherPollTimer); }
+    weatherNextDue = new Date().getTime() + delay;
+    weatherPollTimer = setTimeout(pollWeather, delay);
+  }
+  function pollWeather() {
+    if (location.protocol === 'file:' || weatherPending) { return; }
+    if (weatherPollTimer !== null) { clearTimeout(weatherPollTimer); weatherPollTimer = null; }
+    weatherPending = true;
+    var xhr = new XMLHttpRequest(), finished = false, timeout;
+    function finish(ok) {
+      if (finished) { return; }
+      finished = true; clearTimeout(timeout); weatherPending = false; errors.weather = !ok; topLine();
+      var delay = shanghaiNow().getUTCHours() < 6 || (ok && dailyWeatherValid(weather)) ? nextWeatherMorning() : 120000;
+      scheduleWeatherPoll(delay);
+    }
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4 || finished) { return; }
+      if (xhr.status !== 200) { finish(false); return; }
+      try { finish(acceptWeather(JSON.parse(xhr.responseText))); }
+      catch (error) { finish(false); }
+    };
+    try {
+      xhr.open('GET', 'weather.json?_=' + new Date().getTime(), true);
+      timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, 12000);
+      xhr.send(null);
+    } catch (error) { finish(false); }
+  }
+  function resumeWeather() {
+    if (weatherClient && weatherClient.resume) { weatherClient.resume(); }
+    if (!weatherPending && new Date().getTime() >= weatherNextDue) { pollWeather(); }
+    topLine();
+  }
   function topLine() {
     var en = english(), value = currentDay;
     var lunar = calendar.dates && calendar.dates[currentDay], age = new Date().getTime() - weatherTime(weather.observedAt);
@@ -180,7 +245,10 @@
       if (name && !seenNames[name]) { names.push(name); seenNames[name] = true; }
     }
     var lunarLabel = names.length ? names.join(' · ') : lunar ? (en ? lunar.textEn : lunar.text) : '';
-    var showWeather = typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000;
+    var daily = dailyWeatherValid(weather);
+    var showWeather = daily || (!weather.refreshMode && typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000);
+    var temperatureLabel = daily ? Math.round(weather.lowC) + '–' + Math.round(weather.highC) + '°C' : Math.round(weather.temperatureC) + '°C';
+    var forecastLabel = daily ? (en ? weather.forecastDate + ' daily forecast, updated ' + weather.refreshedAt.slice(11, 16) + ', daily at 06:00 Beijing time' : weather.forecastDate + ' 日预报，' + weather.refreshedAt.slice(11, 16) + '更新，每日06:00刷新') : '';
     var condition = (weather.condition || '') + ' ' + (weather.conditionEn || ''), icon = 'cloud';
     var weatherLabel = en ? weather.conditionEn || weather.condition : weather.condition;
     if (/雷|Thunder/i.test(condition)) { icon = 'cloud-lightning'; }
@@ -188,7 +256,7 @@
     else if (/雨|Rain|Drizzle/i.test(condition)) { icon = 'cloud-rain'; }
     else if (/多云|Partly/i.test(condition)) { icon = 'cloud-sun'; }
     else if (/晴|Clear/i.test(condition)) { icon = 'sun'; }
-    var key = JSON.stringify([value, !!en, lunarLabel, suitable, showWeather ? [icon, weatherLabel, Math.round(weather.temperatureC)] : null]);
+    var key = JSON.stringify([value, !!en, lunarLabel, suitable, showWeather ? [icon, weatherLabel, temperatureLabel, forecastLabel] : null]);
     // Polling still checks freshness, but unchanged content should not repaint the e-ink header.
     if (key === topLineKey) { return; }
     topLineKey = key;
@@ -202,8 +270,9 @@
       var picture = node('img', 'weather-icon'); picture.src = 'images/weather/' + icon + '.svg'; picture.alt = weatherLabel;
       picture.onerror = function () { this.style.display = 'none'; topLineKey = null; };
       visible(weatherLine, true); weatherLine.appendChild(picture);
-      weatherLine.appendChild(node('span', '', ' ' + Math.round(weather.temperatureC) + '°C'));
-      weatherLine.setAttribute('aria-label', weatherLabel + ' ' + Math.round(weather.temperatureC) + '°C');
+      weatherLine.appendChild(node('span', '', ' ' + temperatureLabel));
+      weatherLine.setAttribute('aria-label', weatherLabel + ' ' + temperatureLabel + (forecastLabel ? ', ' + forecastLabel : ''));
+      weatherLine.setAttribute('title', forecastLabel || weatherLabel + ' ' + temperatureLabel);
     }
   }
   function addRow(target, item, en, timed, concise) {
@@ -495,11 +564,13 @@
     setTimeout(tick, 60000);
   }
   window.onpageshow = function (event) {
+    resumeWeather();
     if (event && event.persisted) {
       currentDay = today(); selectedDay = shiftDate(currentDay, 1); followDefault = true;
       rebuild(views[current].page.id, 0); render();
     }
   };
+  if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumeWeather(); } }, false); }
   applyBoard(data, true);
   var hashPage = (location.hash || '').replace(/^#/, '');
   if (pageById(hashPage)) { select(hashPage); }
@@ -508,11 +579,7 @@
     if (!validSchedule(next)) { return false; }
     var old = views[current]; course = next; rebuild(old.page.id, old.chunk); render(); return true;
   });
-  pollJson('weather.json', 600000, 'weather', function (next) {
-    if (!next || typeof next.temperatureC !== 'number' || !isFinite(next.temperatureC) || !next.observedAt) { return false; }
-    if (!isFinite(weatherTime(weather.observedAt)) || weatherTime(next.observedAt) >= weatherTime(weather.observedAt)) { weather = next; }
-    return true;
-  });
+  pollWeather();
   pollJson('breakfasts.json', 60000, 'breakfasts', function (next) {
     if (!next || !array(next.items) || !validDrinks(next.drinks) || (typeof BreakfastPlanner !== 'undefined' && !BreakfastPlanner.validPorridgeRotation(next.porridgeRotation))) { return false; }
     for (var i = 0; i < next.items.length; i++) {
@@ -534,8 +601,9 @@
     festivals = next; topLine(); return true;
   });
   if (/(^|\.)github\.io$/.test(location.hostname || '') && typeof WeatherClient !== 'undefined') {
-    WeatherClient.start({ onWeather: function (next) {
-      if (!isFinite(weatherTime(weather.observedAt)) || weatherTime(next.observedAt) >= weatherTime(weather.observedAt)) { weather = next; topLine(); }
+    weatherClient = WeatherClient.start({ initialWeather: weather, onWeather: function (next) {
+      acceptWeather(next); topLine();
+      if (dailyWeatherValid(weather) && !weatherPending) { scheduleWeatherPoll(nextWeatherMorning()); }
     } });
   }
   setTimeout(tick, 60000);

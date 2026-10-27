@@ -1,12 +1,15 @@
 {
+  "refreshMode": "daily-morning",
+  "forecastDate": "2026-10-27",
+  "refreshedAt": "2026-10-27T21:39:27+08:00",
   "location": "深圳",
   "locationEn": "Shenzhen",
-  "temperatureC": 24.1,
-  "lowC": 22.2,
-  "highC": 31.2,
-  "condition": "晴",
-  "conditionEn": "Clear",
-  "observedAt": "2026-10-26T00:30:00+08:00",
+  "temperatureC": 24.0,
+  "lowC": 22.8,
+  "highC": 30.8,
+  "condition": "小毛毛雨",
+  "conditionEn": "Light drizzle",
+  "observedAt": "2026-10-27T21:30:00+08:00",
   "source": "Open-Meteo",
   "sourceUrl": "https://open-meteo.com/"
 }
