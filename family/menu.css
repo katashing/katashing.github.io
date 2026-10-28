@@ -29,8 +29,8 @@ html[lang="en"] .menu-title:before,html[lang="en"] .menu-title:after{width:20%}
 /* A uniquely named digits-only face keeps every numeral handwritten. */
 .top-bar .top-line,.top-bar .weather-line{width:124px}.weather-period{font-family:"Board Digits","Menu Handwriting","Kaiti SC",KaiTi,serif}html[lang="en"] .weather-period{font-family:"Board Digits",Arial,Helvetica,sans-serif}@media(max-width:420px){.top-bar .top-line,.top-bar .weather-line{width:104px}}
 .time,.top-line,.weather-line,.selected-date,.entry-date,.menu-page-count,.part,.all-board .week-days button{font-family:"Board Digits",Arial,Helvetica,sans-serif;font-weight:normal;font-style:normal;letter-spacing:0}
-.lunar-line,.day-nav #day-today,.scope{font-family:"Board Digits","Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal;font-style:normal;letter-spacing:0}
-html[lang="en"] .lunar-line,html[lang="en"] .day-nav #day-today,html[lang="en"] .scope{font-family:"Board Digits","Menu English","Menu Handwriting",Georgia,serif}
+.time,.selected-date,.entry-date,.lunar-line,.day-nav #day-today,.scope{font-family:"Board Digits","Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal;font-style:normal;letter-spacing:0}
+html[lang="en"] .time,html[lang="en"] .selected-date,html[lang="en"] .entry-date,html[lang="en"] .lunar-line,html[lang="en"] .day-nav #day-today,html[lang="en"] .scope{font-family:"Board Digits","Menu English","Menu Handwriting",Georgia,serif}
 .time{width:134px;font-size:19px;line-height:1.5;white-space:nowrap}
 #page .time+.entry,.all-board .time+.entry{padding-left:16px}
 .top-bar .top-line,.top-bar .lunar-line,.weather-line{font-size:14px;line-height:24px}
