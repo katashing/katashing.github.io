@@ -15,7 +15,7 @@ button.selected:before,.top-nav a.selected:before,button:active:before{backgroun
 #play:active:after,#play.selected:after{background-image:url("images/paw-light.svg")}
 @media(max-width:420px){#play{padding-left:1.65em;padding-right:1.65em}#play:after{width:1.1em;height:1.1em;margin-top:-.55em}}
 
-button,.all-data,.top-nav a,.reference-toggle{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal}.switches button{font-weight:normal}html[lang="en"] button,html[lang="en"] .all-data,html[lang="en"] .top-nav a,html[lang="en"] .reference-toggle,#en,#language-en{font-family:"Menu English","Menu Handwriting",Georgia,serif;font-weight:normal}#zh,#language-zh{font-family:"Menu Handwriting","Kaiti SC",KaiTi,serif}
+button,.all-data,.top-nav a,.reference-toggle{font-family:"Board Digits","Menu Handwriting","Kaiti SC",KaiTi,serif;font-weight:normal}.switches button{font-weight:normal}html[lang="en"] button,html[lang="en"] .all-data,html[lang="en"] .top-nav a,html[lang="en"] .reference-toggle,#en,#language-en{font-family:"Board Digits","Menu English","Menu Handwriting",Georgia,serif;font-weight:normal}#zh,#language-zh{font-family:"Board Digits","Menu Handwriting","Kaiti SC",KaiTi,serif}
 
 /* Keep the information-page controls playful without repeating one icon. */
 .top-nav a:active,.all-data:active{background:#333;color:#fff;border-color:#333}
