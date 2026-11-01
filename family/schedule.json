@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "timezone": "Asia/Shanghai",
   "validFrom": "2026-10-19",
-  "validThrough": "2026-11-01",
+  "validThrough": "2026-11-08",
   "source": {
     "kind": "user-image",
-    "file": "docs/sources/课程表_20261026-20261101.png",
-    "description": "保留10月19日至25日历史安排，并按用户新图片录入10月26日至11月1日；工作日上午上学不虚构钟点，新周日白天休息、晚间复习。",
-    "dateBasis": "新图标注10月26日至11月1日及星期，按2026年对应周录入；不自动延用到下一周。",
+    "file": "docs/sources/课程表_20261102-20261108.png",
+    "description": "保留10月19日至11月1日两周历史安排，并按用户新图片录入11月2日至8日；工作日10:30英文，周二英文面试，周六测试，周日白天休息。",
+    "dateBasis": "图片未印日期；用户于2026年11月1日要求更新下周，按北京时间下周2026年11月2日至8日录入，不自动延用到以后。",
     "weekly": "用户另行确认：自2026年10月24日起，每周三、四、五17:45–18:45上体育课，其余日期同一时间为户外活动。weeklyItems独立于原图单周有效期，其他课程不按周重复。",
     "weeks": [
       {
@@ -21,6 +21,12 @@
         "validThrough": "2026-11-01",
         "file": "docs/sources/课程表_20261026-20261101.png",
         "description": "周六英文10:30–12:30，午餐12:30–13:30，测试或自习13:30–15:30；本周日白天休息，19:30–20:45复习、阅读。"
+      },
+      {
+        "validFrom": "2026-11-02",
+        "validThrough": "2026-11-08",
+        "file": "docs/sources/课程表_20261102-20261108.png",
+        "description": "工作日英文10:30–12:30、午餐12:30–13:30；周一三四数学、周二五中文；周二英文面试15:30–17:30，其余工作日作业和单词15:30–17:00；周六上午休息、测试13:30–16:30，周日白天休息；每天19:30–20:45复习、阅读。"
       }
     ]
   },
@@ -653,6 +659,307 @@
       "items": [
         {
           "id": "2026-11-01-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-02",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-11-02-morning-english",
+          "start": "10:30",
+          "end": "12:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-02-lunch",
+          "start": "12:30",
+          "end": "13:30",
+          "text": "午餐",
+          "textEn": "Lunch",
+          "example": false,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-11-02-afternoon-lesson",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "数学",
+          "textEn": "Maths",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-02-afternoon-followup",
+          "start": "15:30",
+          "end": "17:00",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-11-02-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-11-03-morning-english",
+          "start": "10:30",
+          "end": "12:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-03-lunch",
+          "start": "12:30",
+          "end": "13:30",
+          "text": "午餐",
+          "textEn": "Lunch",
+          "example": false,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-11-03-afternoon-lesson",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "中文",
+          "textEn": "Chinese",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-03-afternoon-followup",
+          "start": "15:30",
+          "end": "17:30",
+          "text": "英文面试",
+          "textEn": "English interview",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-03-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-11-04-morning-english",
+          "start": "10:30",
+          "end": "12:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-04-lunch",
+          "start": "12:30",
+          "end": "13:30",
+          "text": "午餐",
+          "textEn": "Lunch",
+          "example": false,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-11-04-afternoon-lesson",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "数学",
+          "textEn": "Maths",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-04-afternoon-followup",
+          "start": "15:30",
+          "end": "17:00",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-11-04-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-05",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-11-05-morning-english",
+          "start": "10:30",
+          "end": "12:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-05-lunch",
+          "start": "12:30",
+          "end": "13:30",
+          "text": "午餐",
+          "textEn": "Lunch",
+          "example": false,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-11-05-afternoon-lesson",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "数学",
+          "textEn": "Maths",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-05-afternoon-followup",
+          "start": "15:30",
+          "end": "17:00",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-11-05-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-06",
+      "noteZh": "",
+      "noteEn": "",
+      "items": [
+        {
+          "id": "2026-11-06-morning-english",
+          "start": "10:30",
+          "end": "12:30",
+          "text": "英文",
+          "textEn": "English",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-06-lunch",
+          "start": "12:30",
+          "end": "13:30",
+          "text": "午餐",
+          "textEn": "Lunch",
+          "example": false,
+          "kind": "activity"
+        },
+        {
+          "id": "2026-11-06-afternoon-lesson",
+          "start": "13:30",
+          "end": "15:30",
+          "text": "中文",
+          "textEn": "Chinese",
+          "example": false,
+          "kind": "lesson"
+        },
+        {
+          "id": "2026-11-06-afternoon-followup",
+          "start": "15:30",
+          "end": "17:00",
+          "text": "完成作业、记单词",
+          "textEn": "Homework and vocabulary",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-11-06-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "noteZh": "上午休息",
+      "noteEn": "Rest in the morning",
+      "items": [
+        {
+          "id": "2026-11-07-afternoon-test",
+          "start": "13:30",
+          "end": "16:30",
+          "text": "测试",
+          "textEn": "Test",
+          "example": false,
+          "kind": "study"
+        },
+        {
+          "id": "2026-11-07-evening-study",
+          "start": "19:30",
+          "end": "20:45",
+          "text": "复习、阅读",
+          "textEn": "Review and reading",
+          "example": false,
+          "kind": "study"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "noteZh": "白天休息",
+      "noteEn": "Rest during the day",
+      "items": [
+        {
+          "id": "2026-11-08-evening-study",
           "start": "19:30",
           "end": "20:45",
           "text": "复习、阅读",
