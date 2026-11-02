@@ -133,7 +133,7 @@
   function rebuild(id, chunk) {
     views = [];
     for (var i = 0; i < data.pages.length; i++) {
-      var page = data.pages[i], entries = entriesFor(page), size = isChild(page) ? 6 : 4;
+      var page = data.pages[i], entries = entriesFor(page), size = isChild(page) ? Math.max(1, entries.length) : 4;
       var count = Math.max(1, Math.ceil(entries.length / size));
       for (var part = 0; part < count; part++) {
         views.push({ page: page, chunk: part, count: count, entries: entries.slice(part * size, (part + 1) * size) });
@@ -290,6 +290,7 @@
   }
   function addRow(target, item, en, timed, concise) {
     var row = node('div', 'row' + (item.done ? ' done' : '')), content = node('div', 'entry');
+    if (timed && (item.text === '午餐' || item.textEn === 'Lunch')) { row.className += ' lunch-row'; }
     row.appendChild(node('span', timed ? 'time' : 'mark', timed ? itemTime(item, en) : (item.done ? '✓' : '□')));
     var title = node('div', 'entry-title', localized(item, en));
     if (item.example) { title.appendChild(node('span', 'sample', en ? 'Sample' : '示例')); }
@@ -406,9 +407,23 @@
     visible(el('sync-error'), names.length > 0);
     text(el('sync-error'), names.length ? (en ? 'Sync failed: ' : '同步失败：') + names.join(' / ') + (en ? '. Keeping saved content.' : '，保留上次内容。') : '');
   }
+  function fitChild() {
+    if (!views.length || !isChild(views[current].page)) { return; }
+    var page = el('page'), controls = el('controls'), target = el('entries');
+    if (!page.getBoundingClientRect || !controls || !controls.getBoundingClientRect) { return; }
+    var boundary = controls.getBoundingClientRect().top - 8;
+    if (boundary <= 0 || page.getBoundingClientRect().bottom <= boundary) { return; }
+    page.className = 'child-page child-compact';
+    if (page.getBoundingClientRect().bottom <= boundary) { return; }
+    // Lunch remains in the source and full timetable; only this small-screen view may omit it.
+    for (var i = 0; i < target.children.length; i++) {
+      var row = target.children[i];
+      if (/(^|\s)lunch-row(\s|$)/.test(row.className)) { row.style.display = 'none'; }
+    }
+  }
   function render() {
     var view = views[current], en = english(), child = isChild(view.page), tasks = isTasks(view.page), target = el('entries');
-    el('page').className = child ? '' : tasks ? 'tasks-page' : 'breakfast-page';
+    el('page').className = child ? 'child-page' : tasks ? 'tasks-page' : 'breakfast-page';
     document.documentElement.lang = en ? 'en' : 'zh-CN';
     text(el('home'), en ? 'Breakfast' : '早餐'); text(el('tasks'), en ? 'Tasks' : '待办'); text(el('child'), en ? 'Child' : '孩子');
     selected(el('home'), !child && !tasks); selected(el('tasks'), tasks); selected(el('child'), child); selected(el('zh'), !en); selected(el('en'), en);
@@ -427,6 +442,7 @@
     text(el('demo-note'), demo ? (en ? 'Sample content' : '示例内容') : '');
     text(el('play'), en ? (playing ? 'Stop auto switch' : 'Start auto switch') : (playing ? '停止轮播' : '开启轮播'));
     renderErrors();
+    if (child) { fitChild(); }
   }
   function validBoard(next) {
     if (!next || !array(next.pages) || !next.pages.length || next.pages.length > 20) { return false; }
@@ -583,6 +599,8 @@
       rebuild(views[current].page.id, 0); render();
     }
   };
+  window.onresize = function () { if (views.length && isChild(views[current].page)) { render(); } };
+  window.onload = function () { if (views.length && isChild(views[current].page)) { render(); } };
   if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumeWeather(); } }, false); }
   applyBoard(data, true);
   var hashPage = (location.hash || '').replace(/^#/, '');
