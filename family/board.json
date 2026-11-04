@@ -6,7 +6,8 @@
     "intervalSeconds": 120,
     "autoRotate": false,
     "controlVersion": 3,
-    "showPage": ""
+    "showPage": "",
+    "clientVersion": "20261104-refresh1"
   },
   "breakfasts": [
     {

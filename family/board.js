@@ -25,6 +25,7 @@
     var now = shanghaiNow();
     return now.getUTCFullYear() + '-' + pad(now.getUTCMonth() + 1) + '-' + pad(now.getUTCDate());
   }
+  function defaultChildDate() { return shiftDate(today(), shanghaiNow().getUTCHours() < 12 ? 0 : 1); }
   function shiftDate(key, offset) {
     var bits = key.split('-'), date = new Date(Date.UTC(+bits[0], +bits[1] - 1, +bits[2] + offset));
     return date.getUTCFullYear() + '-' + pad(date.getUTCMonth() + 1) + '-' + pad(date.getUTCDate());
@@ -64,8 +65,10 @@
   }
   function itemOrder(item) { return item.start || { morning: '00:00', afternoon: '12:00', evening: '18:00' }[item.period] || ''; }
   var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
-  var views = [], current = 0, playing = true, timer = null, lastControl = null;
-  var touched = false, synced = false, errors = {}, payloads = {}, currentDay = today(), selectedDay = shiftDate(currentDay, 1), followDefault = true;
+  var CLIENT_VERSION = '20261104-refresh1';
+  var views = [], current = 0, playing = false, timer = null, lastControl = null;
+  var errors = {}, payloads = {}, currentDay = today(), selectedDay = defaultChildDate();
+  var defaultDay = selectedDay, clockTimer = null, pollers = [], reloading = false;
   var topLineKey = null, photoCropKey = null, photoFailed = false;
   var weatherClient = null, weatherPollTimer = null, weatherPending = false, weatherNextDue = 0;
   function pageById(id) {
@@ -158,7 +161,7 @@
       timer = setTimeout(function () { timer = null; current = (current + 1) % views.length; render(); schedule(); }, interval());
     }
   }
-  function pause() { touched = true; playing = false; stop(); }
+  function pause() { playing = false; stop(); }
   function select(id, chunk) {
     pause(); rebuild(id, chunk || 0); render();
   }
@@ -380,10 +383,11 @@
     text(el('day-context'), context);
     text(el('heading'), label);
     text(el('day-prev'), en ? 'Prev day' : '前一天'); text(el('day-next'), en ? 'Next day' : '后一天');
-    el('day-today').setAttribute('aria-label', selectedDay + ' ' + label + (en ? ', back to tomorrow' : '，回到明天'));
-    el('day-today').setAttribute('title', en ? 'Back to tomorrow' : '回到明天');
+    var returnLabel = defaultChildDate() === currentDay ? (en ? 'Back to today' : '回到今天') : (en ? 'Back to tomorrow' : '回到明天');
+    el('day-today').setAttribute('aria-label', selectedDay + ' ' + label + (en ? ', ' + returnLabel.toLowerCase() : '，' + returnLabel));
+    el('day-today').setAttribute('title', returnLabel);
     el('day-nav').setAttribute('aria-label', en ? 'Choose a date' : '查看日期');
-    selected(el('day-today'), selectedDay === shiftDate(currentDay, 1));
+    selected(el('day-today'), selectedDay === defaultChildDate());
     visible(el('day-note'), !!(plan && (plan.noteZh || plan.noteEn)));
     if (plan) { text(el('day-note'), en ? plan.noteEn || plan.noteZh : plan.noteZh); }
     visible(el('scope'), false);
@@ -514,11 +518,11 @@
   function applyBoard(next, initialLoad) {
     if (!validBoard(next)) { return false; }
     var old = views[current], previousInterval = interval(), cv = String((next.settings || {}).controlVersion || 0);
-    var changeControl = initialLoad || (synced ? cv !== lastControl : !touched);
+    var changeControl = initialLoad || cv !== lastControl;
     data = next; data.settings = data.settings || {};
     rebuild(old ? old.page.id : 'family', old ? old.chunk : 0);
     if (changeControl) {
-      currentDay = today(); selectedDay = shiftDate(currentDay, 1); followDefault = true;
+      currentDay = today(); selectedDay = defaultChildDate(); defaultDay = selectedDay;
       playing = data.settings.autoRotate !== false;
       var id = data.settings.showPage;
       if (id === 'helper') { id = 'family'; } else if (id === 'helper_en') { id = 'family_en'; }
@@ -529,43 +533,71 @@
     if (timer === null || changeControl || previousInterval !== interval()) { schedule(); }
     return true;
   }
+  function contentPollDelay() {
+    var seconds = Number((data.settings || {}).pollIntervalSeconds);
+    return isFinite(seconds) && seconds >= 60 ? Math.min(3600, seconds) * 1000 : 900000;
+  }
+  function checkClientVersion(next) {
+    var version = (next.settings || {}).clientVersion;
+    if (reloading || location.protocol === 'file:' || typeof version !== 'string' || !/^[A-Za-z0-9_-]{1,64}$/.test(version) || version === CLIENT_VERSION || !location.replace) { return; }
+    if (new RegExp('(?:^|[?&])_app=' + version + '(?:&|$)').test(location.search || '')) { return; }
+    reloading = true;
+    location.replace('index.html?_app=' + version + '&_=' + new Date().getTime() + '#' + views[current].page.id);
+  }
   function pollJson(path, delay, key, accept) {
     if (location.protocol === 'file:') { return; }
-    var xhr = new XMLHttpRequest(), finished = false, timeout;
-    function finish(ok) {
-      if (finished) { return; }
-      finished = true; clearTimeout(timeout); errors[key] = !ok; topLine(); renderErrors();
-      setTimeout(function () { pollJson(path, delay, key, accept); }, delay);
-    }
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4 || finished) { return; }
-      if (xhr.status !== 200) { finish(false); return; }
+    var poller = { key: key, pending: false, timer: null, lastStarted: null };
+    poller.run = function () {
+      if (poller.pending) { return; }
+      if (poller.timer !== null) { clearTimeout(poller.timer); poller.timer = null; }
+      poller.pending = true; poller.lastStarted = new Date().getTime();
+      var xhr, finished = false, timeout;
+      function finish(ok) {
+        if (finished) { return; }
+        finished = true; clearTimeout(timeout); poller.pending = false;
+        errors[key] = !ok; topLine(); renderErrors();
+        poller.timer = setTimeout(poller.run, ok ? (typeof delay === 'function' ? delay() : delay) : 120000);
+      }
       try {
-        var next = JSON.parse(xhr.responseText), signature = JSON.stringify(next);
-        if (payloads[key] === signature) { finish(true); return; }
-        var ok = accept(next) !== false;
-        if (ok) { payloads[key] = signature; }
-        finish(ok);
+        xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== 4 || finished) { return; }
+          if (xhr.status !== 200) { finish(false); return; }
+          try {
+            var next = JSON.parse(xhr.responseText), signature = JSON.stringify(next);
+            if (payloads[key] === signature) { finish(true); return; }
+            var ok = accept(next) !== false;
+            if (ok) { payloads[key] = signature; }
+            finish(ok);
+          } catch (error) { finish(false); }
+        };
+        xhr.open('GET', path + '?_=' + new Date().getTime(), true);
+        try { xhr.setRequestHeader('Cache-Control', 'no-cache'); } catch (headerError) {}
+        timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, 12000);
+        xhr.send(null);
       } catch (error) { finish(false); }
     };
-    try {
-      xhr.open('GET', path + '?_=' + new Date().getTime(), true);
-      timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, 12000);
-      xhr.send(null);
-    } catch (error) { finish(false); }
+    pollers.push(poller); poller.run();
+  }
+  function refreshContent() {
+    var now = new Date().getTime();
+    for (var i = 0; i < pollers.length; i++) {
+      var poller = pollers[i];
+      if (/^(board|schedule|breakfasts)$/.test(poller.key) && (poller.lastStarted === null || now - poller.lastStarted >= 1000)) { poller.run(); }
+    }
   }
   el('home').onclick = function () { select(english() ? 'family_en' : 'family'); };
   el('tasks').onclick = function () { select(english() ? 'tasks_en' : 'tasks'); };
   el('child').onclick = function () {
-    currentDay = today(); selectedDay = shiftDate(currentDay, 1); followDefault = true;
+    currentDay = today(); selectedDay = defaultChildDate(); defaultDay = selectedDay;
     select(english() ? 'child_en' : 'child');
   };
   el('zh').onclick = function () { select(isChild(views[current].page) ? 'child' : isTasks(views[current].page) ? 'tasks' : 'family', views[current].chunk); };
   el('en').onclick = function () { select(isChild(views[current].page) ? 'child_en' : isTasks(views[current].page) ? 'tasks_en' : 'family_en', views[current].chunk); };
   el('play').onclick = function () {
-    touched = true; playing = !playing;
+    playing = !playing;
     if (playing) {
-      var old = views[current]; currentDay = today(); selectedDay = shiftDate(currentDay, 1); followDefault = true; rebuild(old.page.id, 0);
+      var old = views[current]; currentDay = today(); selectedDay = defaultChildDate(); defaultDay = selectedDay; rebuild(old.page.id, 0);
     }
     render(); schedule();
   };
@@ -577,41 +609,53 @@
     render();
   };
   function chooseDate(offset, reset) {
-    pause(); currentDay = today(); selectedDay = reset ? shiftDate(currentDay, 1) : shiftDate(selectedDay, offset); followDefault = selectedDay === shiftDate(currentDay, 1);
+    syncClock(false);
+    pause(); selectedDay = reset ? defaultChildDate() : shiftDate(selectedDay, offset);
     rebuild(views[current].page.id, 0); render();
+    if (reset) { refreshContent(); resumeWeather(); }
   }
   el('day-prev').onclick = function () { chooseDate(-1, false); };
   el('day-next').onclick = function () { chooseDate(1, false); };
   el('day-today').onclick = function () { chooseDate(0, true); };
-  function tick() {
-    var now = today();
-    if (now !== currentDay) {
-      var old = views[current]; currentDay = now;
-      if (followDefault) { selectedDay = shiftDate(currentDay, 1); }
-      rebuild(old.page.id, old.chunk); render();
-    } else { topLine(); if (!isChild(views[current].page) && !isTasks(views[current].page)) { breakfast(english()); } }
-    setTimeout(tick, 60000);
+  function syncClock(reset) {
+    var now = today(), nextDefault = defaultChildDate(), boundary = now !== currentDay || nextDefault !== defaultDay;
+    currentDay = now; defaultDay = nextDefault;
+    if (boundary || reset) {
+      var old = views[current]; selectedDay = nextDefault;
+      rebuild(old.page.id, 0); render();
+    } else {
+      topLine();
+      if (!isChild(views[current].page) && !isTasks(views[current].page)) { breakfast(english()); }
+    }
+    if (boundary) { refreshContent(); }
+  }
+  function scheduleClock() {
+    if (clockTimer !== null) { clearTimeout(clockTimer); }
+    var now = shanghaiNow(), elapsed = ((now.getUTCHours() * 60 + now.getUTCMinutes()) * 60 + now.getUTCSeconds()) * 1000 + now.getUTCMilliseconds();
+    var boundaries = [36000000, 43200000, 86400000], delay = 900000;
+    for (var i = 0; i < boundaries.length; i++) { if (boundaries[i] > elapsed) { delay = Math.min(delay, boundaries[i] - elapsed); break; } }
+    clockTimer = setTimeout(function () { clockTimer = null; syncClock(false); scheduleClock(); }, Math.max(1, delay));
+  }
+  function resumePage(reset) {
+    syncClock(reset); refreshContent(); resumeWeather(); scheduleClock();
   }
   window.onpageshow = function (event) {
-    resumeWeather();
-    if (event && event.persisted) {
-      currentDay = today(); selectedDay = shiftDate(currentDay, 1); followDefault = true;
-      rebuild(views[current].page.id, 0); render();
-    }
+    resumePage(!!(event && event.persisted));
   };
   window.onresize = function () { if (views.length && isChild(views[current].page)) { render(); } };
-  window.onload = function () { if (views.length && isChild(views[current].page)) { render(); } };
-  if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumeWeather(); } }, false); }
+  window.onload = function () { resumePage(false); if (views.length && isChild(views[current].page)) { render(); } };
+  window.onfocus = function () { resumePage(false); };
+  if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumePage(false); } }, false); }
   applyBoard(data, true);
   var hashPage = (location.hash || '').replace(/^#/, '');
   if (pageById(hashPage)) { select(hashPage); }
-  pollJson('board.json', 60000, 'board', function (next) { var ok = applyBoard(next, false); if (ok) { synced = true; } return ok; });
-  pollJson('schedule.json', 60000, 'schedule', function (next) {
+  pollJson('board.json', contentPollDelay, 'board', function (next) { var ok = applyBoard(next, false); if (ok) { checkClientVersion(next); } return ok; });
+  pollJson('schedule.json', contentPollDelay, 'schedule', function (next) {
     if (!validSchedule(next)) { return false; }
     var old = views[current]; course = next; rebuild(old.page.id, old.chunk); render(); return true;
   });
   pollWeather();
-  pollJson('breakfasts.json', 60000, 'breakfasts', function (next) {
+  pollJson('breakfasts.json', contentPollDelay, 'breakfasts', function (next) {
     if (!next || !array(next.items) || !validDrinks(next.drinks) || (typeof BreakfastPlanner !== 'undefined' && !BreakfastPlanner.validPorridgeRotation(next.porridgeRotation))) { return false; }
     for (var i = 0; i < next.items.length; i++) {
       var meal = next.items[i];
@@ -637,5 +681,5 @@
       if (dailyWeatherValid(weather) && !weatherPending) { scheduleWeatherPoll(nextWeatherRefresh()); }
     } });
   }
-  setTimeout(tick, 60000);
+  scheduleClock();
 }());
