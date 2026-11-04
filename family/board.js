@@ -65,7 +65,7 @@
   }
   function itemOrder(item) { return item.start || { morning: '00:00', afternoon: '12:00', evening: '18:00' }[item.period] || ''; }
   var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
-  var CLIENT_VERSION = '20261104-refresh1';
+  var CLIENT_VERSION = '20261104-refresh2';
   var views = [], current = 0, playing = false, timer = null, lastControl = null;
   var errors = {}, payloads = {}, currentDay = today(), selectedDay = defaultChildDate();
   var defaultDay = selectedDay, clockTimer = null, pollers = [], reloading = false;
@@ -535,7 +535,7 @@
   }
   function contentPollDelay() {
     var seconds = Number((data.settings || {}).pollIntervalSeconds);
-    return isFinite(seconds) && seconds >= 60 ? Math.min(3600, seconds) * 1000 : 900000;
+    return isFinite(seconds) && seconds >= 60 ? Math.min(7200, seconds) * 1000 : 7200000;
   }
   function checkClientVersion(next) {
     var version = (next.settings || {}).clientVersion;
@@ -632,7 +632,7 @@
   function scheduleClock() {
     if (clockTimer !== null) { clearTimeout(clockTimer); }
     var now = shanghaiNow(), elapsed = ((now.getUTCHours() * 60 + now.getUTCMinutes()) * 60 + now.getUTCSeconds()) * 1000 + now.getUTCMilliseconds();
-    var boundaries = [36000000, 43200000, 86400000], delay = 900000;
+    var boundaries = [36000000, 43200000, 86400000], delay = 7200000;
     for (var i = 0; i < boundaries.length; i++) { if (boundaries[i] > elapsed) { delay = Math.min(delay, boundaries[i] - elapsed); break; } }
     clockTimer = setTimeout(function () { clockTimer = null; syncClock(false); scheduleClock(); }, Math.max(1, delay));
   }

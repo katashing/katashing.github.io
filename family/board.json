@@ -7,7 +7,8 @@
     "autoRotate": false,
     "controlVersion": 3,
     "showPage": "",
-    "clientVersion": "20261104-refresh1"
+    "clientVersion": "20261104-refresh2",
+    "pollIntervalSeconds": 7200
   },
   "breakfasts": [
     {
