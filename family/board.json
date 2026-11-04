@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
   "demo": false,
-  "updatedAt": "2026-10-25",
+  "updatedAt": "2026-11-04",
   "settings": {
     "intervalSeconds": 120,
-    "autoRotate": true,
-    "controlVersion": 2,
+    "autoRotate": false,
+    "controlVersion": 3,
     "showPage": ""
   },
   "breakfasts": [
