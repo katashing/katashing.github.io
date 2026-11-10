@@ -3,7 +3,7 @@ window.SCHEDULE_CHECK_DATA = {
   "checkedAt": "2026-10-10",
   "schools": {
     "north06": {
-      "status": "confirmed",
+      "status": "partial",
       "checkedAt": "2026-10-13",
       "message": "截止日期及笔试月份与官网一致：2026年12月4日17:00截止，2027年1月入学试。有对应年级空缺时，12月28日前短信通知具体安排；小三学额需确认。",
       "sources": [
@@ -11,7 +11,10 @@ window.SCHEDULE_CHECK_DATA = {
           "title": "马锦灿2026/27下学期插班",
           "url": "https://www.twghmkc.edu.hk/CP/pG/53/425/232"
         }
-      ]
+      ],
+      "issueLabel": "通知方式需确认",
+      "comparisonReceivedOn": "2026-11-10",
+      "comparisonNote": "本次收到老师消息称12月28日前电话通知入选者，与既有官网核查所列短信通知有差异；原官方核查日期、内容与链接保留，本轮未重新访问官网。"
     },
     "north08": {
       "status": "confirmed",
