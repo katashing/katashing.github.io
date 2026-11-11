@@ -172,7 +172,9 @@ window.SCHEDULE_CHECK_DATA = {
           "url": "https://www.pylfps.edu.hk/%E5%89%AF%E6%9C%AC-%E5%B0%8F%E4%B8%80%E5%85%A5%E5%AD%B8%E7%94%B3%E8%AB%8B"
         }
       ],
-      "checkedAt": "2026-10-13"
+      "checkedAt": "2026-10-13",
+      "referenceOnly": true,
+      "referenceReason": "11月11日已收到老师转述的个人笔试通知；此前通知方式及测试时间待确认的说明仅作历史参考。本轮未重新访问官网，旧核查日期和官方须知保留。"
     },
     "tp04": {
       "status": "unverified",

@@ -683,6 +683,12 @@ button.school-name.application-pending:focus-visible,
 .assessment-detail { display: block; margin-top: 4px; color: #405246; font-size: 12px; line-height: 1.7; }
 .assessment-detail b { color: #a12922; font-weight: 700; }
 .followup > .followup-text { display: block; margin-top: 4px; }
+.assessment-conflict { margin: 8px 0 10px; padding: 9px; border: 2px solid #b3261e; border-radius: 5px; background: #fff1ed; color: #942019; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.assessment-conflict > strong, .assessment-conflict > span, .assessment-conflict > b, .assessment-conflict > small { display: block; }
+.assessment-conflict > strong { margin-bottom: 4px; font-size: 14px; font-weight: 850; }
+.assessment-conflict > b { margin-top: 5px; font-weight: 800; }
+.assessment-conflict > small { margin-top: 4px; font-size: 11px; }
+.fact-box .assessment-conflict { color: #942019; }
 @media screen and (max-width:1000px) {
   .source-date:has(.assessment-notice) { width: 100%; }
   .source-date .assessment-priority { font-size: 16px; }
@@ -701,4 +707,7 @@ button.school-name.application-pending:focus-visible,
   .fact-box .assessment-priority { border: 2px solid #b3261e; padding: 3px 4px; color: #a11c15; background: #ffe1d8; font-size: 10px; font-weight: 850; }
   .assessment-notice { margin-bottom: 5px; break-inside: avoid; }
   .assessment-detail { font-size: 8px; line-height: 1.5; }
+  .assessment-conflict { margin: 5px 0; padding: 4px; font-size: 8px; break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .assessment-conflict > strong { font-size: 10px; }
+  .assessment-conflict > small { font-size: 7px; }
 }
