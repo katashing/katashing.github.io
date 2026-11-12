@@ -159,16 +159,29 @@ window.SCHEDULE_CHECK_DATA = {
       ]
     },
     "north03": {
-      "status": "unverified",
-      "issueLabel": "安排待核实",
-      "message": "老师新表列2026年11月19日至12月3日申请、12月12日笔试；当前小三下学期申请窗口及考试日期尚待官方核实。",
+      "status": "confirmed",
+      "message": "官网2026/27插班须知已核：11月19日至12月3日16:00网上申请，12月12日笔试，具体时间电邮通知；2027年2月1日入学。未明列小三空缺，个人考试资格待确认。 上午时段仅据老师消息，未记为官方精确时间。",
+      "checkedAt": "2026-11-12",
       "sources": [
         {
-          "title": "嘉福荣真官网",
-          "url": "https://www.skhkfwc.edu.hk/"
+          "title": "嘉福荣真2026/27插班生安排",
+          "url": "https://www.skhkfwc.edu.hk/uploads/files/2026-27%E5%B9%B4%E5%BA%A6%E6%8B%9B%E6%94%B6%E6%8F%92%E7%8F%AD%E7%94%9F%E5%AE%89%E6%8E%92.pdf"
         }
       ],
-      "checkedAt": "2026-10-13"
+      "historicalChecks": [
+        {
+          "status": "unverified",
+          "issueLabel": "安排待核实",
+          "message": "老师新表列2026年11月19日至12月3日申请、12月12日笔试；当前小三下学期申请窗口及考试日期尚待官方核实。",
+          "sources": [
+            {
+              "title": "嘉福荣真官网",
+              "url": "https://www.skhkfwc.edu.hk/"
+            }
+          ],
+          "checkedAt": "2026-10-13"
+        }
+      ]
     },
     "north04": {
       "status": "partial",
@@ -209,16 +222,30 @@ window.SCHEDULE_CHECK_DATA = {
       "checkedAt": "2026-10-13"
     },
     "tp01": {
-      "status": "unverified",
-      "issueLabel": "安排待核实",
-      "message": "老师新表列2026年11月开放；当前小三下学期具体开放日、截止及笔试安排尚待官方核实。",
+      "status": "partial",
+      "issueLabel": "已开放（老师告知）；官方细节待核实",
+      "message": "老师告知已开放，并安排12月12日（周六）上午笔试；当前春季官方正文未取得，截止、小三名额、准确考试时间和个人资格待确认。",
+      "checkedAt": "2026-11-12",
       "sources": [
         {
-          "title": "大埔旧墟宝湖道官网",
-          "url": "https://www.tpompspc.edu.hk/"
+          "title": "宝湖道官方插班申请页",
+          "url": "https://www.tpompspc.edu.hk/插班生申請/"
         }
       ],
-      "checkedAt": "2026-10-13"
+      "historicalChecks": [
+        {
+          "status": "unverified",
+          "issueLabel": "安排待核实",
+          "message": "老师新表列2026年11月开放；当前小三下学期具体开放日、截止及笔试安排尚待官方核实。",
+          "sources": [
+            {
+              "title": "大埔旧墟宝湖道官网",
+              "url": "https://www.tpompspc.edu.hk/"
+            }
+          ],
+          "checkedAt": "2026-10-13"
+        }
+      ]
     }
   }
 };
