@@ -54,16 +54,36 @@ window.SCHEDULE_CHECK_DATA = {
       ]
     },
     "sz02": {
-      "status": "unverified",
-      "message": "当前小三插班开放时间、截止和考试日期未核实；尚未找到2026/27春季公告。",
+      "status": "partial",
+      "issueLabel": "已开放；小三细节待核实",
+      "message": "2026年11月12日核查官网：11月9日发布2026/27学年春季插班申请已开启公告。11月9日是公告发布日，非已核实的开放起日；小三学位、截止及测评细节待官方确认。",
       "sources": [
         {
-          "title": "南山中英文协同港籍部官方公告",
+          "title": "官方2026/27春季插班申请开启公告列表",
           "url": "https://www.concordiaacademy.cn/latest_news_chi.php?items_per_page=20&page=1"
         },
         {
-          "title": "官方入学要求",
-          "url": "https://www.concordiaacademy.cn/content_chi.php?ctype=60"
+          "title": "官网链接的官方公众号公告（正文访问受限）",
+          "url": "https://mp.weixin.qq.com/s/P53HplDW56pzBYr64o-jvg"
+        }
+      ],
+      "checkedAt": "2026-11-12",
+      "applicationOpenConfirmed": true,
+      "officialPublicationDate": "2026-11-09",
+      "historicalChecks": [
+        {
+          "status": "unverified",
+          "message": "当前小三插班开放时间、截止和考试日期未核实；尚未找到2026/27春季公告。",
+          "sources": [
+            {
+              "title": "南山中英文协同港籍部官方公告",
+              "url": "https://www.concordiaacademy.cn/latest_news_chi.php?items_per_page=20&page=1"
+            },
+            {
+              "title": "官方入学要求",
+              "url": "https://www.concordiaacademy.cn/content_chi.php?ctype=60"
+            }
+          ]
         }
       ]
     },

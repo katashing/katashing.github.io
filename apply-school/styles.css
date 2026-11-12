@@ -689,6 +689,7 @@ button.school-name.application-pending:focus-visible,
 .assessment-conflict > b { margin-top: 5px; font-weight: 800; }
 .assessment-conflict > small { margin-top: 4px; font-size: 11px; }
 .fact-box .assessment-conflict { color: #942019; }
+.assessment-conflict-decided, .fact-box .assessment-conflict-decided { border-color: #537861; background: #eff7f1; color: #29523a; }
 @media screen and (max-width:1000px) {
   .source-date:has(.assessment-notice) { width: 100%; }
   .source-date .assessment-priority { font-size: 16px; }
