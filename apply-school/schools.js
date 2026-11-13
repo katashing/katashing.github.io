@@ -268,8 +268,11 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "基督教",
       year: 2026, deadlineDate: "2026-11-06", assessmentDate: "2026-11-17",
       deadlineText: "11月6截止", assessmentText: "入选者11月17笔试", actionText: "", alias: "",
-      status: "待确认", followupText: "继续申请；先确认小三招生安排", updateReceivedAt: "2026-10-13",
-      notes: "家长已确认继续申请；具体递交批次待老师确认。"
+      status: "不再申请",
+      teacherNote: "家长决定不再申请：通勤太远。",
+      applicationDecision: "not_applying",
+      decisionReason: "通勤太远", followupText: "家长因通勤太远决定不再申请；保留历史记录，停止本校申请及考试提醒。", updateReceivedAt: "2026-11-13",
+      notes: "2026年11月13日家长明确“陈元喜不选择，太远了”，更新为不再申请，原因为通勤太远。保留学校编号与历史记录，停止申请、小三资格确认及考试提醒；没有已提交或撤回申请证据，不记已撤回或校方取消。 历史记录：家长此前于10月13日确认继续申请，具体递交批次待老师确认；该安排已被本次不再申请决定替代。"
     }
   },
   {
