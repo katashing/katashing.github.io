@@ -35,7 +35,8 @@
   const followupSummary=(s,r,date=r.followup)=>date?`${date}${confirmedAssessment(s,r)&&r.followupText?`；${r.followupText}`:''}`:r.followupText;
   const introduction=s=>s.source==='selected'?[s.plan?.type,s.plan?.language,s.plan?.religion==='无'?'':s.plan?.religion].filter(Boolean).join(' · '):s.highlight;
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
-  const applicationPriority=s=>isApplying(recordFor(s))?0:s.selected?1:2;
+  const notChosenAfterConflict=s=>{const c=s.plan?.assessmentConflict;return Boolean(c?.decisionResolved&&c.selectedSchoolId&&c.selectedSchoolId!==s.id);};
+  const applicationPriority=s=>notChosenAfterConflict(s)?3:isApplying(recordFor(s))?0:s.selected?1:2;
   function pendingOpening(s,r){
     if(APPLYING_STATUSES.has(r.status)||['暂缓报名','录取','已录取','未录取','不再申请'].includes(r.status))return '';
     const p=s.plan;
@@ -145,10 +146,11 @@
   const csvValue=value=>'"'+String(value??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
   $('csv-button').addEventListener('click',()=>{
     const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','递交日期','报名开放状态','申请开放日期','申请开放安排','申请截止','笔试/面试日期','考试时间','考试时段','考试科目','备考要点','考试时长','携带物品','考试地点','考试安排来源','笔试/评估安排','笔试结果公布日期','笔试结果说明','结果公布安排来源','笔试结果网址','面试跟进','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期','日期说明','官方说明','官方报名入口'];
-    const rows=DATA.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.submission,registrationOpen(s,r)?'已开放报名':pendingOpening(s,r)||'待确认',r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,s.plan?.assessmentTime??'',s.plan?.assessmentSession??'',s.plan?.assessmentSubjects??'',s.plan?.assessmentPreparationNote??'',s.plan?.assessmentDuration??'',s.plan?.assessmentItems??'',s.plan?.assessmentLocation??'',s.plan?.assessmentSource??'',assessmentText(s.plan),s.plan?.resultDate??'',s.plan?.resultText??'',s.plan?.resultSource??'',s.plan?.resultUrl??'',s.plan?.interviewNote??'',r.openDay,followupSummary(s,r),r.contact,r.website,r.notes,check?.referenceOnly?[check.referenceReason,check.message].filter(Boolean).join('；'):check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??'',s.plan?.dateNote??'',r.officialNote,r.applicationUrl];});
+    const csvSchools=[...DATA].sort((a,b)=>applicationPriority(a)-applicationPriority(b));
+    const rows=csvSchools.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,r.selected?'是':'否',r.status,r.submission,registrationOpen(s,r)?'已开放报名':pendingOpening(s,r)||'待确认',r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,s.plan?.assessmentTime??'',s.plan?.assessmentSession??'',s.plan?.assessmentSubjects??'',s.plan?.assessmentPreparationNote??'',s.plan?.assessmentDuration??'',s.plan?.assessmentItems??'',s.plan?.assessmentLocation??'',s.plan?.assessmentSource??'',assessmentText(s.plan),s.plan?.resultDate??'',s.plan?.resultText??'',s.plan?.resultSource??'',s.plan?.resultUrl??'',s.plan?.interviewNote??'',r.openDay,followupSummary(s,r),r.contact,r.website,r.notes,check?.referenceOnly?[check.referenceReason,check.message].filter(Boolean).join('；'):check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??'',s.plan?.dateNote??'',r.officialNote,r.applicationUrl];});
     head.push('考试冲突','冲突处理状态','改期情况','冲突说明来源','考试选择','选择确认来源','选择收到日期');
-    rows.forEach((row,i)=>{const c=DATA[i].plan?.assessmentConflict;row.push(assessmentConflictSummary(DATA[i]),c?.decisionStatus??'',conflictReschedule(c),c?.source??'',c?.decisionResolved&&c.selectedSchoolId?conflictChoiceName(c):'',c?.decisionSource??'',c?.decisionReceivedOn??'');});
-    if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(DATA[i],TRAVEL_SETTINGS)));}
+    rows.forEach((row,i)=>{const c=csvSchools[i].plan?.assessmentConflict;row.push(assessmentConflictSummary(csvSchools[i]),c?.decisionStatus??'',conflictReschedule(c),c?.source??'',c?.decisionResolved&&c.selectedSchoolId?conflictChoiceName(c):'',c?.decisionSource??'',c?.decisionReceivedOn??'');});
+    if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(csvSchools[i],TRAVEL_SETTINGS)));}
     download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
   });
   $('print-button').addEventListener('click',()=>window.print());
