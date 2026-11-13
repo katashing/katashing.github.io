@@ -714,6 +714,30 @@ button.school-name.application-pending:focus-visible,
 }
 
 
+/* 出行方式紧凑切换；每所学校只展示当前路线。 */
+.travel-mode-buttons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-bottom: 9px; }
+.travel-mode-buttons[data-mode-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.travel-mode-button { min-width: 0; min-height: 30px; padding: 5px 3px; border: 1px solid #cbd5c9; border-radius: 4px; background: #f5f7f0; color: #526650; font-size: 10px; font-weight: 600; line-height: 1.35; white-space: normal; overflow-wrap: anywhere; }
+.travel-mode-button:hover { background: #e9efe4; border-color: #91a589; }
+.travel-mode-button[aria-pressed="true"] { color: #fff; background: #315b4d; border-color: #315b4d; }
+.travel-switcher .travel-option { display: block; margin: 0; padding: 0; border: 0; }
+.travel-switcher .travel-option[hidden] { display: none !important; }
+.travel-switcher .travel-heading { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: 3px 6px; }
+.travel-switcher .travel-label { margin: 0; }
+.travel-switcher .travel-time { margin-top: 3px; }
+.travel-options-detail { display: block; }
+.travel-options-detail .travel-mode-buttons { max-width: 430px; }
+@media screen and (max-width:1000px) {
+  .travel-cell { display: block; width: 100%; }
+  .travel-cell::before { margin-bottom: 8px; }
+  .travel-mode-button { min-height: 34px; font-size: 12px; }
+}
+@media print {
+  .travel-mode-buttons { display: none !important; }
+  .travel-switcher .travel-label { display: block; font-weight: 700; }
+  .travel-switcher .travel-time { margin-top: 2px; }
+}
+
 /* 明确展示停止推进的学校，保留记录完整可查。 */
 .retained-records-link { white-space: nowrap; color: #665a45; }
 .retained-tag { display: inline-flex; align-items: center; min-height: 20px; padding: 1px 7px; border: 1px solid #d3ccbd; border-radius: 4px; color: #665a45; background: #f2eee5; font-size: 11px; line-height: 1.6; }

@@ -1,6 +1,7 @@
 'use strict';
 (() => {
   const TRAVEL=window.TRAVEL_DATA;
+  const selectedModes=new Map();
   const huanggangPlanningNote=[TRAVEL.huanggangChange?.routeNote,TRAVEL.homeToHuanggangEstimate?.note].filter(Boolean).join(' ');
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const minutes=range=>range?`${range[0]===range[1]?range[0]:range.join('–')} 分`:'待核对';
@@ -51,18 +52,36 @@
     ]};
   }
   const segmentText=journey=>journey.segments.length?journey.segments.map(part=>`${part.label}：${minutes(part.minutes)}`).join('；'):'待核对';
-  function option(label,journey,link,linkLabel='导航 ↗') {
+  function option(label,journey,link,linkLabel='导航 ↗',mode,selectedMode) {
     const breakdown=journey.segments.length?`<dl class="travel-legs">${journey.segments.map(part=>`<div class="travel-leg"><dt>${esc(part.label)}</dt><dd>${minutes(part.minutes)}</dd></div>`).join('')}</dl>`:'';
     const rounding=journey.roundingMinutes?`<div class="travel-rounding">总时间向上取整至${journey.roundingMinutes}分钟</div>`:'';
-    return `<div class="travel-option"><div class="travel-heading"><span class="travel-label">${esc(label)}</span>${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">${esc(linkLabel)}</a>`:''}</div><div class="travel-time"><span class="travel-total-label">总时间</span>${timeMarkup(journey.range)}</div>${breakdown}${rounding}</div>`;
+    return `<div class="travel-option" data-travel-panel="${mode}"${mode===selectedMode?'':' hidden'}><div class="travel-heading"><span class="travel-label">${esc(label)}</span>${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">${esc(linkLabel)}</a>`:''}</div><div class="travel-time"><span class="travel-total-label">总时间</span>${timeMarkup(journey.range)}</div>${breakdown}${rounding}</div>`;
   }
   function journeyOptions(s,settings) {
     const rec=TRAVEL.schools[s.id];
     const publicLink=rec?.mapLinks?.directPublicTransport??(rec?.coordinates?`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent('深圳翰岭院')}&destination=${encodeURIComponent(rec.officialName+' '+rec.address)}&travelmode=transit`:null);
-    const publicOption=option('地铁 / 公交',publicJourney(s,settings),publicLink);
-    const driveOptions=s.region==='深圳'?option('直接驾车',drivingJourney(s,'huanggang',settings),rec?.mapLinks?.direct):option('新皇岗驾车',drivingJourney(s,'huanggang',settings),rec?.mapLinks?.huanggang,'港段导航 ↗')+option('莲塘驾车',drivingJourney(s,'liantang',settings),rec?.mapLinks?.liantang,'港段导航 ↗');
-    return publicOption+driveOptions;
+    const choices=s.region==='深圳'?[
+      {mode:'direct',label:'直达驾车',journey:drivingJourney(s,'huanggang',settings),link:rec?.mapLinks?.direct}
+    ]:[
+      {mode:'liantang',label:'莲塘驾车',journey:drivingJourney(s,'liantang',settings),link:rec?.mapLinks?.liantang,linkLabel:'港段导航 ↗'},
+      {mode:'huanggang',label:'新皇岗驾车',journey:drivingJourney(s,'huanggang',settings),link:rec?.mapLinks?.huanggang,linkLabel:'港段导航 ↗'}
+    ];
+    choices.push({mode:'transit',label:'地铁公交',journey:publicJourney(s,settings),link:publicLink});
+    const saved=selectedModes.get(s.id),selectedMode=choices.some(choice=>choice.mode===saved)?saved:choices[0].mode;
+    const buttons=choices.map(choice=>`<button type="button" class="travel-mode-button" data-travel-mode="${choice.mode}" aria-pressed="${choice.mode===selectedMode}">${esc(choice.label)}</button>`).join('');
+    const panels=choices.map(choice=>option(choice.label,choice.journey,choice.link,choice.linkLabel,choice.mode,selectedMode)).join('');
+    return `<div class="travel-switcher" data-travel-school="${esc(s.id)}"><div class="travel-mode-buttons" data-mode-count="${choices.length}" role="group" aria-label="${esc(s.name)}出行方式">${buttons}</div><div class="travel-panels">${panels}</div></div>`;
   }
+  document.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-travel-mode]');if(!button)return;
+    const holder=button.closest('.travel-switcher'),schoolId=holder?.dataset.travelSchool,mode=button.dataset.travelMode;if(!schoolId)return;
+    selectedModes.set(schoolId,mode);
+    document.querySelectorAll('.travel-switcher').forEach(switcher=>{
+      if(switcher.dataset.travelSchool!==schoolId)return;
+      switcher.querySelectorAll('button[data-travel-mode]').forEach(item=>item.setAttribute('aria-pressed',String(item.dataset.travelMode===mode)));
+      switcher.querySelectorAll('[data-travel-panel]').forEach(panel=>{panel.hidden=panel.dataset.travelPanel!==mode;});
+    });
+  });
   window.renderSchoolTravelCells=(s,settings)=>`<td data-label="翰岭院出行" class="travel-cell">${journeyOptions(s,settings)}</td>`;
   window.renderSchoolTravel=(s,settings)=>{
     const rec=TRAVEL.schools[s.id],pt=window.TRANSIT_DATA?.schools?.[s.id];
