@@ -712,3 +712,24 @@ button.school-name.application-pending:focus-visible,
   .assessment-conflict > strong { font-size: 10px; }
   .assessment-conflict > small { font-size: 7px; }
 }
+
+
+/* 明确展示停止推进的学校，保留记录完整可查。 */
+.retained-records-link { white-space: nowrap; color: #665a45; }
+.retained-tag { display: inline-flex; align-items: center; min-height: 20px; padding: 1px 7px; border: 1px solid #d3ccbd; border-radius: 4px; color: #665a45; background: #f2eee5; font-size: 11px; line-height: 1.6; }
+.retained-section-row { scroll-margin-top: 16px; }
+.retained-section-row > td { padding: 15px 18px; border-top: 2px solid #b9b19f; border-bottom: 1px solid #d7d1c3; background: #eeeadf; color: #514b3e; }
+.retained-section-row > td > strong { font-size: 15px; font-weight: 750; }
+.retained-section-row:focus { outline: 2px solid #a69c86; outline-offset: -2px; }
+@media screen and (max-width:1000px) {
+  tbody .retained-section-row { display: block; padding: 0; border: 0; border-radius: 6px; box-shadow: none; }
+  .retained-section-row > td:first-child { display: block; width: 100%; padding: 13px 15px; border: 1px solid #c9c0ad; border-radius: 6px; }
+  .retained-section-row > td > strong { font-size: 15px; }
+  .list-note > div { flex-wrap: wrap; gap: 8px 18px; }
+}
+@media print {
+  .retained-section-row { break-after: avoid; break-inside: avoid; outline: 0; }
+  .retained-section-row > td { padding: 7px 6px; border-top: 2px solid #8c8475; background: #eeeadf; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .retained-section-row > td > strong { font-size: 11px; }
+  .retained-tag { padding: 0 4px; border-color: #bdb5a5; background: #fff; color: #514b3e; font-size: 8px; }
+}

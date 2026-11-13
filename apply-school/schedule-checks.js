@@ -32,9 +32,13 @@ window.SCHEDULE_CHECK_DATA = {
     },
     "sz01": {
       "status": "confirmed",
-      "checkedAt": "2026-10-21",
-      "message": "官网提交确认已核实2026年10月21日提交成功，当前仅为已提交，尚未确认获邀或付款。2026年11月26日（周四）16:00至12月4日（周五）23:59登录官方网申系统查询评估详情；学校只邀请部分合适申请人，获邀后再缴评估系统费HKD550，出席与否均不退。12月5日（周六）全天综合评估／体验课仅适用于获邀者，2027年2月正式入学。原申请窗口为2026年10月19日至11月16日，香港课程面向1–10年级。",
+      "checkedAt": "2026-11-13",
+      "message": "11月13日公开官网已核实本轮香港课程评估日期为2026年12月5日；11月26日16:00至12月4日23:59登录官方网申系统查询评估详情。仅部分申请人获邀，个人资格及具体场次待通知；公开公告未列全天或具体时段。与大埔旧墟12月5日14:00–17:00同日，尚不能确认个人时段必然重叠。10月21日提交成功及全天预留要求沿用既有官方确认资料，本轮未重新查询个人申请系统，状态仍为已提交，未确认获邀或付款。",
       "sources": [
+        {
+          "title": "2026/27第二学期香港课程入学公告（11月5日发布）",
+          "url": "https://www.puikiuxinyi.com/list/904.html"
+        },
         {
           "title": "培侨信义2026/27二月插班官方公告（10月19日）",
           "url": "https://mp.weixin.qq.com/s/56uGeCthL9zRMx5ejyjf8g"
@@ -50,6 +54,31 @@ window.SCHEDULE_CHECK_DATA = {
         {
           "title": "历史参考：2024/25二月插班申请须知（含香港课程）",
           "url": "https://www.puikiuxinyi.com/notice/642.html"
+        }
+      ],
+      "historicalChecks": [
+        {
+          "status": "confirmed",
+          "checkedAt": "2026-10-21",
+          "message": "官网提交确认已核实2026年10月21日提交成功，当前仅为已提交，尚未确认获邀或付款。2026年11月26日（周四）16:00至12月4日（周五）23:59登录官方网申系统查询评估详情；学校只邀请部分合适申请人，获邀后再缴评估系统费HKD550，出席与否均不退。12月5日（周六）全天综合评估／体验课仅适用于获邀者，2027年2月正式入学。原申请窗口为2026年10月19日至11月16日，香港课程面向1–10年级。",
+          "sources": [
+            {
+              "title": "培侨信义2026/27二月插班官方公告（10月19日）",
+              "url": "https://mp.weixin.qq.com/s/56uGeCthL9zRMx5ejyjf8g"
+            },
+            {
+              "title": "香港课程官方报名入口",
+              "url": "https://admission.puikiuxinyi.edu.hk/event/tc/3090"
+            },
+            {
+              "title": "历史参考：2025/26二月插班申请须知（香港课程）",
+              "url": "https://www.puikiuxinyi.com/notice/795.html"
+            },
+            {
+              "title": "历史参考：2024/25二月插班申请须知（含香港课程）",
+              "url": "https://www.puikiuxinyi.com/notice/642.html"
+            }
+          ]
         }
       ]
     },
@@ -212,16 +241,51 @@ window.SCHEDULE_CHECK_DATA = {
       "referenceReason": "11月11日已收到老师转述的个人笔试通知；此前通知方式及测试时间待确认的说明仅作历史参考。本轮未重新访问官网，旧核查日期和官方须知保留。"
     },
     "tp04": {
-      "status": "unverified",
-      "issueLabel": "安排待核实",
-      "message": "老师新表列2026年11月开放；当前小三下学期具体开放日、截止及笔试安排尚待官方核实。",
+      "status": "partial",
+      "checkedAt": "2026-11-13",
+      "issueLabel": "同日排期；个人场次待确认",
+      "message": "官方已核实：2026年11月2日至11月27日报名，额满即止；12月5日（周六）14:00–17:00考试，适用小一至小五，2027年2月1日入读。与深圳培侨同日，个人场次是否重叠尚待培侨通知；小三剩余名额未确认。老师已告知本轮取消。",
       "sources": [
         {
-          "title": "大埔旧墟官网",
-          "url": "https://www.tpomps.edu.hk/"
+          "title": "大埔旧墟2026/27下学期插班公告",
+          "url": "https://tpomps.goodschool.hk/article/485"
+        },
+        {
+          "title": "官方插班通告及申请表PDF",
+          "url": "https://tpomps.goodschool.hk/upload/2026/11/4ae4d0f2fb4e8ccade11611fcf8758d6.pdf"
         }
       ],
-      "checkedAt": "2026-10-13"
+      "applicationOpenConfirmed": true,
+      "officialSchedule": {
+        "applicationStart": "2026-11-02",
+        "deadline": "2026-11-27",
+        "capacityCondition": "额满即止",
+        "assessmentDate": "2026-12-05",
+        "assessmentStart": "14:00",
+        "assessmentEnd": "17:00",
+        "entryDate": "2027-02-01",
+        "grades": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "historicalChecks": [
+        {
+          "status": "unverified",
+          "issueLabel": "安排待核实",
+          "message": "老师新表列2026年11月开放；当前小三下学期具体开放日、截止及笔试安排尚待官方核实。",
+          "sources": [
+            {
+              "title": "大埔旧墟官网",
+              "url": "https://www.tpomps.edu.hk/"
+            }
+          ],
+          "checkedAt": "2026-10-13"
+        }
+      ]
     },
     "tp01": {
       "status": "partial",
