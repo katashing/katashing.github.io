@@ -9,14 +9,15 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "2026-12-12",
       applicationStartText: "已开放报名", deadlineText: "截止待确认", assessmentText: "12月12日（周六）上午笔试（老师告知），准确时间及个人考试资格待确认", actionText: "", alias: "",
-      status: "已开放，待报名", teacherNote: "老师告知插班报名刚开放，与嘉福荣真同为12月12日周六上午笔试；老师建议优先嘉福，家长尚未选择。", followupText: "已开放（老师告知）；确认本轮小三名额、申请截止及材料要求。与嘉福同日上午笔试排期冲突，待家长选择及准确时间确认。", updateReceivedAt: "2026-11-12",
+      status: "本轮暂不推进", teacherNote: "家长已选择嘉福荣真并与老师确认；宝湖道保留记录，本轮暂不推进。", followupText: "本轮选择嘉福荣真，宝湖道暂不推进；保留已开放事实和学校原排期，待家长新安排。", updateReceivedAt: "2026-11-13",
       applicationStartDate: "",
       assessmentWeekday: "周六",
       assessmentSession: "上午（老师告知，具体时间待通知）",
       assessmentSource: "老师消息（11月12日收到），当前官方春季通告尚待核实",
       officialNote: "本次未取得当前春季官方通告正文；已开放及12月12日上午安排按老师说明记录，截止和小三名额待核实。",
-      assessmentConflict: {"date": "2026-12-12", "time": "上午", "source": "老师消息（11月12日收到）", "note": "老师告知两校同日上午笔试；具体时间及能否错开待确认，尚未确认个人考试资格。", "decisionStatus": "老师建议优先嘉福荣真；待家长选择", "scheduleOnly": true, "selectedSchoolId": null, "decisionResolved": false, "rescheduleAvailable": null, "recommendedSchoolId": "north03", "schoolId": "north03", "schoolName": "圣公会嘉福荣真小学"},
-      notes: "2026年11月12日收到老师消息：大埔旧墟公立学校（宝湖道）刚开放插班报名，与嘉福荣真都在12月12日周六上午笔试。按老师说明记已开放待报名和考试排期；没有实际递交、个人获邀或缴费证据。老师建议优先嘉福，家长尚未选择，保留宝湖道已选记录。本次官网春季通告正文未取得，具体截止、小三空缺、准确考试时间及能否错开待确认；旧5—6月秋季公告不能代替春季安排。截图无消息日期，收到日不作发送日。 历史记录：2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月开放。历史记录：老师此前投递规划表列11月开放，具体开放日、截止和笔试安排待学校公布。尚无实际递交确认。"
+      applicationDecision: "hold_this_round",
+      assessmentConflict: {"date": "2026-12-12", "time": "上午", "source": "老师消息（11月12日收到）", "note": "两校原通用笔试排期同为12月12日上午；家长已选嘉福荣真。具体时刻及个人考试资格仍以学校通知为准。", "decisionStatus": "已选择嘉福荣真，并已与老师确认；宝湖道本轮暂不推进", "scheduleOnly": true, "selectedSchoolId": "north03", "decisionResolved": true, "rescheduleAvailable": null, "recommendedSchoolId": "north03", "schoolId": "north03", "schoolName": "圣公会嘉福荣真小学", "decisionSource": "家长2026年11月13日直接确认", "decisionReceivedOn": "2026-11-13", "confirmedWithTeacher": true},
+      notes: "2026年11月13日家长确认选择嘉福荣真并已与老师确认；本轮宝湖道暂不推进，保留学校记录、报名已开放事实及原通用排期，不再提醒两校选择或本轮宝湖道报名、赴考。未取得递交、获邀、撤回申请或校方取消证据。 历史记录：2026年11月12日收到老师消息：大埔旧墟公立学校（宝湖道）刚开放插班报名，与嘉福荣真都在12月12日周六上午笔试。按老师说明记已开放待报名和考试排期；没有实际递交、个人获邀或缴费证据。老师建议优先嘉福，家长尚未选择，保留宝湖道已选记录。本次官网春季通告正文未取得，具体截止、小三空缺、准确考试时间及能否错开待确认；旧5—6月秋季公告不能代替春季安排。截图无消息日期，收到日不作发送日。 历史记录：2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月开放。历史记录：老师此前投递规划表列11月开放，具体开放日、截止和笔试安排待学校公布。尚无实际递交确认。"
     }
   },
   {
@@ -120,7 +121,7 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中英", religion: "基督教",
       year: 2026, applicationStartDate: "2026-11-19", deadlineDate: "2026-12-03", assessmentDate: "2026-12-12",
       deadlineText: "11月19-12月3", assessmentText: "12月12日（周六）笔试，老师告知上午，具体时间以电邮通知为准；尚未确认个人考试资格", actionText: "", alias: "",
-      status: "待开放", teacherNote: "老师告知与宝湖道同为12月12日周六上午笔试；考虑离福田口岸较近，建议优先嘉福荣真。家长尚未决定。", followupText: "11月19日开放后按官网要求准备及申请；与宝湖道同日上午排期冲突，老师建议嘉福，待家长选择并确认具体时间。", updateReceivedAt: "2026-11-12",
+      status: "待开放", teacherNote: "家长已选定圣公会嘉福荣真小学，并确认已与老师沟通确认；本轮按嘉福推进。", followupText: "择校已与老师确认。11月19日开放后按官网要求申请，12月3日16:00截止；确认小三空缺及材料，等待实际递交确认和个人考试通知。", updateReceivedAt: "2026-11-13",
       applicationStartSource: "official",
       deadlineTime: "16:00",
       assessmentWeekday: "周六",
@@ -129,8 +130,9 @@ window.SCHOOL_DATA = [
       applicationUrl: "https://forms.gle/QStv3PSYVkKGj5Bj6",
       officialNote: "官网2026/27插班须知已核：11月19日至12月3日16:00网上申请，12月12日笔试，具体时间电邮通知；2027年2月1日入学。未明列小三空缺，个人考试资格待确认。",
       dateNote: "申请截止：2026年12月3日（周四）16:00；2027年2月1日入学。12月12日上午为老师说明，准确时间以学校电邮通知为准。",
-      assessmentConflict: {"date": "2026-12-12", "time": "上午", "source": "老师消息（11月12日收到）", "note": "老师告知两校同日上午笔试；具体时间及能否错开待确认，尚未确认个人考试资格。", "decisionStatus": "老师建议优先嘉福荣真；待家长选择", "scheduleOnly": true, "selectedSchoolId": null, "decisionResolved": false, "rescheduleAvailable": null, "recommendedSchoolId": "north03", "schoolId": "tp01", "schoolName": "大埔旧墟公立学校（宝湖道）"},
-      notes: "2026年11月12日收到老师建议截图：嘉福荣真与大埔旧墟宝湖道都在原计划，两校12月12日周六上午笔试；老师以嘉福较近福田口岸为由建议优先嘉福。老师建议不等于家长已选择，不取消宝湖道；具体时间与能否错开待确认。官网同日核实嘉福申请期11月19日至12月3日16:00、12月12日笔试及2027年2月1日入学；上午仅老师告知，未确认小三空缺或个人获邀。截图未显示消息日期，收到日不当发送日。 历史记录：2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月19日至12月3日。历史记录：此前规划表列12月12日笔试，本次截图未重列笔试日期，保留原安排待学校确认。尚无实际递交确认。"
+      applicationDecision: "proceed",
+      assessmentConflict: {"date": "2026-12-12", "time": "上午", "source": "老师消息（11月12日收到）", "note": "两校原通用笔试排期同为12月12日上午；家长已选嘉福荣真。具体时刻及个人考试资格仍以学校通知为准。", "decisionStatus": "已选择嘉福荣真，并已与老师确认；宝湖道本轮暂不推进", "scheduleOnly": true, "selectedSchoolId": "north03", "decisionResolved": true, "rescheduleAvailable": null, "recommendedSchoolId": "north03", "schoolId": "tp01", "schoolName": "大埔旧墟公立学校（宝湖道）", "decisionSource": "家长2026年11月13日直接确认", "decisionReceivedOn": "2026-11-13", "confirmedWithTeacher": true},
+      notes: "2026年11月13日家长明确选择圣公会嘉福荣真小学，并告知已与老师确认。两校选择事项已解决，本轮按嘉福推进；当前仍待11月19日开放，尚无实际递交或个人获邀确认。既有官网申请期、截止和笔试日期保持不变，具体考试时刻及小三学位待确认。 历史记录：2026年11月12日收到老师建议截图：嘉福荣真与大埔旧墟宝湖道都在原计划，两校12月12日周六上午笔试；老师以嘉福较近福田口岸为由建议优先嘉福。老师建议不等于家长已选择，不取消宝湖道；具体时间与能否错开待确认。官网同日核实嘉福申请期11月19日至12月3日16:00、12月12日笔试及2027年2月1日入学；上午仅老师告知，未确认小三空缺或个人获邀。截图未显示消息日期，收到日不当发送日。 历史记录：2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月19日至12月3日。历史记录：此前规划表列12月12日笔试，本次截图未重列笔试日期，保留原安排待学校确认。尚无实际递交确认。"
     }
   },
   {
@@ -328,15 +330,22 @@ window.SCHOOL_DATA = [
     source: "selected", selected: true,
     plan: {
       type: "私立", gender: "男女", language: "英中", religion: "无",
-      year: 2026, deadlineDate: "", assessmentDate: "",
-      deadlineText: "", assessmentText: "本轮小三评估安排待官方确认；尚无个人获邀通知", actionText: "", alias: "",
+      year: 2026, deadlineDate: "", assessmentDate: "2026-12-19",
+      deadlineText: "", assessmentText: "G3–G6入学评估：笔试（英文、英数/中数、语文）＋面试（英文面试＋小组面试）；老师告知，尚无个人获邀通知", actionText: "", alias: "",
+      assessmentWeekday: "周六",
+      assessmentSession: "具体时间待通知",
+      assessmentSubjects: "G3–G6：英文、英数/中数、语文",
+      assessmentPreparationNote: "英数/中数的具体安排待确认",
+      assessmentSource: "老师消息（2026年11月12日收到）",
+      interviewNote: "英文面试＋小组面试；具体日期、时间待通知",
       status: "已开放，待报名",
       applicationStartText: "已开放报名",
       applicationStartDate: "",
-      officialNote: "2026年11月12日核查官网：11月9日发布2026/27学年春季插班申请已开启公告。11月9日是公告发布日，非已核实的开放起日；小三学位、截止及测评细节待官方确认。",
-      followupText: "确认本轮小三学位、申请材料、截止及测评安排；当前已开放，尚未递交。",
+      teacherNote: "老师确认现可报名，12月19日笔试；与目前已记录的确定考试日期未见冲突。",
+      officialNote: "官网已确认2026/27春季插班申请开启；11月9日为公告发布日。12月19日笔试及评估内容来自老师消息，尚未取得完整官方正文。",
+      followupText: "确认小三学位、申请材料及截止，办理报名；笔试具体时间、地点及面试安排待通知。",
       updateReceivedAt: "2026-11-12",
-      notes: "2026年11月12日按家长要求核查：南山中英文学校协同港籍学生部官网11月9日发布2026-2027学年春季插班生申请现已开启公告，确认本轮已开放。11月9日仅为官网发布日，不作开放起日。官方公众号正文遇验证码，未取得完整官方招生细节；小三学位、截止及测评待确认。尚未递交、缴费或获邀。"
+      notes: "2026年11月12日收到老师消息：南山中英文现在可报名，已确定笔试时间12月19，未和其他考试冲突。小学部入学评估：G3-G6 笔试（英文、英数/中数、语文）+面试（英文面试+小组面试）。截图无发送日期；12月按2026年记录，与目前已记录的确定考试日期未见冲突，部分学校日期仍未定。面试是否同日、具体时刻及英数/中数安排待确认。此前官网11月9日发布2026/27春季插班申请开启公告，11月9日仅为公告发布日；官方公众号正文遇验证码，未取得完整招生细节，小三学位、截止及本轮官方评估正文待核实。尚未递交、缴费或获邀。"
     }
   },
   {
