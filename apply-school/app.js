@@ -33,6 +33,19 @@
     const decided=Boolean(c.decisionResolved&&c.selectedSchoolId);
     return `<div class="assessment-conflict${decided?' assessment-conflict-decided':''}"><strong>${decided?c.scheduleOnly?`择校已确认 · ${esc(conflictChoiceName(c))}`:`考试冲突 · 已选择${esc(conflictChoiceName(c))}`:c.overlapConfirmed===false?'同日安排 · 时段待确认':c.scheduleOnly?'笔试排期冲突':'考试时间冲突'}</strong><span>${esc(assessmentConflictSummary(s))}</span>${!c.note&&conflictReschedule(c)?`<span>${esc(conflictReschedule(c))}</span>`:''}<b>${esc(c.decisionStatus??(decided?c.scheduleOnly?`已选择${conflictChoiceName(c)}`:`已选择参加${conflictChoiceName(c)}笔试`:'待家长选择参加哪一场'))}</b>${c.source?`<small>冲突来源：${esc(c.source)}</small>`:''}${decided&&c.decisionSource?`<small>选择来源：${esc(c.decisionSource)}</small>`:''}</div>`;
   }
+  const tableSummaryFor=s=>Array.isArray(s.plan?.tableSummary?.dates)?s.plan.tableSummary:null;
+  const shortSchoolName=id=>({sz01:'深圳培侨',tp04:'大埔旧墟',tp01:'宝湖道',north03:'嘉福荣真',north05:'于良发',north08:'凤溪第一'}[id]??DATA.find(s=>s.id===id)?.name??'另一所学校');
+  function compactConflictCard(s){
+    const c=s.plan?.assessmentConflict;if(!c)return '';
+    const decided=Boolean(c.decisionResolved&&c.selectedSchoolId);
+    const text=decided?`已选择${shortSchoolName(c.selectedSchoolId)}`:c.overlapConfirmed===false?`与${shortSchoolName(c.schoolId)}同日，时段冲突待确认；继续跟进`:`与${shortSchoolName(c.schoolId)}${c.scheduleOnly?'同日':'冲突'}，待确认`;
+    return `<div class="table-conflict${decided?' table-conflict-decided':''}">${esc(text)}</div>`;
+  }
+  function summaryDateCell(s,summary){
+    const dates=summary.dates.map(item=>`<div class="summary-date${item.kind==='plain'?' summary-date-plain':' important-date'}${item.kind==='deadline'?' deadline-date':''}${item.kind==='assessment'?' summary-date-assessment':''}"><span class="summary-date-label">${esc(item.label)}</span><strong>${esc(item.text)}</strong></div>`).join('');
+    const notes=(summary.notes??[]).map(note=>`<small class="table-summary-note">${esc(note)}</small>`).join('');
+    return dates+notes+compactConflictCard(s)||'<span class="muted">—</span>';
+  }
   const followupSummary=(s,r,date=r.followup)=>date?`${date}${confirmedAssessment(s,r)&&r.followupText?`；${r.followupText}`:''}`:r.followupText;
   const introduction=s=>s.source==='selected'?[s.plan?.type,s.plan?.language,s.plan?.religion==='无'?'':s.plan?.religion].filter(Boolean).join(' · '):s.highlight;
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
@@ -71,6 +84,7 @@
     return `<div class="schedule-issue"><strong>${esc(check.issueLabel??(check.status==='conflict'?'日期有冲突':'未核实'))}</strong><span>${esc(check.message)}</span>${source?`<a href="${esc(source.url)}" target="_blank" rel="noopener">官方资料 ↗</a>`:''}</div>`;
   }
   function dateCell(s,r){
+    const summary=tableSummaryFor(s);if(summary)return summaryDateCell(s,summary);
     const p=s.plan,pieces=[],assessmentConfirmed=confirmedAssessment(s,r);
     const hasDate=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'');
     if(assessmentConfirmed)pieces.push(`<div class="assessment-notice"><strong class="important-date assessment-priority">${esc(assessmentLabel(s))} ${esc(assessmentDateTime(s,r))}</strong>${assessmentConflictCard(s)}${assessmentFacts(s).map(([label,value])=>`<small class="assessment-detail"><b>${esc(label)}：</b>${esc(value)}</small>`).join('')}</div>`);
@@ -100,20 +114,21 @@
     const visibleRetainedCount=rows.filter(isRetainedRecord).length;
     $('school-list').innerHTML=rows.map((s,index)=>{
       const r=recordFor(s);
+      const summary=tableSummaryFor(s);
       const applying=isApplying(r);
       const opening=pendingOpening(s,r);
       const open=registrationOpen(s,r);
       const deferred=isDeferred(s,r);
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,TRAVEL_SETTINGS):'<td class="travel-cell" data-label="翰岭院出行">查询中</td>';
-      const followup=r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>${confirmedAssessment(s,r)&&r.followupText?`<span class="followup-text">${esc(r.followupText)}</span>`:''}`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
+      const followup=summary?esc(summary.nextAction||'待安排'):r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>${confirmedAssessment(s,r)&&r.followupText?`<span class="followup-text">${esc(r.followupText)}</span>`:''}`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
       const retainedHeading=scope==='selected'&&isRetainedRecord(s)&&(index===0||!isRetainedRecord(rows[index-1]))?`<tr id="retained-records" class="retained-section-row" tabindex="-1"><td colspan="8"><strong>不再推进 · 保留记录（${visibleRetainedCount}所）</strong></td></tr>`:'';
       return `${retainedHeading}<tr${opening?' class="application-pending-row"':deferred?' class="application-deferred-row"':''}>
         <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open&&!deferred?' application-open':''}${deferred?' application-deferred':''}${opening?' application-pending':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${isRetainedRecord(s)?'<span class="retained-tag">保留记录</span>':r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?`<span class="opening-open-tag">${deferred?'已开放 · 暂缓报名':'已开放报名'}</span>`:''}</div></td>
         <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):''}</span></td>
         <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
         <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
-        <td data-label="重要日期" class="source-date">${dateCell(s,r)}</td>
-        <td data-label="报名进度 / 下次跟进" class="progress-cell"><span class="status-pill" data-status="${esc(r.status)}">${esc(r.status)}</span>${r.submission?`<p class="teacher-update"><span class="important-date">递交日期 ${dateText(r.submission)}</span></p>`:''}${r.teacherNote?`<p class="teacher-update">${esc(r.teacherNote)}</p>`:''}${r.officialNote?`<p class="teacher-update">${esc(r.officialNote)}</p>`:''}<div class="followup"><small>下次跟进</small>${followup}</div>${r.applicationUrl?`<a href="${esc(r.applicationUrl)}" class="route-link" target="_blank" rel="noopener">官方报名 ↗</a>`:''}${r.website?`<a href="${esc(r.website)}" class="route-link" target="_blank" rel="noopener">官网 ↗</a>`:''}</td>
+        <td data-label="重要日期" class="source-date${summary?' source-date-compact':''}">${dateCell(s,r)}</td>
+        <td data-label="报名进度 / 下次跟进" class="progress-cell${summary?' progress-compact':''}"><span class="status-pill" data-status="${esc(r.status)}">${esc(r.status)}</span>${summary?.statusNote?`<small class="status-confirmation">${esc(summary.statusNote)}</small>`:''}${r.submission?`<p class="teacher-update"><span class="important-date">递交日期 ${dateText(r.submission)}</span></p>`:''}${!summary&&r.teacherNote?`<p class="teacher-update">${esc(r.teacherNote)}</p>`:''}${!summary&&r.officialNote?`<p class="teacher-update">${esc(r.officialNote)}</p>`:''}<div class="followup"><small>${summary?'下一步':'下次跟进'}</small>${followup}</div><button type="button" class="summary-details-button" data-detail="${s.id}" aria-label="查看${esc(s.name)}详情">详情</button>${!summary&&r.applicationUrl?`<a href="${esc(r.applicationUrl)}" class="route-link" target="_blank" rel="noopener">官方报名 ↗</a>`:''}${!summary&&r.website?`<a href="${esc(r.website)}" class="route-link" target="_blank" rel="noopener">官网 ↗</a>`:''}</td>
         <td data-label="老师路程（原文）" class="teacher-route">${esc(s.commute)||'<span class="muted">—</span>'}</td>
         ${travel}
       </tr>`;

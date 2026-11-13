@@ -714,6 +714,33 @@ button.school-name.application-pending:focus-visible,
 }
 
 
+/* 主表保留关键日期和下一步，完整说明在详情中查看。 */
+.source-date-compact .summary-date { margin-top: 5px; line-height: 1.55; }
+.source-date-compact .summary-date:first-child { margin-top: 0; }
+.summary-date-label { margin-right: 5px; font-size: 11px; font-weight: 500; }
+.summary-date > strong { font-size: 13px; }
+.summary-date-assessment > strong { font-weight: 800; }
+.summary-date-plain { color: #526355; }
+.source-date-compact > .table-summary-note { margin-top: 5px; color: #526355; font-size: 12px; line-height: 1.55; }
+.table-conflict { margin-top: 7px; padding: 4px 6px; border-left: 2px solid #b26e41; background: #faf2e6; color: #825325; font-size: 12px; font-weight: 550; line-height: 1.55; overflow-wrap: anywhere; }
+.table-conflict-decided { border-color: #7b9780; background: #f0f5ed; color: #46654b; }
+.status-confirmation { display: inline-block; margin-left: 5px; color: #6b756e; font-size: 11px; line-height: 1.5; }
+.progress-compact .teacher-update { margin-top: 6px; }
+.progress-compact .followup { margin-top: 8px; color: #405246; font-size: 12px; line-height: 1.6; }
+.progress-compact .followup > small { margin-bottom: 2px; }
+.summary-details-button { margin-top: 10px; padding: 4px 11px; border: 1px solid #bfcdbb; border-radius: 4px; color: #315b4d; background: #f4f7f0; font-size: 12px; font-weight: 650; line-height: 1.5; }
+.summary-details-button:hover { background: #e8efe2; border-color: #91a589; }
+@media screen and (max-width:1000px) {
+  .source-date-compact, .progress-compact { width: 50%; }
+  .summary-details-button { min-height: 32px; }
+}
+@media print {
+  .summary-date-label, .source-date-compact > .table-summary-note, .table-conflict, .progress-compact .followup, .status-confirmation { font-size: 8px; }
+  .summary-date > strong { font-size: 9px; }
+  .summary-details-button { display: none !important; }
+  .table-conflict { padding: 2px 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
 /* 出行方式紧凑切换；每所学校只展示当前路线。 */
 .travel-mode-buttons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-bottom: 9px; }
 .travel-mode-buttons[data-mode-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
