@@ -6,13 +6,16 @@
   <meta name="description" content="学校申请跟踪：大陆学校、香港已选与备选学校、进度、日期、备注、翰岭院出行时间。">
   <title>学校申请跟踪</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20261113-nanshan-chinese-math-v39">
-  <script src="schools.js?v=20261113-nanshan-chinese-math-v39" defer></script>
-  <script src="travel-data.js?v=20261113-nanshan-chinese-math-v39" defer></script>
-  <script src="transit-data.js?v=20261113-nanshan-chinese-math-v39" defer></script>
-  <script src="travel.js?v=20261113-nanshan-chinese-math-v39" defer></script>
-  <script src="schedule-checks.js?v=20261113-nanshan-chinese-math-v39" defer></script>
-  <script src="app.js?v=20261113-nanshan-chinese-math-v39" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261116-exam-calendar-v40">
+  <script src="schools.js?v=20261116-exam-calendar-v40" defer></script>
+  <script src="travel-data.js?v=20261116-exam-calendar-v40" defer></script>
+  <script src="transit-data.js?v=20261116-exam-calendar-v40" defer></script>
+  <script src="travel.js?v=20261116-exam-calendar-v40" defer></script>
+  <script src="schedule-checks.js?v=20261116-exam-calendar-v40" defer></script>
+  <link rel="stylesheet" href="calendar.css?v=20261116-exam-calendar-v40">
+  <script src="calendar-data.js?v=20261116-exam-calendar-v40" defer></script>
+  <script src="calendar.js?v=20261116-exam-calendar-v40" defer></script>
+  <script src="app.js?v=20261116-exam-calendar-v40" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -20,7 +23,8 @@
   </header>
   <main>
     <section class="workspace" aria-label="学校清单">
-      <nav class="tabs" aria-label="学校表页"><button data-scope="mainland" class="active" aria-pressed="true">大陆学校 <span id="tab-mainland-count">3</span></button><button data-scope="selected" aria-pressed="false">香港已选 <span id="tab-selected-count">10</span></button><button data-scope="candidates" aria-pressed="false">香港备选 <span id="tab-candidate-count">25</span></button></nav>
+      <nav class="tabs" aria-label="学校表页"><button data-scope="mainland" class="active" aria-pressed="true">大陆学校 <span id="tab-mainland-count">3</span></button><button data-scope="selected" aria-pressed="false">香港已选 <span id="tab-selected-count">10</span></button><button data-scope="candidates" aria-pressed="false">香港备选 <span id="tab-candidate-count">25</span></button><button data-scope="calendar" aria-pressed="false">考试日历</button></nav>
+      <div id="school-table-panel">
       <div class="filters">
         <label class="search"><span class="sr-only">搜索学校或备注</span><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索学校或备注…"></label>
         <label><span class="sr-only">地区</span><select id="region"><option value="">全部地区</option><option>北区</option><option>大埔</option><option>沙田</option><option>深圳</option></select></label>
@@ -32,6 +36,8 @@
       <div class="list-note"><div><span id="result-count"></span><span class="status-legend status-legend-open">红色：已开放报名 / 申请中</span><span class="status-legend">橙色：待开放申请</span><span class="status-legend status-legend-deferred">绿色：普林已开放，暂缓报名</span></div><div><a id="retained-records-link" class="text-button retained-records-link" href="#retained-records" hidden>保留记录 0所 ↓</a><button id="csv-button" class="text-button">导出 CSV</button><button id="print-button" class="text-button">打印</button></div></div>
       <div class="table-wrap"><table><colgroup><col class="school-col"><col class="region-col"><col class="tier-col"><col class="intro-col"><col class="date-col"><col class="progress-col"><col class="teacher-route-col"><col class="travel-col"></colgroup><thead><tr><th>学校</th><th>地区</th><th>梯队</th><th class="intro-head">学校介绍</th><th>重要日期</th><th>报名进度<small>下次跟进</small></th><th class="teacher-route-head">老师路程（原文）</th><th id="travel-head">翰岭院出行<small>单程总时间</small></th></tr></thead><tbody id="school-list"></tbody></table></div>
       <div id="empty-state" class="empty-state" hidden><strong>没有符合条件的学校</strong><button id="clear-filters" class="button">清除筛选</button></div>
+      </div>
+      <section id="exam-calendar" aria-label="考试日历" hidden></section>
     </section>
     <details class="sources"><summary>资料来源</summary>
       <div class="source-grid"><div class="source-copy"><p>老师的学校介绍和路程原文直接列在表格中。报名、笔试日期以学校通知为准；红色问题提示保留现有日期。</p><div id="travel-source-notes"></div></div><div class="source-links"><a href="assets/taipo.png" target="_blank" rel="noopener">大埔学校资料 ↗</a><a href="assets/north.png" target="_blank" rel="noopener">北区学校资料 ↗</a></div></div>

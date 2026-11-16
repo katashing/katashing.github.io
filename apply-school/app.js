@@ -14,7 +14,7 @@
   const dateText=date=>date?date.replace(/-/g,'.'):'';
   const diffDays=date=>Math.round((new Date(date+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000);
   const reminder=date=>{const n=diffDays(date);return n<0?`已过 ${-n} 天`:n===0?'今天':`还有 ${n} 天`;};
-  let scope=location.hash==='#retained-records'?'selected':'mainland';
+  let scope=location.hash==='#calendar'?'calendar':location.hash==='#retained-records'?'selected':'mainland';
   const inScope=s=>scope==='mainland'?isMainland(s):scope==='selected'?s.selected&&!isMainland(s):s.source!=='selected'&&!isMainland(s);
   const recordFor=s=>({selected:s.selected,status:s.plan?.status??(s.selected?'待确认':'备选'),submission:s.plan?.submissionDate??'',applicationStart:s.plan?.applicationStartDate??'',deadline:s.plan?.deadlineDate??'',assessment:s.plan?.assessmentDate??'',openDay:s.plan?.openDayDate??'',followup:s.plan?.followupDate??'',followupText:s.plan?.followupText??'',teacherNote:s.plan?.teacherNote??'',officialNote:s.plan?.officialNote??'',applicationUrl:s.plan?.applicationUrl??'',contact:window.TRAVEL_DATA?.schools?.[s.id]?.phone??'',website:window.TRAVEL_DATA?.schools?.[s.id]?.website??'',notes:s.plan?.notes??''});
   const assessmentText=p=>{const text=p?.assessmentText?.replace(/^入选者/,'')??'';return text&&/[0-9]月/.test(text)?`${p.assessmentYear??p.year}年${text}`:text;};
@@ -107,6 +107,11 @@
     $('tab-selected-count').textContent=DATA.filter(s=>s.selected&&!isMainland(s)).length;
     $('tab-candidate-count').textContent=DATA.filter(s=>s.source!=='selected'&&!isMainland(s)).length;
     document.querySelectorAll('.tabs [data-scope]').forEach(b=>{b.classList.toggle('active',b.dataset.scope===scope);b.setAttribute('aria-pressed',String(b.dataset.scope===scope));});
+    const calendarActive=scope==='calendar';
+    $('school-table-panel').hidden=calendarActive;
+    $('exam-calendar').hidden=!calendarActive;
+    document.querySelector('.sources').hidden=calendarActive;
+    if(calendarActive){window.schoolCalendar?.render();return;}
     const rows=getRows();$('result-count').textContent=`显示 ${rows.length} 所学校`;$('empty-state').hidden=rows.length!==0;
     const retainedCount=DATA.filter(s=>s.selected&&!isMainland(s)&&isRetainedRecord(s)).length;
     $('retained-records-link').hidden=retainedCount===0;
@@ -167,7 +172,7 @@
     const retainedLink=event.target.closest('#retained-records-link');
     if(retainedLink){event.preventDefault();history.replaceState(null,'','#retained-records');openRetainedRecords();return;}
     const detail=event.target.closest('[data-detail]');if(detail)openDetail(detail.dataset.detail);
-    const group=event.target.closest('[data-scope]');if(group){scope=group.dataset.scope;if(scope!=='selected'&&location.hash==='#retained-records')history.replaceState(null,'',location.pathname+location.search);if($('region').value&&!DATA.some(s=>inScope(s)&&s.region===$('region').value))$('region').value='';render();document.querySelector('.table-wrap').scrollLeft=0;}
+    const group=event.target.closest('[data-scope]');if(group){scope=group.dataset.scope;if(scope==='calendar')history.replaceState(null,'','#calendar');else if(location.hash==='#calendar'||(scope!=='selected'&&location.hash==='#retained-records'))history.replaceState(null,'',location.pathname+location.search);if($('region').value&&!DATA.some(s=>inScope(s)&&s.region===$('region').value))$('region').value='';render();document.querySelector('.table-wrap').scrollLeft=0;}
     const close=event.target.closest('[data-close]');if(close)$(close.dataset.close).close();
   });
   for(const id of ['search','region','tier','status','sort'])$(id).addEventListener(id==='search'?'input':'change',render);
@@ -185,7 +190,7 @@
   });
   $('print-button').addEventListener('click',()=>window.print());
   window.schoolNotebook={render,getTravelSettings(){return {...TRAVEL_SETTINGS};}};
-  window.addEventListener('hashchange',()=>{if(location.hash==='#retained-records')openRetainedRecords();});
+  window.addEventListener('hashchange',()=>{if(location.hash==='#retained-records')openRetainedRecords();else if(location.hash==='#calendar'){scope='calendar';render();}});
   render();
   if(location.hash==='#retained-records')openRetainedRecords();
 })();
