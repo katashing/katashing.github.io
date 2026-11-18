@@ -85,7 +85,7 @@ window.SCHEDULE_CHECK_DATA = {
     "sz02": {
       "status": "partial",
       "issueLabel": "小三学位、截止及评估待官方复核",
-      "message": "官网已确认本轮春季申请开放，11月9日为公告发布日。老师另告知12月19日笔试及G3–G6评估内容；小三学位、截止、考试具体时间及完整官方评估正文仍待核实。",
+      "message": "官网已确认本轮春季申请开放，11月9日为公告发布日。老师另告知12月19日笔试及G3–G6评估内容；小三学位、截止、考试具体时间及完整官方评估正文仍待核实。 2026年11月18日本聊天收到老师确认截图：明确可以参加笔试，等学校邮件通知具体考试时间。按老师确认更新待笔试；12月19日沿用既有老师通知，具体时刻、地点及面试待确认，不声称已收到学校邮件或官方个人邀请。",
       "sources": [
         {
           "title": "官方2026/27春季插班申请开启公告列表",
@@ -114,7 +114,9 @@ window.SCHEDULE_CHECK_DATA = {
             }
           ]
         }
-      ]
+      ],
+      "teacherConfirmationReceivedOn": "2026-11-18",
+      "teacherConfirmedWrittenTestParticipation": true
     },
     "sz03": {
       "status": "followup",

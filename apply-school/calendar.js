@@ -26,7 +26,7 @@
     if(!school)return '';
     const notice=event.kind==='notice';
     const schedule=!notice&&event.certainty!=='personal';
-    const scheduled=event.kind==='exam'&&['personal','registered'].includes(event.certainty)&&Boolean(window.schoolNotebook?.hasExamNotice(school));
+    const scheduled=event.kind==='exam'&&['personal','registered','teacher_notice'].includes(event.certainty)&&Boolean(window.schoolNotebook?.hasExamNotice(school));
     const tone=notice?'notice':scheduled?'scheduled':'schedule';
     const note=event.summary??event.note??(schedule?'资格待确认':'');
     const time=event.displayTime??event.time;
