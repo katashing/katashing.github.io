@@ -96,7 +96,7 @@
     var setTimer = options.setTimeout || function (fn, delay) { return root.setTimeout(fn, delay); };
     var clearTimer = options.clearTimeout || function (id) { return root.clearTimeout(id); };
     var now = options.now || function () { return new Date().getTime(); };
-    var pending = null, timer = null, stopped = false, saved = null, storage = null;
+    var pending = null, requestStartedAt = null, timer = null, stopped = false, saved = null, storage = null;
     try { storage = typeof options.storage !== 'undefined' ? options.storage : root.localStorage; } catch (error) { /* Storage may be disabled. */ }
     function readSaved() {
       var cached = null;
@@ -128,7 +128,7 @@
     }
     function finish(request, value, error) {
       if (stopped || pending !== request) { return; }
-      pending = null; cancelTimer(); detach(request);
+      pending = null; requestStartedAt = null; cancelTimer(); detach(request);
       if (value) { save(value); notify(options.onWeather, value); }
       else { notify(options.onError, error); }
       later(value ? currentCycle(now()) + HALF_DAY - now() : ERROR_DELAY);
@@ -144,7 +144,7 @@
       var request;
       try {
         if (typeof XHR !== 'function') { throw new Error('XHR unavailable'); }
-        request = new XHR(); pending = request;
+        request = new XHR(); pending = request; requestStartedAt = now();
         request.onreadystatechange = function () {
           if (stopped || pending !== request || request.readyState !== 4) { return; }
           try {
@@ -169,7 +169,14 @@
       }
     }
     var handle = { resume: function () {
-      if (stopped || pending !== null) { return; }
+      if (stopped) { return; }
+      if (pending !== null) {
+        if (now() - requestStartedAt < REQUEST_TIMEOUT) { return; }
+        // Sleep can suspend the timeout callback while an abandoned XHR stays pending.
+        var expired = pending;
+        pending = null; requestStartedAt = null;
+        cancelTimer(); detach(expired); abort(expired);
+      }
       var previous = saved;
       cancelTimer(); readSaved();
       if (saved !== previous && validSaved(saved, now())) { notify(options.onWeather, saved); }
@@ -177,7 +184,7 @@
     }, stop: function () {
       if (stopped) { return; }
       stopped = true; cancelTimer();
-      var request = pending; pending = null;
+      var request = pending; pending = null; requestStartedAt = null;
       if (request) { detach(request); abort(request); }
     } };
     readSaved();

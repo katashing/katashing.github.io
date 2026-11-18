@@ -65,12 +65,69 @@
   }
   function itemOrder(item) { return item.start || { morning: '00:00', afternoon: '12:00', evening: '18:00' }[item.period] || ''; }
   var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
-  var CLIENT_VERSION = '20261115-exam1';
+  var CLIENT_VERSION = '20261118-load1';
+  var REQUEST_TIMEOUT = 12000;
   var views = [], current = 0, playing = false, timer = null, lastControl = null;
   var errors = {}, payloads = {}, currentDay = today(), selectedDay = defaultChildDate();
   var defaultDay = selectedDay, clockTimer = null, pollers = [], reloading = false;
+  var initialPage = (location.hash || '').replace(/^#/, '');
   var topLineKey = null, photoCropKey = null, photoFailed = false;
   var weatherClient = null, weatherPollTimer = null, weatherPending = false, weatherNextDue = 0;
+  var weatherStartedAt = 0, cancelWeatherRequest = null;
+  var plannerScript = { path: 'breakfast-planner.js?v=20261026-porridge1', loading: false, failed: false, startedAt: 0 };
+  var weatherScript = { path: 'weather-client.js?v=20261118-load1', loading: false, failed: false, startedAt: 0 };
+  function githubPage() { return /(^|\.)github\.io$/.test(location.hostname || ''); }
+  function scriptAvailable(state) {
+    return state === plannerScript ? typeof BreakfastPlanner !== 'undefined' : typeof WeatherClient !== 'undefined';
+  }
+  function scriptNeeded(state) {
+    return state === plannerScript ? views.length && !isChild(views[current].page) && !isTasks(views[current].page) : githubPage();
+  }
+  function startWeatherClient() {
+    if (weatherClient || !githubPage() || typeof WeatherClient === 'undefined') { return; }
+    weatherClient = WeatherClient.start({ initialWeather: weather, onWeather: function (next) {
+      acceptWeather(next); topLine();
+      if (dailyWeatherValid(weather) && !weatherPending) { scheduleWeatherPoll(nextWeatherRefresh()); }
+    } });
+  }
+  function loadOptionalScript(state, force) {
+    if (!scriptNeeded(state)) { return; }
+    if (scriptAvailable(state)) { if (state === weatherScript) { startWeatherClient(); } return; }
+    var now = new Date().getTime();
+    if (state.loading) {
+      if (now - state.startedAt < REQUEST_TIMEOUT) { return; }
+      state.cancel();
+    }
+    if (!force && now < (state.retryAt || 0)) { return; }
+    if (state.retryTimer) { clearTimeout(state.retryTimer); state.retryTimer = null; }
+    var script = node('script'), finished = false, timeout;
+    state.loading = true; state.startedAt = now; state.failed = false;
+    function detach() {
+      script.onload = null; script.onerror = null;
+      if (script.parentNode) { script.parentNode.removeChild(script); }
+    }
+    state.cancel = function () {
+      if (finished) { return; }
+      finished = true; clearTimeout(timeout); state.loading = false; state.cancel = null; detach();
+    };
+    function finish(ok) {
+      if (finished) { return; }
+      state.cancel(); state.failed = !ok;
+      if (ok) {
+        state.retryAt = 0;
+        if (state === weatherScript) { startWeatherClient(); }
+      } else {
+        state.retryAt = new Date().getTime() + 120000;
+        state.retryTimer = setTimeout(function () { state.retryTimer = null; loadOptionalScript(state, false); }, 120000);
+      }
+      if (state === plannerScript && scriptNeeded(state)) { render(); }
+    }
+    script.onload = function () { finish(scriptAvailable(state)); };
+    script.onerror = function () { finish(false); };
+    script.async = true; script.src = state.path;
+    timeout = setTimeout(function () { finish(false); }, REQUEST_TIMEOUT);
+    try { document.body.appendChild(script); } catch (error) { finish(false); }
+  }
   function pageById(id) {
     for (var i = 0; i < data.pages.length; i++) { if (data.pages[i].id === id) { return data.pages[i]; } }
     return null;
@@ -222,11 +279,17 @@
   function pollWeather() {
     if (location.protocol === 'file:' || weatherPending) { return; }
     if (weatherPollTimer !== null) { clearTimeout(weatherPollTimer); weatherPollTimer = null; }
-    weatherPending = true;
+    weatherPending = true; weatherStartedAt = new Date().getTime();
     var xhr = new XMLHttpRequest(), finished = false, timeout;
+    cancelWeatherRequest = function () {
+      if (finished) { return; }
+      finished = true; clearTimeout(timeout); weatherPending = false; cancelWeatherRequest = null;
+      xhr.onreadystatechange = null;
+      try { xhr.abort(); } catch (error) {}
+    };
     function finish(ok) {
       if (finished) { return; }
-      finished = true; clearTimeout(timeout); weatherPending = false; errors.weather = !ok; topLine();
+      finished = true; clearTimeout(timeout); weatherPending = false; cancelWeatherRequest = null; errors.weather = !ok; topLine();
       var delay = ok && weather.refreshMode === 'twice-daily' && dailyWeatherValid(weather) ? nextWeatherRefresh() : 120000;
       scheduleWeatherPoll(delay);
     }
@@ -238,11 +301,13 @@
     };
     try {
       xhr.open('GET', 'weather.json?_=' + new Date().getTime(), true);
-      timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, 12000);
+      timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, REQUEST_TIMEOUT);
       xhr.send(null);
     } catch (error) { finish(false); }
   }
   function resumeWeather() {
+    if (weatherPending && new Date().getTime() - weatherStartedAt >= REQUEST_TIMEOUT) { cancelWeatherRequest(); }
+    loadOptionalScript(weatherScript, true);
     if (weatherClient && weatherClient.resume) { weatherClient.resume(); }
     if (!weatherPending && new Date().getTime() >= weatherNextDue) { pollWeather(); }
     topLine();
@@ -305,6 +370,7 @@
     row.appendChild(content); target.appendChild(row);
   }
   function breakfast(en) {
+    loadOptionalScript(plannerScript, false);
     var date = shanghaiNow().getUTCHours() < 10 ? currentDay : shiftDate(currentDay, 1), meal = null;
     for (var i = 0; i < (data.breakfasts || []).length; i++) { if (data.breakfasts[i].date === date) { meal = data.breakfasts[i]; break; } }
     var rotation = data.breakfastRotation || {};
@@ -319,7 +385,11 @@
       for (var m = 0; m < entries.length; m++) { if (entries[m].id === meal.mealId) { recipe = entries[m]; break; } }
     }
     var name = meal && meal.text ? localized(meal, en) : (recipe ? localized(recipe, en) : '');
-    text(el('breakfast-text'), name || (en ? 'Not planned yet' : '待安排'));
+    var fallback = en ? 'Not planned yet' : '待安排';
+    if (typeof BreakfastPlanner === 'undefined') {
+      fallback = plannerScript.failed ? (en ? 'Breakfast unavailable' : '早餐读取失败') : (en ? 'Loading breakfast' : '早餐读取中');
+    }
+    text(el('breakfast-text'), name || fallback);
     visible(el('breakfast-visual'), !!(recipe && recipe.image));
     if (recipe && recipe.image) {
       var photo = el('breakfast-photo'), visual = el('breakfast-visual'), cropBox = el('breakfast-crop'), crop = recipe.crop;
@@ -448,6 +518,42 @@
     renderErrors();
     if (child) { fitChild(); }
   }
+  function validBreakfastDate(value) {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) { return false; }
+    var bits = value.split('-'), year = +bits[0], month = +bits[1], day = +bits[2];
+    if (year < 100) { return false; }
+    var date = new Date(Date.UTC(year, month - 1, day));
+    return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+  }
+  function contains(values, value) {
+    for (var i = 0; i < values.length; i++) { if (values[i] === value) { return true; } }
+    return false;
+  }
+  // Keep these schema checks aligned with breakfast-planner.js so delayed or
+  // failed helper loading never weakens validation of shared household data.
+  function validBreakfastRotation(rotation) {
+    if (!rotation || rotation.enabled !== true || rotation.strategy !== 'shuffle-bag' || !validBreakfastDate(rotation.startDate)) { return false; }
+    var seed = rotation.seed, ids = rotation.mealIds, noodles = rotation.noodleIds || [], meals = [], noodleIds = [], i;
+    if (typeof seed !== 'number' || !isFinite(seed) || seed % 1 !== 0 || seed < 1 || seed > 4294967295 || !array(ids) || !ids.length || !array(noodles)) { return false; }
+    for (i = 0; i < ids.length; i++) {
+      if (typeof ids[i] !== 'string' || !ids[i] || contains(meals, ids[i])) { return false; }
+      meals.push(ids[i]);
+    }
+    for (i = 0; i < noodles.length; i++) {
+      if (!contains(meals, noodles[i]) || contains(noodleIds, noodles[i])) { return false; }
+      noodleIds.push(noodles[i]);
+    }
+    return rotation.weekendNoodles !== true || (noodleIds.length > 0 && meals.length <= noodleIds.length * 7);
+  }
+  function validPorridgeRotation(rotation) {
+    if (typeof rotation === 'undefined') { return true; }
+    if (!rotation || !validBreakfastDate(rotation.startDate) || !array(rotation.items) || rotation.items.length !== 2) { return false; }
+    for (var i = 0; i < rotation.items.length; i++) {
+      var item = rotation.items[i];
+      if (!item || typeof item.text !== 'string' || !item.text || typeof item.textEn !== 'string' || !item.textEn) { return false; }
+    }
+    return true;
+  }
   function validBoard(next) {
     if (!next || !array(next.pages) || !next.pages.length || next.pages.length > 20) { return false; }
     var ids = {}, required = ['family', 'family_en', 'tasks', 'tasks_en', 'child', 'child_en'];
@@ -474,9 +580,8 @@
     for (var b = 0; b < (next.breakfasts || []).length; b++) { if (!next.breakfasts[b] || typeof next.breakfasts[b].date !== 'string' || (typeof next.breakfasts[b].text !== 'string' && typeof next.breakfasts[b].mealId !== 'string')) { return false; } }
     if (next.breakfastRotation && next.breakfastRotation.enabled) {
       var rotation = next.breakfastRotation;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(rotation.startDate || '') || !array(rotation.mealIds) || !rotation.mealIds.length) { return false; }
-      if (typeof BreakfastPlanner === 'undefined' || !BreakfastPlanner.mealForDate(rotation.startDate, rotation)) { return false; }
-      for (var m = 0; m < rotation.mealIds.length; m++) { if (typeof rotation.mealIds[m] !== 'string') { return false; } }
+      if (!validBreakfastRotation(rotation)) { return false; }
+      if (typeof BreakfastPlanner !== 'undefined' && !BreakfastPlanner.mealForDate(rotation.startDate, rotation)) { return false; }
     }
     return true;
   }
@@ -515,6 +620,27 @@
     }
     return true;
   }
+  function validMenus(next) {
+    if (!next || !array(next.items) || !validDrinks(next.drinks) || !validPorridgeRotation(next.porridgeRotation)) { return false; }
+    for (var i = 0; i < next.items.length; i++) {
+      var meal = next.items[i];
+      if (!meal || typeof meal.id !== 'string' || typeof meal.text !== 'string' || (meal.image && !/^images\/breakfast\/[a-zA-Z0-9_.-]+\.(jpg|jpeg|png|webp)$/.test(meal.image))) { return false; }
+    }
+    return true;
+  }
+  function calendarReady(key, value) {
+    if (!value || !value.dates || !value.validFrom || !value.validThrough || currentDay < value.validFrom || currentDay > value.validThrough) { return false; }
+    if (key === 'festivals') { return validFestivals(value); }
+    var day = value.dates[currentDay];
+    return !!day && (key === 'calendar' ? typeof day.text === 'string' && typeof day.textEn === 'string' : array(day.yi));
+  }
+  function refreshMissingCalendars() {
+    var values = { calendar: calendar, almanac: almanac, festivals: festivals };
+    for (var i = 0; i < pollers.length; i++) {
+      var key = pollers[i].key;
+      if (values[key] && !calendarReady(key, values[key])) { pollers[i].run(); }
+    }
+  }
   function applyBoard(next, initialLoad) {
     if (!validBoard(next)) { return false; }
     var old = views[current], previousInterval = interval(), cv = String((next.settings || {}).controlVersion || 0);
@@ -526,6 +652,7 @@
       playing = data.settings.autoRotate !== false;
       var id = data.settings.showPage;
       if (id === 'helper') { id = 'family'; } else if (id === 'helper_en') { id = 'family_en'; }
+      if (initialLoad && pageById(initialPage)) { id = initialPage; playing = false; }
       if (id && pageById(id)) { rebuild(id, 0); } else { rebuild(views[current].page.id, views[current].chunk); }
     }
     lastControl = cv;
@@ -544,7 +671,7 @@
     reloading = true;
     location.replace('index.html?_app=' + version + '&_=' + new Date().getTime() + '#' + views[current].page.id);
   }
-  function pollJson(path, delay, key, accept) {
+  function pollJson(path, delay, key, accept, initialDelay) {
     if (location.protocol === 'file:') { return; }
     var poller = { key: key, pending: false, timer: null, lastStarted: null };
     poller.run = function () {
@@ -554,10 +681,18 @@
       var xhr, finished = false, timeout;
       function finish(ok) {
         if (finished) { return; }
-        finished = true; clearTimeout(timeout); poller.pending = false;
+        finished = true; clearTimeout(timeout); poller.pending = false; poller.cancel = null;
         errors[key] = !ok; topLine(); renderErrors();
         poller.timer = setTimeout(poller.run, ok ? (typeof delay === 'function' ? delay() : delay) : 120000);
       }
+      poller.cancel = function () {
+        if (finished) { return; }
+        finished = true; clearTimeout(timeout); poller.pending = false; poller.cancel = null;
+        if (xhr) {
+          xhr.onreadystatechange = null;
+          try { xhr.abort(); } catch (error) {}
+        }
+      };
       try {
         xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -565,7 +700,10 @@
           if (xhr.status !== 200) { finish(false); return; }
           try {
             var next = JSON.parse(xhr.responseText), signature = JSON.stringify(next);
-            if (payloads[key] === signature) { finish(true); return; }
+            if (payloads[key] === signature) {
+              if (key === 'board') { checkClientVersion(next); }
+              finish(true); return;
+            }
             var ok = accept(next) !== false;
             if (ok) { payloads[key] = signature; }
             finish(ok);
@@ -573,20 +711,24 @@
         };
         xhr.open('GET', path + '?_=' + new Date().getTime(), true);
         try { xhr.setRequestHeader('Cache-Control', 'no-cache'); } catch (headerError) {}
-        timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, 12000);
+        timeout = setTimeout(function () { finish(false); try { xhr.abort(); } catch (error) {} }, REQUEST_TIMEOUT);
         xhr.send(null);
       } catch (error) { finish(false); }
     };
-    pollers.push(poller); poller.run();
+    pollers.push(poller);
+    if (initialDelay) { poller.timer = setTimeout(poller.run, initialDelay); }
+    else { poller.run(); }
   }
   function refreshContent() {
     var now = new Date().getTime();
     for (var i = 0; i < pollers.length; i++) {
       var poller = pollers[i];
-      if (/^(board|schedule|breakfasts)$/.test(poller.key) && (poller.lastStarted === null || now - poller.lastStarted >= 1000)) { poller.run(); }
+      var expired = poller.pending && now - poller.lastStarted >= REQUEST_TIMEOUT;
+      if (expired) { poller.cancel(); }
+      if (expired || (/^(board|schedule|breakfasts)$/.test(poller.key) && (poller.lastStarted === null || now - poller.lastStarted >= 1000))) { poller.run(); }
     }
   }
-  el('home').onclick = function () { select(english() ? 'family_en' : 'family'); };
+  el('home').onclick = function () { plannerScript.retryAt = 0; select(english() ? 'family_en' : 'family'); };
   el('tasks').onclick = function () { select(english() ? 'tasks_en' : 'tasks'); };
   el('child').onclick = function () {
     currentDay = today(); selectedDay = defaultChildDate(); defaultDay = selectedDay;
@@ -627,7 +769,7 @@
       topLine();
       if (!isChild(views[current].page) && !isTasks(views[current].page)) { breakfast(english()); }
     }
-    if (boundary) { refreshContent(); }
+    if (boundary) { refreshContent(); refreshMissingCalendars(); }
   }
   function scheduleClock() {
     if (clockTimer !== null) { clearTimeout(clockTimer); }
@@ -637,7 +779,8 @@
     clockTimer = setTimeout(function () { clockTimer = null; syncClock(false); scheduleClock(); }, Math.max(1, delay));
   }
   function resumePage(reset) {
-    syncClock(reset); refreshContent(); resumeWeather(); scheduleClock();
+    if (scriptNeeded(plannerScript)) { plannerScript.retryAt = 0; }
+    syncClock(reset); refreshContent(); refreshMissingCalendars(); resumeWeather(); scheduleClock();
   }
   window.onpageshow = function (event) {
     resumePage(!!(event && event.persisted));
@@ -646,9 +789,9 @@
   window.onload = function () { resumePage(false); if (views.length && isChild(views[current].page)) { render(); } };
   window.onfocus = function () { resumePage(false); };
   if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumePage(false); } }, false); }
-  applyBoard(data, true);
-  var hashPage = (location.hash || '').replace(/^#/, '');
-  if (pageById(hashPage)) { select(hashPage); }
+  if (applyBoard(data, true)) { payloads.board = JSON.stringify(data); }
+  if (validSchedule(course)) { payloads.schedule = JSON.stringify(course); }
+  if (validMenus(menus)) { payloads.breakfasts = JSON.stringify(menus); }
   pollJson('board.json', contentPollDelay, 'board', function (next) { var ok = applyBoard(next, false); if (ok) { checkClientVersion(next); } return ok; });
   pollJson('schedule.json', contentPollDelay, 'schedule', function (next) {
     if (!validSchedule(next)) { return false; }
@@ -656,30 +799,21 @@
   });
   pollWeather();
   pollJson('breakfasts.json', contentPollDelay, 'breakfasts', function (next) {
-    if (!next || !array(next.items) || !validDrinks(next.drinks) || (typeof BreakfastPlanner !== 'undefined' && !BreakfastPlanner.validPorridgeRotation(next.porridgeRotation))) { return false; }
-    for (var i = 0; i < next.items.length; i++) {
-      var meal = next.items[i];
-      if (!meal || typeof meal.id !== 'string' || typeof meal.text !== 'string' || (meal.image && !/^images\/breakfast\/[a-zA-Z0-9_.-]+\.(jpg|jpeg|png|webp)$/.test(meal.image))) { return false; }
-    }
+    if (!validMenus(next)) { return false; }
     menus = next; render(); return true;
   });
   pollJson('calendar.json', 86400000, 'calendar', function (next) {
     if (!next || !next.dates || !next.validFrom || !next.validThrough) { return false; }
     calendar = next; topLine(); return true;
-  });
+  }, calendarReady('calendar', calendar) ? 86400000 : 0);
   pollJson('almanac.json', 86400000, 'almanac', function (next) {
     if (!next || !next.dates || !next.validFrom || !next.validThrough) { return false; }
     almanac = next; topLine(); return true;
-  });
+  }, calendarReady('almanac', almanac) ? 86400000 : 0);
   pollJson('festivals.json', 86400000, 'festivals', function (next) {
     if (!validFestivals(next)) { return false; }
     festivals = next; topLine(); return true;
-  });
-  if (/(^|\.)github\.io$/.test(location.hostname || '') && typeof WeatherClient !== 'undefined') {
-    weatherClient = WeatherClient.start({ initialWeather: weather, onWeather: function (next) {
-      acceptWeather(next); topLine();
-      if (dailyWeatherValid(weather) && !weatherPending) { scheduleWeatherPoll(nextWeatherRefresh()); }
-    } });
-  }
+  }, calendarReady('festivals', festivals) ? 86400000 : 0);
+  loadOptionalScript(weatherScript, false);
   scheduleClock();
 }());
