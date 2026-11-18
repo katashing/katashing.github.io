@@ -11,7 +11,7 @@
   const plan = id => schools.find(item => item.id === id)?.plan ?? {};
   const events = [
     { id: 'north05-assessment', schoolId: 'north05', date: plan('north05').assessmentDate, time: plan('north05').assessmentTime,
-      label: '笔试', kind: 'exam', certainty: 'personal', source: '老师转述个人通知',
+      label: '获邀笔试', kind: 'exam', certainty: 'personal', source: '老师转述个人通知',
       summary: '中英数（中数）· 2小时',
       note: '已确认参加；中英数（中数），共2小时。粉岭晖明路16号。' },
     { id: 'sz01-query-start', schoolId: 'sz01', date: '2026-11-26', time: '16:00',

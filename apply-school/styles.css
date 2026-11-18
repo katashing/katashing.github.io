@@ -564,7 +564,7 @@ th > small { display: block; font-size: 9px; font-weight: 400; color: #7c8777; m
   .travel-leg { gap: 1px 4px; margin: 3px 0; }
 }
 
-/* 申请办理阶段使用红色，个人考试通知阶段由下方蓝色规则覆盖。 */
+/* 申请办理阶段使用红色，已有具体考试排期的报名学校由下方蓝色规则覆盖。 */
 button.school-name.application-active,
 button.school-name.application-active:hover,
 button.school-name.application-active:focus-visible,
@@ -785,39 +785,41 @@ button.school-name.application-pending:focus-visible,
   .retained-tag { padding: 0 4px; border-color: #bdb5a5; background: #fff; color: #514b3e; font-size: 8px; }
 }
 
-/* 已取得个人考试通知并继续推进的学校使用蓝色。 */
-.exam-notified-row > td { background: #f6faff; }
-.exam-notified-row > td:first-child { box-shadow: inset 3px 0 #3b79b8; }
-button.school-name.exam-notified,
-button.school-name.exam-notified:hover,
-button.school-name.exam-notified:focus-visible,
-#detail-title.exam-notified { color: #245b9b; font-weight: 750; }
-.exam-notified-row .school-number,
-.exam-notified-row .selected-tag,
-.exam-notified-row .opening-open-tag,
-.exam-notified-row .status-pill,
-#detail-dialog.exam-notified .fact-box .opening-open-text {
+/* 已报名并已有具体考试排期的学校使用蓝色。 */
+.exam-scheduled-row > td { background: #f6faff; }
+.exam-scheduled-row > td:first-child { box-shadow: inset 3px 0 #3b79b8; }
+button.school-name.exam-scheduled,
+button.school-name.exam-scheduled:hover,
+button.school-name.exam-scheduled:focus-visible,
+#detail-title.exam-scheduled { color: #245b9b; font-weight: 750; }
+.exam-scheduled-row .school-number,
+.exam-scheduled-row .selected-tag,
+.exam-scheduled-row .opening-open-tag,
+.exam-scheduled-row .status-pill,
+#detail-dialog.exam-scheduled .fact-box .opening-open-text {
   color: #245b9b;
   background: #edf5ff;
   border-color: #bfd3ec;
 }
-.exam-notified-row .source-date .summary-date-assessment,
-.exam-notified-row .source-date .assessment-priority,
-#detail-dialog.exam-notified .fact-box .assessment-priority {
+.exam-scheduled-row .source-date .summary-date-assessment,
+.exam-scheduled-row .source-date .assessment-priority,
+#detail-dialog.exam-scheduled .fact-box .assessment-priority,
+#detail-dialog.exam-scheduled .fact-box .exam-schedule-date {
   color: #245b9b;
   background: #e8f1ff;
   border-color: #3b79b8;
 }
-.exam-notified-row .source-date .assessment-detail b { color: #245b9b; }
+.exam-scheduled-row .source-date .assessment-detail b { color: #245b9b; }
 @media print {
-  .exam-notified-row > td,
-  .exam-notified-row .school-number,
-  .exam-notified-row .selected-tag,
-  .exam-notified-row .opening-open-tag,
-  .exam-notified-row .status-pill,
-  .exam-notified-row .source-date .summary-date-assessment,
-  .exam-notified-row .source-date .assessment-priority,
-  #detail-dialog.exam-notified .fact-box .assessment-priority {
+  .exam-scheduled-row > td,
+  .exam-scheduled-row .school-number,
+  .exam-scheduled-row .selected-tag,
+  .exam-scheduled-row .opening-open-tag,
+  .exam-scheduled-row .status-pill,
+  .exam-scheduled-row .source-date .summary-date-assessment,
+  .exam-scheduled-row .source-date .assessment-priority,
+  #detail-dialog.exam-scheduled .fact-box .assessment-priority,
+  #detail-dialog.exam-scheduled .fact-box .exam-schedule-date {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

@@ -51,7 +51,10 @@
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
   const notChosenAfterConflict=s=>{const c=s.plan?.assessmentConflict;return Boolean(c?.decisionResolved&&c.selectedSchoolId&&c.selectedSchoolId!==s.id);};
   const isRetainedRecord=s=>isNoLongerApplying(recordFor(s))||notChosenAfterConflict(s);
-  const isExamNotified=(s,r)=>['获邀笔试','待笔试'].includes(r.status)&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
+  const isExamScheduled=(s,r)=>{
+    const examDate=r.assessment||window.SCHOOL_CALENDAR_DATA?.events?.find(event=>event.schoolId===s.id&&event.kind==='exam')?.date;
+    return r.selected&&['已提交','获邀笔试','待笔试'].includes(r.status)&&/^\d{4}-\d{2}-\d{2}$/.test(examDate??'')&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
+  };
   const applicationPriority=s=>isRetainedRecord(s)?3:isApplying(recordFor(s))?0:s.selected?1:2;
   function pendingOpening(s,r){
     if(APPLYING_STATUSES.has(r.status)||['暂缓报名','录取','已录取','未录取','不再申请'].includes(r.status))return '';
@@ -125,12 +128,12 @@
       const opening=pendingOpening(s,r);
       const open=registrationOpen(s,r);
       const deferred=isDeferred(s,r);
-      const examNotified=isExamNotified(s,r);
+      const examScheduled=isExamScheduled(s,r);
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,TRAVEL_SETTINGS):'<td class="travel-cell" data-label="翰岭院出行">查询中</td>';
       const followup=summary?esc(summary.nextAction||'待安排'):r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>${confirmedAssessment(s,r)&&r.followupText?`<span class="followup-text">${esc(r.followupText)}</span>`:''}`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
       const retainedHeading=scope==='selected'&&isRetainedRecord(s)&&(index===0||!isRetainedRecord(rows[index-1]))?`<tr id="retained-records" class="retained-section-row" tabindex="-1"><td colspan="8"><strong>不再推进 · 保留记录（${visibleRetainedCount}所）</strong></td></tr>`:'';
-      return `${retainedHeading}<tr${examNotified?' class="exam-notified-row"':opening?' class="application-pending-row"':deferred?' class="application-deferred-row"':''}>
-        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open&&!deferred?' application-open':''}${deferred?' application-deferred':''}${opening?' application-pending':''}${examNotified?' exam-notified':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${isRetainedRecord(s)?'<span class="retained-tag">保留记录</span>':r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?`<span class="opening-open-tag">${deferred?'已开放 · 暂缓报名':'已开放报名'}</span>`:''}</div></td>
+      return `${retainedHeading}<tr${examScheduled?' class="exam-scheduled-row"':opening?' class="application-pending-row"':deferred?' class="application-deferred-row"':''}>
+        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open&&!deferred?' application-open':''}${deferred?' application-deferred':''}${opening?' application-pending':''}${examScheduled?' exam-scheduled':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${isRetainedRecord(s)?'<span class="retained-tag">保留记录</span>':r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?`<span class="opening-open-tag">${deferred?'已开放 · 暂缓报名':'已开放报名'}</span>`:''}</div></td>
         <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):''}</span></td>
         <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
         <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
@@ -152,13 +155,14 @@
     const deferred=isDeferred(s,r);
     $('detail-title').classList.toggle('application-open',open&&!deferred);
     $('detail-title').classList.toggle('application-deferred',deferred);
-    $('detail-title').classList.toggle('exam-notified',isExamNotified(s,r));
-    $('detail-dialog').classList.toggle('exam-notified',isExamNotified(s,r));
+    const examScheduled=isExamScheduled(s,r);
+    $('detail-title').classList.toggle('exam-scheduled',examScheduled);
+    $('detail-dialog').classList.toggle('exam-scheduled',examScheduled);
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
     const assessmentConfirmed=confirmedAssessment(s,r);
     const examFacts=assessmentConfirmed?[[notAttendingAssessment(s)?'原笔试安排（本次不参加）':'笔试时间',assessmentDateTime(s,r),'important-date assessment-priority'],...assessmentFacts(s)]:[];
     const resultFacts=p?.resultDate?[[p.resultLabel||(notAttendingAssessment(s)?'学校结果公布（参考）':'查笔试结果'),p.resultDateText||dateText(p.resultDate),'important-date'],...(p.resultText?[['结果说明',p.resultText]]:[]),...(p.resultSource?[['公布安排来源',p.resultSource]]:[]),...(p.resultUrl?[['结果查询官网','官网查笔试结果 ↗','',p.resultUrl]]:[]),...(p.interviewNote?[['面试跟进',p.interviewNote]]:[])]:[];
-    const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(!assessmentConfirmed?(r.assessment?[[p?.assessmentSession||p?.assessmentConflict?.scheduleOnly?'学校笔试安排':'笔试日期',assessmentScheduleText(s,r),'important-date'],...assessmentFacts(s)]:p?.assessmentText?[['笔试/评估安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)]]:[]):[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
+    const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(!assessmentConfirmed?(r.assessment?[[p?.assessmentSession||p?.assessmentConflict?.scheduleOnly?'学校笔试安排':'笔试日期',assessmentScheduleText(s,r),examScheduled?'important-date exam-schedule-date':'important-date'],...assessmentFacts(s)]:p?.assessmentText?[['笔试/评估安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)+(examScheduled?' exam-schedule-date':'')]]:[]):[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
     const facts=[...examFacts,...resultFacts,...(p?.interviewNote&&!p?.resultDate?[['面试安排',p.interviewNote]]:[]),['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...(isRetainedRecord(s)?[['选校状态','否（保留记录）']]:[]),...(r.submission?[['递交日期',dateText(r.submission),'important-date']]:[]),...(opening?[['申请开放状态',opening,'opening-pending-text']]:open?[['申请开放状态',deferred?'已开放报名 · 暂缓报名':'已开放报名',deferred?'opening-open-text opening-deferred-text':'opening-open-text']]:[]),...dates,...(p?.dateNote?[['日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.officialNote?[['官方说明',r.officialNote]]:[]),...(r.followup||r.followupText?[['下次跟进',followupSummary(s,r,dateText(r.followup))]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
     const check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];
     const checked=check?`<div class="schedule-check ${check.referenceOnly||check.status==='confirmed'?'':'schedule-issue'}"><strong>${check.referenceOnly?'此前官网核查':'日期核查'} · ${esc(check.checkedAt??window.SCHEDULE_CHECK_DATA.checkedAt)}</strong>${check.referenceOnly&&check.referenceReason?`<p>${esc(check.referenceReason)}</p>`:''}<p>${esc(check.details??check.message)}</p>${(check.sources??[]).map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a>`).join('')}</div>`:'';
@@ -193,7 +197,7 @@
     download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
   });
   $('print-button').addEventListener('click',()=>window.print());
-  window.schoolNotebook={render,getTravelSettings(){return {...TRAVEL_SETTINGS};}};
+  window.schoolNotebook={render,hasExamSchedule(school){return isExamScheduled(school,recordFor(school));},getTravelSettings(){return {...TRAVEL_SETTINGS};}};
   window.addEventListener('hashchange',()=>{if(location.hash==='#retained-records')openRetainedRecords();else if(location.hash==='#calendar'){scope='calendar';render();}});
   render();
   if(location.hash==='#retained-records')openRetainedRecords();

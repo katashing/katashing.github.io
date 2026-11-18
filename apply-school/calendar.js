@@ -26,7 +26,8 @@
     if(!school)return '';
     const notice=event.kind==='notice';
     const schedule=!notice&&event.certainty!=='personal';
-    const tone=notice?'notice':schedule?'schedule':'personal';
+    const scheduled=window.schoolNotebook?.hasExamSchedule(school)??(event.certainty==='personal');
+    const tone=notice?'notice':scheduled?'scheduled':'schedule';
     const note=event.summary??event.note??(schedule?'资格待确认':'');
     const time=event.displayTime??event.time;
     return `<article class="calendar-event calendar-event-${tone}">${schoolButton(school)}<div class="calendar-event-main">${time?`<span class="calendar-event-time">${esc(time)}</span>`:''}<strong>${esc(event.label||(event.kind==='interview'?'面试':notice?'通知':'笔试'))}</strong></div>${note?`<p class="calendar-event-note">${esc(note)}</p>`:''}</article>`;
@@ -58,7 +59,7 @@
       grid+=`<div class="calendar-week" role="row">${cells}</div>`;
     }
     const pending=(Array.isArray(data.pending)?data.pending:[]).filter(item=>schoolFor(item.schoolId)&&item.text);
-    root.innerHTML=`<div class="calendar-toolbar"><h2 id="calendar-month-title" aria-live="polite">${viewYear}年${viewMonth+1}月</h2><div class="calendar-controls"><button type="button" data-calendar-action="previous" aria-label="上个月">‹ 上月</button><button type="button" data-calendar-action="today">本月</button><button type="button" data-calendar-action="next" aria-label="下个月">下月 ›</button><button type="button" data-calendar-action="print" class="calendar-print">打印日历</button></div></div><div class="calendar-legend"><span class="calendar-legend-personal">个人考试</span><span class="calendar-legend-schedule">学校排期 · 资格待确认</span><span class="calendar-legend-notice">通知 / 查询</span></div><div class="calendar-grid" role="table" aria-labelledby="calendar-month-title"><div class="calendar-weekdays" role="row">${weekdays.map(day=>`<div role="columnheader">周${day}</div>`).join('')}</div>${grid}</div>${events.length?'':'<p class="calendar-no-events">本月暂无已记录的考试或通知。</p>'}${pending.length?`<details class="calendar-pending"><summary>日期待定 <span>${pending.length}</span></summary><ul>${pending.map(item=>`<li>${schoolButton(schoolFor(item.schoolId))}<span>${esc(item.summary??item.text)}</span></li>`).join('')}</ul></details>`:''}`;
+    root.innerHTML=`<div class="calendar-toolbar"><h2 id="calendar-month-title" aria-live="polite">${viewYear}年${viewMonth+1}月</h2><div class="calendar-controls"><button type="button" data-calendar-action="previous" aria-label="上个月">‹ 上月</button><button type="button" data-calendar-action="today">本月</button><button type="button" data-calendar-action="next" aria-label="下个月">下月 ›</button><button type="button" data-calendar-action="print" class="calendar-print">打印日历</button></div></div><div class="calendar-legend"><span class="calendar-legend-scheduled">已报名 · 有考试日期</span><span class="calendar-legend-schedule">学校排期 · 待报名</span><span class="calendar-legend-notice">通知 / 查询</span></div><div class="calendar-grid" role="table" aria-labelledby="calendar-month-title"><div class="calendar-weekdays" role="row">${weekdays.map(day=>`<div role="columnheader">周${day}</div>`).join('')}</div>${grid}</div>${events.length?'':'<p class="calendar-no-events">本月暂无已记录的考试或通知。</p>'}${pending.length?`<details class="calendar-pending"><summary>日期待定 <span>${pending.length}</span></summary><ul>${pending.map(item=>`<li>${schoolButton(schoolFor(item.schoolId))}<span>${esc(item.summary??item.text)}</span></li>`).join('')}</ul></details>`:''}`;
     if(!wired.has(root)){
       wired.add(root);
       root.addEventListener('click',event=>{
