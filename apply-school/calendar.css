@@ -9,7 +9,7 @@
 .calendar-controls .calendar-print { margin-left: 3px; background: transparent; }
 .calendar-legend { display: flex; flex-wrap: wrap; gap: 4px 15px; margin-bottom: 7px; color: #68756b; font-size: 11px; line-height: 1.4; }
 .calendar-legend > span::before { display: inline-block; width: 8px; height: 8px; margin-right: 6px; content: ''; border-radius: 2px; }
-.calendar-legend-personal::before { background: #b73d36; }
+.calendar-legend-personal::before { background: #3b79b8; }
 .calendar-legend-schedule::before { background: #b77631; }
 .calendar-legend-notice::before { background: #44728e; }
 .calendar-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--line); gap: 1px; }
@@ -25,7 +25,7 @@
 .calendar-today-label { font-size: 9px; color: var(--green); font-weight: 500; }
 .calendar-day-events { display: grid; gap: 4px; }
 .calendar-event { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 5px; min-width: 0; padding: 4px 5px; border-left: 3px solid; border-radius: 3px; line-height: 1.3; overflow-wrap: anywhere; }
-.calendar-event-personal { color: #922f29; background: #fff0eb; border-color: #b73d36; }
+.calendar-event-personal { color: #245b9b; background: #e8f1ff; border-color: #3b79b8; }
 .calendar-event-schedule { color: #82521f; background: #fbf2e5; border-color: #b77631; }
 .calendar-event-notice { color: #335f78; background: #edf4f8; border-color: #44728e; }
 .calendar-school { display: block; max-width: 100%; padding: 0; border: 0; color: inherit; background: transparent; text-align: left; font-size: 12px; font-weight: 750; line-height: 1.3; overflow-wrap: anywhere; }

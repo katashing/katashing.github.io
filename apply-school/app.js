@@ -51,6 +51,7 @@
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
   const notChosenAfterConflict=s=>{const c=s.plan?.assessmentConflict;return Boolean(c?.decisionResolved&&c.selectedSchoolId&&c.selectedSchoolId!==s.id);};
   const isRetainedRecord=s=>isNoLongerApplying(recordFor(s))||notChosenAfterConflict(s);
+  const isExamNotified=(s,r)=>['获邀笔试','待笔试'].includes(r.status)&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
   const applicationPriority=s=>isRetainedRecord(s)?3:isApplying(recordFor(s))?0:s.selected?1:2;
   function pendingOpening(s,r){
     if(APPLYING_STATUSES.has(r.status)||['暂缓报名','录取','已录取','未录取','不再申请'].includes(r.status))return '';
@@ -124,11 +125,12 @@
       const opening=pendingOpening(s,r);
       const open=registrationOpen(s,r);
       const deferred=isDeferred(s,r);
+      const examNotified=isExamNotified(s,r);
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,TRAVEL_SETTINGS):'<td class="travel-cell" data-label="翰岭院出行">查询中</td>';
       const followup=summary?esc(summary.nextAction||'待安排'):r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>${confirmedAssessment(s,r)&&r.followupText?`<span class="followup-text">${esc(r.followupText)}</span>`:''}`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
       const retainedHeading=scope==='selected'&&isRetainedRecord(s)&&(index===0||!isRetainedRecord(rows[index-1]))?`<tr id="retained-records" class="retained-section-row" tabindex="-1"><td colspan="8"><strong>不再推进 · 保留记录（${visibleRetainedCount}所）</strong></td></tr>`:'';
-      return `${retainedHeading}<tr${opening?' class="application-pending-row"':deferred?' class="application-deferred-row"':''}>
-        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open&&!deferred?' application-open':''}${deferred?' application-deferred':''}${opening?' application-pending':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${isRetainedRecord(s)?'<span class="retained-tag">保留记录</span>':r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?`<span class="opening-open-tag">${deferred?'已开放 · 暂缓报名':'已开放报名'}</span>`:''}</div></td>
+      return `${retainedHeading}<tr${examNotified?' class="exam-notified-row"':opening?' class="application-pending-row"':deferred?' class="application-deferred-row"':''}>
+        <td data-label="学校"><div class="school-title-row"><span class="school-number" aria-label="学校编号 ${schoolNumber(s)}">${schoolNumber(s)}</span><button class="school-name${applying?' application-active':''}${open&&!deferred?' application-open':''}${deferred?' application-deferred':''}${opening?' application-pending':''}${examNotified?' exam-notified':''}" data-detail="${s.id}">${esc(s.name)}</button></div><div class="school-meta">${isRetainedRecord(s)?'<span class="retained-tag">保留记录</span>':r.selected?`<span class="selected-tag${applying?' application-active':''}">✓ 已选报名${applying?' · 申请中':''}</span>`:''}${opening?`<span class="opening-pending-tag">${esc(opening)}</span>`:open?`<span class="opening-open-tag">${deferred?'已开放 · 暂缓报名':'已开放报名'}</span>`:''}</div></td>
         <td data-label="地区"><strong>${esc(s.region)}</strong><span class="muted">${s.net?'校网 '+esc(s.net):''}</span></td>
         <td data-label="梯队">${s.tier?`<span class="pill tier tier-${s.tier.slice(-1)}">${esc(s.tier)}</span>`:'<span class="muted">—</span>'}</td>
         <td data-label="学校介绍" class="school-intro">${esc(introduction(s))||'<span class="muted">—</span>'}</td>
@@ -150,6 +152,8 @@
     const deferred=isDeferred(s,r);
     $('detail-title').classList.toggle('application-open',open&&!deferred);
     $('detail-title').classList.toggle('application-deferred',deferred);
+    $('detail-title').classList.toggle('exam-notified',isExamNotified(s,r));
+    $('detail-dialog').classList.toggle('exam-notified',isExamNotified(s,r));
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
     const assessmentConfirmed=confirmedAssessment(s,r);
     const examFacts=assessmentConfirmed?[[notAttendingAssessment(s)?'原笔试安排（本次不参加）':'笔试时间',assessmentDateTime(s,r),'important-date assessment-priority'],...assessmentFacts(s)]:[];
