@@ -29,7 +29,7 @@
     if(!range)return {range:null,segments:[]};
     const local=record.segments?.length?record.segments:[{label:s.region==='深圳'?`翰岭院 → ${s.name}`:`落马洲站 → ${s.name}`,minutes:record.minutes??record.range}];
     const home=window.TRANSIT_DATA.homeToFutian?.minutes??window.TRANSIT_DATA.homeToFutian?.range??[29,48];
-    return {range,segments:s.region==='深圳'?local:[
+    return {range,route:record.panelRoute,segments:s.region==='深圳'?local:[
       {label:'翰岭院 → 福田口岸',minutes:home},
       {label:'福田口岸排队、通关',minutes:[settings.queueMin,settings.queueMax]},
       ...local
@@ -44,7 +44,7 @@
     ]};
     const portName=port==='huanggang'?'新皇岗口岸':'莲塘口岸';
     const home=TRAVEL.driveMinutes[port==='huanggang'?'homeToHuanggang':'homeToLiantang'];
-    return {range,segments:[
+    return {range,route:record.driveRoute?.[port],segments:[
       {label:`翰岭院 → ${portName}${port==='huanggang'?'（含接入预留）':''}`,minutes:[home,home]},
       {label:`${portName}排队、通关`,minutes:[settings.queueMin,settings.queueMax]},
       {label:`${portName}港方 → 学校`,minutes:[record[port],record[port]]},
@@ -55,7 +55,8 @@
   function option(label,journey,link,linkLabel='导航 ↗',mode,selectedMode) {
     const breakdown=journey.segments.length?`<dl class="travel-legs">${journey.segments.map(part=>`<div class="travel-leg"><dt>${esc(part.label)}</dt><dd>${minutes(part.minutes)}</dd></div>`).join('')}</dl>`:'';
     const rounding=journey.roundingMinutes?`<div class="travel-rounding">总时间向上取整至${journey.roundingMinutes}分钟</div>`:'';
-    return `<div class="travel-option" data-travel-panel="${mode}"${mode===selectedMode?'':' hidden'}><div class="travel-heading"><span class="travel-label">${esc(label)}</span>${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">${esc(linkLabel)}</a>`:''}</div><div class="travel-time"><span class="travel-total-label">总时间</span>${timeMarkup(journey.range)}</div>${breakdown}${rounding}</div>`;
+    const route=journey.route?`<div class="travel-rounding travel-route-note">${esc(journey.route)}</div>`:'';
+    return `<div class="travel-option" data-travel-panel="${mode}"${mode===selectedMode?'':' hidden'}><div class="travel-heading"><span class="travel-label">${esc(label)}</span>${link?`<a href="${esc(link)}" class="route-link" target="_blank" rel="noopener">${esc(linkLabel)}</a>`:''}</div><div class="travel-time"><span class="travel-total-label">总时间</span>${timeMarkup(journey.range)}</div>${breakdown}${route}${rounding}</div>`;
   }
   function journeyOptions(s,settings) {
     const rec=TRAVEL.schools[s.id];
@@ -66,7 +67,7 @@
       {mode:'liantang',label:'莲塘驾车',journey:drivingJourney(s,'liantang',settings),link:rec?.mapLinks?.liantang,linkLabel:'港段导航 ↗'},
       {mode:'huanggang',label:'新皇岗驾车',journey:drivingJourney(s,'huanggang',settings),link:rec?.mapLinks?.huanggang,linkLabel:'港段导航 ↗'}
     ];
-    choices.push({mode:'transit',label:'地铁公交',journey:publicJourney(s,settings),link:publicLink});
+    choices.push({mode:'transit',label:'地铁公交',journey:publicJourney(s,settings),link:publicLink,linkLabel:rec?.publicTransportLinkLabel});
     const saved=selectedModes.get(s.id),selectedMode=choices.some(choice=>choice.mode===saved)?saved:choices[0].mode;
     const buttons=choices.map(choice=>`<button type="button" class="travel-mode-button" data-travel-mode="${choice.mode}" aria-pressed="${choice.mode===selectedMode}">${esc(choice.label)}</button>`).join('');
     const panels=choices.map(choice=>option(choice.label,choice.journey,choice.link,choice.linkLabel,choice.mode,selectedMode)).join('');
@@ -89,7 +90,7 @@
     html+=`<details class="route-details"><summary>地址与路线依据</summary>`;
     if(rec?.officialName)html+=`<div>${esc(rec.officialName)}</div>`;
     if(rec?.address)html+=`<div>${esc(rec.address)} <a href="${esc(rec.addressSourceUrl??rec.sourceUrl)}" target="_blank" rel="noopener">校址 ↗</a></div>`;
-    if(pt){html+=`<div>地铁／公交：${esc(pt.route??pt.shortRoute??'路线待确认')}</div>`;if(pt.note)html+=`<div>${esc(pt.note)}</div>`;}
+    if(pt){html+=`<div>地铁／公交：${esc(pt.route??pt.shortRoute??'路线待确认')}</div>`;if(pt.note)html+=`<div>${esc(pt.note)}</div>`;if(Array.isArray(pt.sources))html+=pt.sources.map(source=>`<div><a href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} ↗</a></div>`).join('');if(rec?.mapLinks?.schoolWalk)html+=`<div><a href="${esc(rec.mapLinks.schoolWalk)}" target="_blank" rel="noopener">上水站到校步行导航 ↗</a></div>`;}
     if(s.region!=='深圳') {
       html+='<div>驾车按跨境车直达估算；换乘车辆需另留候车时间。港段导航从口岸港方出发。</div>';
       if(TRAVEL.huanggangChange)html+=`<div>${esc(huanggangPlanningNote||'皇岗按2026年10月12日新口岸规划估算。')} <a href="${esc(TRAVEL.huanggangChange.sourceUrl)}" target="_blank" rel="noopener">口岸安排 ↗</a></div>`;

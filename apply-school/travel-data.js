@@ -980,11 +980,49 @@ window.TRAVEL_DATA = {
       "website": "https://www.tmms.edu.hk/",
       "phone": "26703111",
       "addressSourceUrl": "https://www.chsc.hk/psp2026/sch_detail.php?lang_id=2&sch_id=200",
-      "sourceUrl": "https://www.chsc.hk/psp2026/sch_detail.php?lang_id=2&sch_id=200",
-      "infoCheckedAt": "2026-10-14",
-      "huanggang": null,
-      "liantang": null,
-      "updateNote": "新增学校，已核对官方基本资料；出行时间尚待查询，不填推测数值。"
+      "sourceUrl": "https://www.edb.gov.hk/attachment/en/student-parents/sch-info/sch-search/sch-location-info/SCH_LOC_EDB.csv",
+      "infoCheckedAt": "2026-11-18",
+      "huanggang": 15,
+      "liantang": 15,
+      "updateNote": "2026-11-18按教育局公开坐标补齐两口岸港段路网估算，分别约15分钟（向上取整）；家庭到口岸沿用15分，通关15分、路况15分，总时间60分。非实时交通或实测；新皇岗内部衔接仍须按现场导航核对。跨境车直达口径，过关换乘车辆需另留候车时间。",
+      "coordinates": [
+        114.12523251,
+        22.49373432
+      ],
+      "longitude": 114.12523251,
+      "latitude": 22.49373432,
+      "coordinateSystem": "WGS84",
+      "schoolNo": "554596000123",
+      "routingCheckedAt": "2026-11-18",
+      "driveSeconds": {
+        "liantang": 889.9,
+        "huanggang": 751.5
+      },
+      "driveDistanceMeters": {
+        "liantang": 9433.7,
+        "huanggang": 9279.1
+      },
+      "mapLinks": {
+        "liantang": "https://www.google.com/maps/dir/?api=1&origin=22.55278148%2C114.15385221&destination=22.49373432%2C114.12523251&travelmode=driving",
+        "huanggang": "https://www.google.com/maps/dir/?api=1&origin=22.523177%2C114.068333&destination=22.49373432%2C114.12523251&travelmode=driving",
+        "directPublicTransport": "https://www.google.com/maps/dir/?api=1&origin=%E8%90%BD%E9%A6%AC%E6%B4%B2%E7%AB%99+%E9%A6%99%E6%B8%AF&destination=22.49373432%2C114.12523251&travelmode=transit",
+        "schoolWalk": "https://www.google.com/maps/dir/?api=1&origin=%E4%B8%8A%E6%B0%B4%E7%AB%99B1%E5%87%BA%E5%8F%A3+%E9%A6%99%E6%B8%AF&destination=22.49373432%2C114.12523251&travelmode=walking"
+      },
+      "routingRequestUrls": {
+        "liantang": "https://router.project-osrm.org/route/v1/driving/114.15385221,22.55278148;114.12523251,22.49373432?overview=false&steps=true",
+        "huanggang": "https://router.project-osrm.org/route/v1/driving/114.068333,22.523177;114.12523251,22.49373432?overview=false&steps=true"
+      },
+      "originRoadSnapDistanceMeters": {
+        "liantang": 60.8,
+        "huanggang": 1.7
+      },
+      "roadSnapDistanceMeters": 26.2,
+      "driveRoute": {
+        "liantang": "港段：香园围 → 文锦渡路 → 上水清城路1号",
+        "huanggang": "港段：新深路 → 粉岭公路 → 清城路1号"
+      },
+      "routingStatus": "success",
+      "publicTransportLinkLabel": "港段导航 ↗"
     },
     "sz01": {
       "officialName": "深圳香港培侨书院龙华信义学校",
