@@ -244,7 +244,7 @@ window.SCHEDULE_CHECK_DATA = {
       "status": "partial",
       "checkedAt": "2026-11-13",
       "issueLabel": "同日排期；个人场次待确认",
-      "message": "官方已核实：2026年11月2日至11月27日报名，额满即止；12月5日（周六）14:00–17:00考试，适用小一至小五，2027年2月1日入读。与深圳培侨同日，个人场次是否重叠尚待培侨通知；小三剩余名额未确认。",
+      "message": "官方已核实11月2日至11月27日报名，额满即止；12月5日14:00–17:00考试，适用小一至小五，2027年2月1日入读。11月18日复核本地已存官方通告第1页，确认无论取录与否均于2027年1月16日或之前以书面通知，如有需要可约见学生及家长。老师同日收到的消息确认已递交，并补充面试在笔试后按需要安排。与培侨同日的实际时段重叠及个人考试资格仍待确认。",
       "sources": [
         {
           "title": "大埔旧墟2026/27下学期插班公告",
@@ -270,7 +270,11 @@ window.SCHEDULE_CHECK_DATA = {
           3,
           4,
           5
-        ]
+        ],
+        "resultDeadlineDate": "2027-01-16",
+        "resultDatePrecision": "on_or_before",
+        "resultNotificationMethod": "书面通知，无论取录与否",
+        "interviewConditional": true
       },
       "historicalChecks": [
         {
@@ -285,7 +289,9 @@ window.SCHEDULE_CHECK_DATA = {
           ],
           "checkedAt": "2026-10-13"
         }
-      ]
+      ],
+      "comparisonReceivedOn": "2026-11-18",
+      "comparisonNote": "老师说明的12月5日笔试及2027年1月16日或之前结果通知，与本地保存官方PDF第1页一致；本次复核本地官方文件，未重新访问官网。面试在笔试后按需要安排为老师补充。"
     },
     "tp01": {
       "status": "partial",

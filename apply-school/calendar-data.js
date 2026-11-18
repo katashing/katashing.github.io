@@ -25,6 +25,9 @@
     { id: 'tp04-assessment', schoolId: 'tp04', date: plan('tp04').assessmentDate, time: '14:00–17:00',
       label: '学校考试', kind: 'exam', certainty: 'schedule', source: '官方通告',
       note: '个人考试资格待确认；与深圳培侨同日，时段是否重叠待确认。' },
+    { id: 'tp04-result-deadline', schoolId: 'tp04', date: plan('tp04').resultDate, time: '1月16日或之前',
+      label: '书面结果通知期限', kind: 'notice', certainty: 'schedule', source: '官方通告；老师补充',
+      note: '无论取录与否；可能提前通知。如有需要，笔试后面试，具体安排待通知。' },
     { id: 'north03-assessment', schoolId: 'north03', date: plan('north03').assessmentDate, time: '上午（老师告知）',
       label: '笔试', kind: 'exam', certainty: 'schedule', source: '日期官方；时段老师告知',
       note: '准确时间待电邮通知；个人考试资格待确认。' },
@@ -36,6 +39,7 @@
       note: '不是确定当天通知；老师称电话，既存官网称短信，通知方式待确认。' }
   ];
   const pending = [
+    { schoolId: 'tp04', text: '如有需要，笔试后安排面试；日期、时间及个人资格待通知（老师补充；官方通告列按需要约见）。' },
     { schoolId: 'north06', text: '2027年1月笔试，具体日期待定；仅入选者。' },
     { schoolId: 'north04', text: '测试日期待电话通知（老师告知）。' },
     { schoolId: 'sz02', text: '英文面试＋小组面试，日期、时间待通知。' },
