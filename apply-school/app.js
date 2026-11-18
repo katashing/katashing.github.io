@@ -51,10 +51,7 @@
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
   const notChosenAfterConflict=s=>{const c=s.plan?.assessmentConflict;return Boolean(c?.decisionResolved&&c.selectedSchoolId&&c.selectedSchoolId!==s.id);};
   const isRetainedRecord=s=>isNoLongerApplying(recordFor(s))||notChosenAfterConflict(s);
-  const isExamScheduled=(s,r)=>{
-    const examDate=r.assessment||window.SCHOOL_CALENDAR_DATA?.events?.find(event=>event.schoolId===s.id&&event.kind==='exam')?.date;
-    return r.selected&&['已提交','获邀笔试','待笔试'].includes(r.status)&&/^\d{4}-\d{2}-\d{2}$/.test(examDate??'')&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
-  };
+  const isExamNotified=(s,r)=>r.selected&&['获邀笔试','待笔试'].includes(r.status)&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
   const applicationPriority=s=>isRetainedRecord(s)?3:isApplying(recordFor(s))?0:s.selected?1:2;
   function pendingOpening(s,r){
     if(APPLYING_STATUSES.has(r.status)||['暂缓报名','录取','已录取','未录取','不再申请'].includes(r.status))return '';
@@ -128,7 +125,7 @@
       const opening=pendingOpening(s,r);
       const open=registrationOpen(s,r);
       const deferred=isDeferred(s,r);
-      const examScheduled=isExamScheduled(s,r);
+      const examScheduled=isExamNotified(s,r);
       const travel=window.renderSchoolTravelCells?window.renderSchoolTravelCells(s,TRAVEL_SETTINGS):'<td class="travel-cell" data-label="翰岭院出行">查询中</td>';
       const followup=summary?esc(summary.nextAction||'待安排'):r.followup?`<strong class="${diffDays(r.followup)<0?'overdue':''}">${dateText(r.followup)}</strong><span class="muted">${reminder(r.followup)}</span>${confirmedAssessment(s,r)&&r.followupText?`<span class="followup-text">${esc(r.followupText)}</span>`:''}`:r.followupText?esc(r.followupText):'<span class="muted">待安排</span>';
       const retainedHeading=scope==='selected'&&isRetainedRecord(s)&&(index===0||!isRetainedRecord(rows[index-1]))?`<tr id="retained-records" class="retained-section-row" tabindex="-1"><td colspan="8"><strong>不再推进 · 保留记录（${visibleRetainedCount}所）</strong></td></tr>`:'';
@@ -155,7 +152,7 @@
     const deferred=isDeferred(s,r);
     $('detail-title').classList.toggle('application-open',open&&!deferred);
     $('detail-title').classList.toggle('application-deferred',deferred);
-    const examScheduled=isExamScheduled(s,r);
+    const examScheduled=isExamNotified(s,r);
     $('detail-title').classList.toggle('exam-scheduled',examScheduled);
     $('detail-dialog').classList.toggle('exam-scheduled',examScheduled);
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
@@ -197,7 +194,7 @@
     download(`学校跟踪表-${today()}.csv`,'\uFEFF'+[head,...rows].map(row=>row.map(csvValue).join(',')).join('\r\n'),'text/csv;charset=utf-8');
   });
   $('print-button').addEventListener('click',()=>window.print());
-  window.schoolNotebook={render,hasExamSchedule(school){return isExamScheduled(school,recordFor(school));},getTravelSettings(){return {...TRAVEL_SETTINGS};}};
+  window.schoolNotebook={render,hasExamNotice(school){return isExamNotified(school,recordFor(school));},getTravelSettings(){return {...TRAVEL_SETTINGS};}};
   window.addEventListener('hashchange',()=>{if(location.hash==='#retained-records')openRetainedRecords();else if(location.hash==='#calendar'){scope='calendar';render();}});
   render();
   if(location.hash==='#retained-records')openRetainedRecords();
