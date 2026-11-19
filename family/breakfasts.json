@@ -249,6 +249,13 @@
         "height": 887
       },
       "porridge": true
+    },
+    {
+      "id": "b08",
+      "text": "番茄牛肉面",
+      "textEn": "Tomato beef noodle soup",
+      "detail": "青菜、煎蛋（可选）",
+      "detailEn": "Greens and optional fried egg"
     }
   ],
   "drinks": [
