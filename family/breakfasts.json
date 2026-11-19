@@ -255,7 +255,26 @@
       "text": "番茄牛肉面",
       "textEn": "Tomato beef noodle soup",
       "detail": "青菜、煎蛋（可选）",
-      "detailEn": "Greens and optional fried egg"
+      "detailEn": "Greens and optional fried egg",
+      "imageSource": "generated-menu-reference",
+      "displaySourceImage": "images/breakfast/b08-menu.png",
+      "displaySourceCrop": {
+        "sourceWidth": 1774,
+        "sourceHeight": 887,
+        "x": 0,
+        "y": 0,
+        "width": 1774,
+        "height": 887
+      },
+      "image": "images/breakfast/b08-menu-kindle-7ae8a4689a23.png",
+      "crop": {
+        "sourceWidth": 600,
+        "sourceHeight": 300,
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 300
+      }
     }
   ],
   "drinks": [
