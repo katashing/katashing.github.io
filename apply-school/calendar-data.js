@@ -53,7 +53,7 @@
     { schoolId: 'north04', summary: '测试待电话通知', text: '测试日期待电话通知（老师告知）。' },
     { schoolId: 'sz02', summary: '英文＋小组面试 · 日期待通知', text: '英文面试＋小组面试，日期、时间待通知。' },
     { schoolId: 'north07', summary: '待开放 · 暂无考试安排', text: '申请待开放，尚无本轮考试安排。' },
-    { schoolId: 'hk-extra02', summary: '待开放 · 暂无考试安排', text: '申请待开放，尚无本轮考试安排。' }
+    { schoolId: 'hk-extra02', summary: '待递交 · 暂无考试安排', text: '老师计划递交，尚无本轮考试安排。' }
   ];
   window.SCHOOL_CALENDAR_DATA = {
     events: events.filter(event => active(event.schoolId) && event.date).sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id)),
