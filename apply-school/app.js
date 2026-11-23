@@ -20,7 +20,8 @@
   const assessmentText=p=>{const text=p?.assessmentText?.replace(/^入选者/,'')??'';return text&&/[0-9]月/.test(text)?`${p.assessmentYear??p.year}年${text}`:text;};
   const confirmedAssessment=(s,r)=>Boolean(r.assessment&&(r.status==='获邀笔试'||(/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(s.plan?.assessmentTime??'')&&s.plan?.assessmentSource)));
   const notAttendingAssessment=s=>s.plan?.assessmentAttendanceDecision==='not_attending_this_session';
-  const assessmentLabel=s=>notAttendingAssessment(s)?'原笔试安排（本次不参加）':'笔试';
+  const assessmentCompleted=s=>s.plan?.assessmentCompleted===true;
+  const assessmentLabel=s=>assessmentCompleted(s)?'原笔试安排（已完成）':notAttendingAssessment(s)?'原笔试安排（本次不参加）':'笔试';
   const assessmentDateTime=(s,r)=>`${dateText(r.assessment)}${s.plan?.assessmentWeekday?`（${s.plan.assessmentWeekday}）`:''}${s.plan?.assessmentTime?`${s.plan.assessmentWeekday?'':' '}${s.plan.assessmentTime}`:''}`;
   const assessmentScheduleText=(s,r)=>[assessmentDateTime(s,r),s.plan?.assessmentSession].filter(Boolean).join(' ');
   const assessmentFacts=s=>[['考试科目',s.plan?.assessmentSubjects],['备考要点',s.plan?.assessmentPreparationNote],['考试时长',s.plan?.assessmentDuration],['携带物品',s.plan?.assessmentItems],['考试地点',s.plan?.assessmentLocation],['安排来源',s.plan?.assessmentSource]].filter(([,value])=>value);
@@ -36,6 +37,7 @@
   const tableSummaryFor=s=>Array.isArray(s.plan?.tableSummary?.dates)?s.plan.tableSummary:null;
   const shortSchoolName=id=>({sz01:'深圳培侨',tp04:'大埔旧墟',tp01:'宝湖道',north03:'嘉福荣真',north05:'于良发',north08:'凤溪第一'}[id]??DATA.find(s=>s.id===id)?.name??'另一所学校');
   function compactConflictCard(s){
+    if(assessmentCompleted(s))return '';
     const c=s.plan?.assessmentConflict;if(!c)return '';
     const decided=Boolean(c.decisionResolved&&c.selectedSchoolId);
     const text=decided?`已选择${shortSchoolName(c.selectedSchoolId)}`:c.overlapConfirmed===false?`与${shortSchoolName(c.schoolId)}同日，时段冲突待确认；继续跟进`:`与${shortSchoolName(c.schoolId)}${c.scheduleOnly?'同日':'冲突'}，待确认`;
@@ -51,7 +53,7 @@
   const schoolNumber=s=>s.schoolNumber?String(s.schoolNumber).padStart(2,'0'):'待编号';
   const notChosenAfterConflict=s=>{const c=s.plan?.assessmentConflict;return Boolean(c?.decisionResolved&&c.selectedSchoolId&&c.selectedSchoolId!==s.id);};
   const isRetainedRecord=s=>isNoLongerApplying(recordFor(s))||notChosenAfterConflict(s);
-  const isExamNotified=(s,r)=>r.selected&&['获邀笔试','待笔试'].includes(r.status)&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
+  const isExamNotified=(s,r)=>r.selected&&(['获邀笔试','待笔试'].includes(r.status)||(r.status==='已笔试'&&assessmentCompleted(s)))&&!isRetainedRecord(s)&&!notAttendingAssessment(s);
   const applicationPriority=s=>isRetainedRecord(s)?3:isApplying(recordFor(s))?0:s.selected?1:2;
   function pendingOpening(s,r){
     if(APPLYING_STATUSES.has(r.status)||['暂缓报名','录取','已录取','未录取','不再申请'].includes(r.status))return '';
@@ -157,7 +159,7 @@
     $('detail-dialog').classList.toggle('exam-scheduled',examScheduled);
     const dateClass=text=>/\d{1,2}\s*月|\d{4}[-/.]\d{1,2}/.test(text??'')?'important-date':'';
     const assessmentConfirmed=confirmedAssessment(s,r);
-    const examFacts=assessmentConfirmed?[[notAttendingAssessment(s)?'原笔试安排（本次不参加）':'笔试时间',assessmentDateTime(s,r),'important-date assessment-priority'],...assessmentFacts(s)]:[];
+    const examFacts=assessmentConfirmed?[[assessmentCompleted(s)?'原笔试安排（已完成）':notAttendingAssessment(s)?'原笔试安排（本次不参加）':'笔试时间',assessmentDateTime(s,r),'important-date assessment-priority'],...(assessmentCompleted(s)?[['完成确认',`已笔试（${p.assessmentCompletionSource||'家长确认'}）`],['确认收到日期',dateText(p.assessmentCompletionConfirmedOn)],['实际考试日期',p.actualAssessmentDate?dateText(p.actualAssessmentDate):'未另行提供；上列为原通知安排']]:[]),...assessmentFacts(s)]:[];
     const resultFacts=p?.resultDate?[[p.resultLabel||(notAttendingAssessment(s)?'学校结果公布（参考）':'查笔试结果'),p.resultDateText||dateText(p.resultDate),'important-date'],...(p.resultText?[['结果说明',p.resultText]]:[]),...(p.resultSource?[['公布安排来源',p.resultSource]]:[]),...(p.resultUrl?[['结果查询官网','官网查笔试结果 ↗','',p.resultUrl]]:[]),...(p.interviewNote?[['面试跟进',p.interviewNote]]:[])]:[];
     const dates=[...(r.applicationStart?[['申请开放',dateText(r.applicationStart),'important-date']]:p?.applicationStartText?[['申请开放',p.applicationStartText==='现可申'?p.applicationStartText:`${p.year}年${p.applicationStartText}`,dateClass(p.applicationStartText)]]:[]),...(r.deadline?[['申请截止',dateText(r.deadline),'important-date deadline-date']]:p?.deadlineText?[['申请时间',p.deadlineText,dateClass(p.deadlineText)+((dateClass(p.deadlineText)&&/截止/.test(p.deadlineText))?' deadline-date':'')]]:[]),...(!assessmentConfirmed?(r.assessment?[[p?.assessmentSession||p?.assessmentConflict?.scheduleOnly?'学校笔试安排':'笔试日期',assessmentScheduleText(s,r),examScheduled?'important-date exam-schedule-date':'important-date'],...assessmentFacts(s)]:p?.assessmentText?[['笔试/评估安排',assessmentText(p)+(/[0-9]月/.test(p.assessmentText)?'，具体日期待确认':''),dateClass(p.assessmentText)+(examScheduled?' exam-schedule-date':'')]]:[]):[]),...(r.openDay?[['开放日',dateText(r.openDay),'important-date']]:[])];
     const facts=[...examFacts,...resultFacts,...(p?.interviewNote&&!p?.resultDate?[['面试安排',p.interviewNote]]:[]),['学校介绍',introduction(s)||'—'],...(s.commute?[['老师路程（原文）',s.commute]]:[]),['报名进度',r.status],...(isRetainedRecord(s)?[['选校状态','否（保留记录）']]:[]),...(r.submission?[['递交日期',dateText(r.submission),'important-date']]:[]),...(opening?[['申请开放状态',opening,'opening-pending-text']]:open?[['申请开放状态',deferred?'已开放报名 · 暂缓报名':'已开放报名',deferred?'opening-open-text opening-deferred-text':'opening-open-text']]:[]),...dates,...(p?.dateNote?[['日期说明',p.dateNote,dateClass(p.dateNote)]]:[]),...(r.teacherNote?[['告知说明',r.teacherNote]]:[]),...(r.officialNote?[['官方说明',r.officialNote]]:[]),...(r.followup||r.followupText?[['下次跟进',followupSummary(s,r,dateText(r.followup))]]:[]),...(r.notes?[['更新记录',r.notes],...(p?.updateReceivedAt?[['资料收到日期',dateText(p.updateReceivedAt)]]:[])]:[]),...(p?[['办学信息',[p.type,p.gender,p.language,p.religion==='无'?'':p.religion].filter(Boolean).join(' · ')],...(p.alias?[['其他名称',p.alias]]:[])]:[]),...(r.contact?[['学校电话',r.contact]]:[])];
@@ -188,6 +190,8 @@
     const head=['学校编号','学校','地区','梯队','校网','学校介绍','老师路程（原文）','已选报名','报名进度','递交日期','报名开放状态','申请开放日期','申请开放安排','申请截止','笔试/面试日期','考试时间','考试时段','考试科目','备考要点','考试时长','携带物品','考试地点','考试安排来源','笔试/评估安排','结果公布／通知日期','笔试结果说明','结果公布安排来源','笔试结果网址','面试跟进','开放日日期','下次跟进','联系电话','官网','备注','日期核查','告知安排','资料收到日期','日期说明','官方说明','官方报名入口'];
     const csvSchools=[...DATA].sort((a,b)=>applicationPriority(a)-applicationPriority(b));
     const rows=csvSchools.map(s=>{const r=recordFor(s),check=window.SCHEDULE_CHECK_DATA?.schools?.[s.id];return [schoolNumber(s),s.name,s.region,s.tier,s.net,introduction(s),s.commute,isRetainedRecord(s)?'否（保留记录）':r.selected?'是':'否',r.status,r.submission,registrationOpen(s,r)?'已开放报名':pendingOpening(s,r)||'待确认',r.applicationStart,s.plan?.applicationStartText??'',r.deadline,r.assessment,s.plan?.assessmentTime??'',s.plan?.assessmentSession??'',s.plan?.assessmentSubjects??'',s.plan?.assessmentPreparationNote??'',s.plan?.assessmentDuration??'',s.plan?.assessmentItems??'',s.plan?.assessmentLocation??'',s.plan?.assessmentSource??'',assessmentText(s.plan),s.plan?.resultDateText||s.plan?.resultDate||'',s.plan?.resultText??'',s.plan?.resultSource??'',s.plan?.resultUrl??'',s.plan?.interviewNote??'',r.openDay,followupSummary(s,r),r.contact,r.website,r.notes,check?.referenceOnly?[check.referenceReason,check.message].filter(Boolean).join('；'):check?.message??'',r.teacherNote,s.plan?.updateReceivedAt??'',s.plan?.dateNote??'',r.officialNote,r.applicationUrl];});
+    head.push('笔试完成确认','完成确认收到日期','实际笔试日期');
+    rows.forEach((row,i)=>{const p=csvSchools[i].plan;row.push(p?.assessmentCompleted?'已笔试（家长确认）':'',p?.assessmentCompletionConfirmedOn??'',p?.actualAssessmentDate??'');});
     head.push('考试冲突','冲突处理状态','改期情况','冲突说明来源','考试选择','选择确认来源','选择收到日期');
     rows.forEach((row,i)=>{const c=csvSchools[i].plan?.assessmentConflict;row.push(assessmentConflictSummary(csvSchools[i]),c?.decisionStatus??'',conflictReschedule(c),c?.source??'',c?.decisionResolved&&c.selectedSchoolId?conflictChoiceName(c):'',c?.decisionSource??'',c?.decisionReceivedOn??'');});
     if(window.schoolTravelCSV){head.push(...window.schoolTravelCSV.headers);rows.forEach((row,i)=>row.push(...window.schoolTravelCSV.values(csvSchools[i],TRAVEL_SETTINGS)));}

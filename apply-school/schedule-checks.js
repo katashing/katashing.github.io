@@ -32,20 +32,16 @@ window.SCHEDULE_CHECK_DATA = {
     },
     "sz01": {
       "status": "confirmed",
-      "checkedAt": "2026-11-13",
-      "message": "11月13日公开官网已核实本轮香港课程评估日期为2026年12月5日；11月26日16:00至12月4日23:59登录官方网申系统查询评估详情。仅部分申请人获邀，个人资格及具体场次待通知；公开公告未列全天或具体时段。与大埔旧墟12月5日14:00–17:00同日，尚不能确认个人时段必然重叠。10月21日提交成功及全天预留要求沿用既有官方确认资料，本轮未重新查询个人申请系统，状态仍为已提交，未确认获邀或付款。",
+      "checkedAt": "2026-11-23",
+      "message": "11月23日已只读登录官方个人申请查询页，当前显示入学申请已成功提交，尚未显示个人评估邀请、场次或缴费确认。页面仍规定11月26日16:00至12月4日23:59查询评估详情；12月5日全天评估仅适用于获邀者，获邀后缴HKD550，出席与否均不退。公开官网本轮香港课程公告同日复核，评估日期及查询窗口一致。与大埔旧墟12月5日14:00–17:00同日，实际时段是否重叠仍待个人评估通知确认。",
       "sources": [
         {
           "title": "2026/27第二学期香港课程入学公告（11月5日发布）",
           "url": "https://www.puikiuxinyi.com/list/904.html"
         },
         {
-          "title": "培侨信义2026/27二月插班官方公告（10月19日）",
-          "url": "https://mp.weixin.qq.com/s/56uGeCthL9zRMx5ejyjf8g"
-        },
-        {
-          "title": "香港课程官方报名入口",
-          "url": "https://admission.puikiuxinyi.edu.hk/event/tc/3090"
+          "title": "香港课程官方申请状态查询入口（登录后核查）",
+          "url": "https://admission.puikiuxinyi.edu.hk/regedit_link/3090"
         },
         {
           "title": "历史参考：2025/26二月插班申请须知（香港课程）",
@@ -79,8 +75,39 @@ window.SCHEDULE_CHECK_DATA = {
               "url": "https://www.puikiuxinyi.com/notice/642.html"
             }
           ]
+        },
+        {
+          "status": "confirmed",
+          "checkedAt": "2026-11-13",
+          "message": "11月13日公开官网已核实本轮香港课程评估日期为2026年12月5日；11月26日16:00至12月4日23:59登录官方网申系统查询评估详情。仅部分申请人获邀，个人资格及具体场次待通知；公开公告未列全天或具体时段。与大埔旧墟12月5日14:00–17:00同日，尚不能确认个人时段必然重叠。10月21日提交成功及全天预留要求沿用既有官方确认资料，本轮未重新查询个人申请系统，状态仍为已提交，未确认获邀或付款。",
+          "sources": [
+            {
+              "title": "2026/27第二学期香港课程入学公告（11月5日发布）",
+              "url": "https://www.puikiuxinyi.com/list/904.html"
+            },
+            {
+              "title": "培侨信义2026/27二月插班官方公告（10月19日）",
+              "url": "https://mp.weixin.qq.com/s/56uGeCthL9zRMx5ejyjf8g"
+            },
+            {
+              "title": "香港课程官方报名入口",
+              "url": "https://admission.puikiuxinyi.edu.hk/event/tc/3090"
+            },
+            {
+              "title": "历史参考：2025/26二月插班申请须知（香港课程）",
+              "url": "https://www.puikiuxinyi.com/notice/795.html"
+            },
+            {
+              "title": "历史参考：2024/25二月插班申请须知（含香港课程）",
+              "url": "https://www.puikiuxinyi.com/notice/642.html"
+            }
+          ]
         }
-      ]
+      ],
+      "verificationScope": "公开官方公告及已登录的个人申请查询页（只读）；未修改申请或缴费",
+      "personalApplicationCheckedAt": "2026-11-23",
+      "personalApplicationStatus": "已提交；尚未显示个人评估通知",
+      "assessmentInvitationConfirmed": false
     },
     "sz02": {
       "status": "partial",
