@@ -5,7 +5,7 @@
 }(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : this, function (root) {
   'use strict';
   var ENDPOINT = 'https://api.open-meteo.com/v1/forecast?latitude=22.5431&longitude=114.0579&current=temperature_2m%2Cweather_code&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min&timezone=Asia%2FShanghai&forecast_days=2';
-  var ERROR_DELAY = 120000, REQUEST_TIMEOUT = 12000, HALF_DAY = 43200000, OFFSET = 28800000;
+  var ERROR_DELAYS = [120000, 300000, 900000, 1800000], REQUEST_TIMEOUT = 12000, HALF_DAY = 43200000, OFFSET = 28800000;
   var CACHE_KEY = 'family-board-twice-daily-weather-v2';
   // Kept identical to server/refresh_weather.py; unknown numeric codes are safe.
   var CONDITIONS = {
@@ -96,7 +96,7 @@
     var setTimer = options.setTimeout || function (fn, delay) { return root.setTimeout(fn, delay); };
     var clearTimer = options.clearTimeout || function (id) { return root.clearTimeout(id); };
     var now = options.now || function () { return new Date().getTime(); };
-    var pending = null, requestStartedAt = null, timer = null, stopped = false, saved = null, storage = null;
+    var pending = null, requestStartedAt = null, timer = null, stopped = false, saved = null, storage = null, failures = 0;
     try { storage = typeof options.storage !== 'undefined' ? options.storage : root.localStorage; } catch (error) { /* Storage may be disabled. */ }
     function readSaved() {
       var cached = null;
@@ -126,17 +126,22 @@
       cancelTimer();
       timer = setTimer(function () { timer = null; refreshIfDue(); }, delay);
     }
+    function failureDelay() {
+      failures = Math.min(failures + 1, ERROR_DELAYS.length);
+      return ERROR_DELAYS[failures - 1];
+    }
     function finish(request, value, error) {
       if (stopped || pending !== request) { return; }
       pending = null; requestStartedAt = null; cancelTimer(); detach(request);
-      if (value) { save(value); notify(options.onWeather, value); }
-      else { notify(options.onError, error); }
-      later(value ? currentCycle(now()) + HALF_DAY - now() : ERROR_DELAY);
+      var delay;
+      if (value) { failures = 0; save(value); delay = currentCycle(now()) + HALF_DAY - now(); notify(options.onWeather, value); }
+      else { delay = failureDelay(); notify(options.onError, error); }
+      later(delay);
     }
     function refreshIfDue() {
       if (stopped || pending !== null) { return; }
       var time = now();
-      if (validSaved(saved, time)) { later(currentCycle(time) + HALF_DAY - time); }
+      if (validSaved(saved, time)) { failures = 0; later(currentCycle(time) + HALF_DAY - time); }
       else { requestWeather(); }
     }
     function requestWeather() {
@@ -165,7 +170,7 @@
         request.send(null);
       } catch (error) {
         if (request && pending === request) { finish(request, null, 'network'); abort(request); }
-        else if (!stopped && !request) { notify(options.onError, 'unavailable'); later(ERROR_DELAY); }
+        else if (!stopped && !request) { var delay = failureDelay(); notify(options.onError, 'unavailable'); later(delay); }
       }
     }
     var handle = { resume: function () {

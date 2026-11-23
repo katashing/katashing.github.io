@@ -1,13 +1,13 @@
 {
   "schemaVersion": 2,
   "demo": false,
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-23",
   "settings": {
     "intervalSeconds": 120,
     "autoRotate": false,
-    "controlVersion": 3,
+    "controlVersion": 4,
     "showPage": "",
-    "clientVersion": "20261118-load1",
+    "clientVersion": "20261123-power1",
     "pollIntervalSeconds": 7200
   },
   "breakfasts": [

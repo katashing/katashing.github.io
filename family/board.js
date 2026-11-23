@@ -65,17 +65,19 @@
   }
   function itemOrder(item) { return item.start || { morning: '00:00', afternoon: '12:00', evening: '18:00' }[item.period] || ''; }
   var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
-  var CLIENT_VERSION = '20261118-load1';
+  var CLIENT_VERSION = '20261123-power1';
   var REQUEST_TIMEOUT = 12000;
+  var RETRY_DELAYS = [120000, 300000, 900000, 1800000];
+  function retryDelay(failures) { return RETRY_DELAYS[Math.min(failures - 1, RETRY_DELAYS.length - 1)]; }
   var views = [], current = 0, playing = false, timer = null, lastControl = null;
   var errors = {}, payloads = {}, currentDay = today(), selectedDay = defaultChildDate();
   var defaultDay = selectedDay, clockTimer = null, pollers = [], reloading = false;
   var initialPage = (location.hash || '').replace(/^#/, '');
   var topLineKey = null, photoCropKey = null, photoFailed = false;
   var weatherClient = null, weatherPollTimer = null, weatherPending = false, weatherNextDue = 0;
-  var weatherStartedAt = 0, cancelWeatherRequest = null;
+  var weatherStartedAt = 0, cancelWeatherRequest = null, weatherFailures = 0;
   var plannerScript = { path: 'breakfast-planner.js?v=20261026-porridge1', loading: false, failed: false, startedAt: 0 };
-  var weatherScript = { path: 'weather-client.js?v=20261118-load1', loading: false, failed: false, startedAt: 0 };
+  var weatherScript = { path: 'weather-client.js?v=20261123-power1', loading: false, failed: false, startedAt: 0 };
   function githubPage() { return /(^|\.)github\.io$/.test(location.hostname || ''); }
   function scriptAvailable(state) {
     return state === plannerScript ? typeof BreakfastPlanner !== 'undefined' : typeof WeatherClient !== 'undefined';
@@ -114,11 +116,13 @@
       if (finished) { return; }
       state.cancel(); state.failed = !ok;
       if (ok) {
-        state.retryAt = 0;
+        state.retryAt = 0; state.failures = 0;
         if (state === weatherScript) { startWeatherClient(); }
       } else {
-        state.retryAt = new Date().getTime() + 120000;
-        state.retryTimer = setTimeout(function () { state.retryTimer = null; loadOptionalScript(state, false); }, 120000);
+        state.failures = (state.failures || 0) + 1;
+        var delay = retryDelay(state.failures);
+        state.retryAt = new Date().getTime() + delay;
+        state.retryTimer = setTimeout(function () { state.retryTimer = null; loadOptionalScript(state, false); }, delay);
       }
       if (state === plannerScript && scriptNeeded(state)) { render(); }
     }
@@ -290,7 +294,9 @@
     function finish(ok) {
       if (finished) { return; }
       finished = true; clearTimeout(timeout); weatherPending = false; cancelWeatherRequest = null; errors.weather = !ok; topLine();
-      var delay = ok && weather.refreshMode === 'twice-daily' && dailyWeatherValid(weather) ? nextWeatherRefresh() : 120000;
+      var ready = ok && weather.refreshMode === 'twice-daily' && dailyWeatherValid(weather);
+      weatherFailures = ready ? 0 : weatherFailures + 1;
+      var delay = ready ? nextWeatherRefresh() : retryDelay(weatherFailures);
       scheduleWeatherPoll(delay);
     }
     xhr.onreadystatechange = function () {
@@ -306,10 +312,11 @@
     } catch (error) { finish(false); }
   }
   function resumeWeather() {
-    if (weatherPending && new Date().getTime() - weatherStartedAt >= REQUEST_TIMEOUT) { cancelWeatherRequest(); }
+    var now = new Date().getTime(), expired = weatherPending && now - weatherStartedAt >= REQUEST_TIMEOUT;
+    if (expired) { cancelWeatherRequest(); }
     loadOptionalScript(weatherScript, true);
     if (weatherClient && weatherClient.resume) { weatherClient.resume(); }
-    if (!weatherPending && new Date().getTime() >= weatherNextDue) { pollWeather(); }
+    if (!weatherPending && (expired || now >= weatherNextDue || (weatherFailures > 0 && now - weatherStartedAt >= 1000))) { pollWeather(); }
     topLine();
   }
   function topLine() {
@@ -673,7 +680,7 @@
   }
   function pollJson(path, delay, key, accept, initialDelay) {
     if (location.protocol === 'file:') { return; }
-    var poller = { key: key, pending: false, timer: null, lastStarted: null };
+    var poller = { key: key, pending: false, timer: null, lastStarted: null, failures: 0 };
     poller.run = function () {
       if (poller.pending) { return; }
       if (poller.timer !== null) { clearTimeout(poller.timer); poller.timer = null; }
@@ -683,7 +690,8 @@
         if (finished) { return; }
         finished = true; clearTimeout(timeout); poller.pending = false; poller.cancel = null;
         errors[key] = !ok; topLine(); renderErrors();
-        poller.timer = setTimeout(poller.run, ok ? (typeof delay === 'function' ? delay() : delay) : 120000);
+        poller.failures = ok ? 0 : poller.failures + 1;
+        poller.timer = setTimeout(poller.run, ok ? (typeof delay === 'function' ? delay() : delay) : retryDelay(poller.failures));
       }
       poller.cancel = function () {
         if (finished) { return; }
@@ -788,6 +796,7 @@
   window.onresize = function () { if (views.length && isChild(views[current].page)) { render(); } };
   window.onload = function () { resumePage(false); if (views.length && isChild(views[current].page)) { render(); } };
   window.onfocus = function () { resumePage(false); };
+  window.ononline = function () { resumePage(false); };
   if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumePage(false); } }, false); }
   if (applyBoard(data, true)) { payloads.board = JSON.stringify(data); }
   if (validSchedule(course)) { payloads.schedule = JSON.stringify(course); }
