@@ -15,7 +15,7 @@
       completed: true,
       completionConfirmedOn: plan('north05').assessmentCompletionConfirmedOn,
       summary: '家长确认完成 · 日期为原排期',
-      note: '11月23日家长确认已考完；日历日期时间为原通知安排，实际考试日期未另行提供。结果及后续面试安排待通知。' },
+      note: '11月23日家长确认已考完；日历日期时间为原通知安排，实际考试日期未另行提供。结果等电话通知，日期待定。' },
     { id: 'sz01-query-start', schoolId: 'sz01', date: '2026-11-26', time: '16:00',
       label: '查询开始', kind: 'notice', certainty: 'schedule', source: '官方安排',
       summary: '评估资格及场次 · 至12/4 23:59',
@@ -50,7 +50,7 @@
       note: '不是确定当天通知；老师称电话，既存官网称短信，通知方式待确认。' }
   ];
   const pending = [
-    { schoolId: 'north05', summary: '已笔试 · 结果及后续面试待通知', text: '家长确认已完成笔试；结果日期、面试资格及时间待通知，不推定通过笔试或已获邀面试。' },
+    { schoolId: 'north05', summary: '已笔试 · 等电话通知，结果日期待定', text: `${plan('north05').resultText} 来源：${plan('north05').resultSource}。` },
     { schoolId: 'tp04', summary: '笔试后按需面试 · 日期、资格待通知', text: '如有需要，笔试后安排面试；日期、时间及个人资格待通知（老师补充；官方通告列按需要约见）。' },
     { schoolId: 'north06', summary: '2027年1月笔试 · 仅入选者，日期待定', text: '2027年1月笔试，具体日期待定；仅入选者。' },
     { schoolId: 'north04', summary: '测试待电话通知', text: '测试日期待电话通知（老师告知）。' },
