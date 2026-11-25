@@ -75,7 +75,8 @@
   }
   function itemOrder(item) { return item.start || { morning: '00:00', afternoon: '12:00', evening: '18:00' }[item.period] || ''; }
   var data = initial('initial-data'), course = initial('initial-schedule'), weather = initial('initial-weather'), menus = initial('initial-breakfasts'), calendar = initial('initial-calendar'), almanac = initial('initial-almanac'), festivals = initial('initial-festivals');
-  var CLIENT_VERSION = '20261123-static1';
+  var CLIENT_VERSION = '20261125-kindle1';
+  var kindleSite = location.hostname === '43.128.89.2';
   var REQUEST_TIMEOUT = 12000;
   var RETRY_DELAYS = [120000, 300000, 900000, 1800000];
   function retryDelay(failures) { return RETRY_DELAYS[Math.min(failures - 1, RETRY_DELAYS.length - 1)]; }
@@ -85,7 +86,7 @@
   var initialPage = (location.hash || '').replace(/^#/, '');
   var topLineKey = null, bodyKey = null, photoCropKey = null, photoFailed = false;
   var weatherClient = null, weatherPollTimer = null, weatherPending = false, weatherNextDue = 0;
-  var weatherStartedAt = 0, cancelWeatherRequest = null, weatherFailures = 0;
+  var weatherStartedAt = 0, cancelWeatherRequest = null, weatherFailures = 0, savedForecast = null;
   var plannerScript = { path: 'breakfast-planner.js?v=20261026-porridge1', loading: false, failed: false, startedAt: 0 };
   var weatherScript = { path: 'weather-client.js?v=20261123-static1', loading: false, failed: false, startedAt: 0 };
   function githubPage() { return /(^|\.)github\.io$/.test(location.hostname || ''); }
@@ -128,6 +129,8 @@
       if (ok) {
         state.retryAt = 0; state.failures = 0;
         if (state === weatherScript) { startWeatherClient(); }
+      } else if (kindleSite) {
+        state.retryAt = Infinity;
       } else {
         state.failures = (state.failures || 0) + 1;
         var delay = retryDelay(state.failures);
@@ -270,7 +273,7 @@
     return isFinite(refreshed) && refreshed >= start && String(value.refreshedAt).slice(0, 10) === value.forecastDate && refreshed < start + 86400000 && refreshed <= new Date().getTime() + 60000 && isFinite(observed) && String(value.observedAt).slice(0, 10) === value.forecastDate && typeof value.condition === 'string' && typeof value.conditionEn === 'string';
   }
   function acceptWeather(next) {
-    if (!next) { return false; }
+    if (!next || (kindleSite && next.refreshMode !== 'twice-daily')) { return false; }
     if (next.refreshMode === 'daily-morning' || next.refreshMode === 'twice-daily') {
       if (!dailyWeatherValid(next)) { return false; }
       if (dailyWeatherValid(weather) && weather.refreshMode === 'twice-daily' && next.refreshMode !== 'twice-daily') { return true; }
@@ -304,6 +307,7 @@
     function finish(ok) {
       if (finished) { return; }
       finished = true; clearTimeout(timeout); weatherPending = false; cancelWeatherRequest = null; errors.weather = !ok; topLine();
+      if (kindleSite) { return; }
       var ready = ok && weather.refreshMode === 'twice-daily' && dailyWeatherValid(weather);
       weatherFailures = ready ? 0 : weatherFailures + 1;
       var delay = ready ? nextWeatherRefresh() : retryDelay(weatherFailures);
@@ -340,14 +344,17 @@
       if (name && !seenNames[name]) { names.push(name); seenNames[name] = true; }
     }
     var lunarLabel = names.length ? names.join(' · ') : lunar ? (en ? lunar.textEn : lunar.text) : '';
-    var daily = dailyWeatherValid(weather);
-    var showWeather = daily || (!weather.refreshMode && typeof weather.temperatureC === 'number' && isFinite(weather.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000);
-    var tomorrow = daily && weather.forecastDate === shiftDate(today(), 1);
-    var temperatureLabel = daily ? Math.round(weather.lowC) + '–' + Math.round(weather.highC) + '°C' : Math.round(weather.temperatureC) + '°C';
+    var fresh = dailyWeatherValid(weather);
+    if (kindleSite && fresh) { savedForecast = weather; }
+    var shown = fresh ? weather : savedForecast || weather, daily = fresh || !!savedForecast;
+    var showWeather = daily || (!shown.refreshMode && typeof shown.temperatureC === 'number' && isFinite(shown.temperatureC) && isFinite(age) && age <= 3 * 3600000 && age >= -3600000);
+    var tomorrow = daily && shown.forecastDate === shiftDate(today(), 1);
+    var temperatureLabel = daily ? Math.round(shown.lowC) + '–' + Math.round(shown.highC) + '°C' : Math.round(shown.temperatureC) + '°C';
     var periodLabel = tomorrow ? (en ? ' (Tmr)' : '（明）') : '';
-    var forecastLabel = daily ? (en ? weather.forecastDate + ' daily forecast, updated ' + weather.refreshedAt.slice(11, 16) + ', refresh at 06:00 and 18:00 Beijing time' : weather.forecastDate + ' 日预报，' + weather.refreshedAt.slice(11, 16) + '更新，每日06:00和18:00刷新') : '';
-    var condition = (weather.condition || '') + ' ' + (weather.conditionEn || ''), icon = 'cloud';
-    var weatherLabel = en ? weather.conditionEn || weather.condition : weather.condition;
+    if (daily && kindleSite && shown.forecastDate < currentDay) { periodLabel = ' ' + shown.forecastDate.slice(5).replace('-', '/'); }
+    var forecastLabel = daily ? (en ? shown.forecastDate + ' daily forecast, updated ' + shown.refreshedAt.slice(11, 16) + ', refresh at 06:00 and 18:00 Beijing time' : shown.forecastDate + ' 日预报，' + shown.refreshedAt.slice(11, 16) + '更新，每日06:00和18:00刷新') : '';
+    var condition = (shown.condition || '') + ' ' + (shown.conditionEn || ''), icon = 'cloud';
+    var weatherLabel = en ? shown.conditionEn || shown.condition : shown.condition;
     if (/雷|Thunder/i.test(condition)) { icon = 'cloud-lightning'; }
     else if (/雪|Snow/i.test(condition)) { icon = 'snowflake'; }
     else if (/雨|Rain|Drizzle/i.test(condition)) { icon = 'cloud-rain'; }
@@ -703,6 +710,7 @@
       var id = data.settings.showPage;
       if (id === 'helper') { id = 'family'; } else if (id === 'helper_en') { id = 'family_en'; }
       if (initialLoad && pageById(initialPage)) { id = initialPage; playing = false; }
+      else if (initialLoad && kindleSite && !pageById(id)) { id = 'family_en'; }
       if (id && pageById(id)) { rebuild(id, 0); } else { rebuild(views[current].page.id, views[current].chunk); }
     }
     lastControl = cv;
@@ -734,7 +742,8 @@
         finished = true; clearTimeout(timeout); poller.pending = false; poller.cancel = null;
         errors[key] = !ok; topLine(); renderErrors();
         poller.failures = ok ? 0 : poller.failures + 1;
-        var nextDelay = ok ? (typeof delay === 'function' ? delay() : delay) : retryDelay(poller.failures);
+        var nextDelay = typeof delay === 'function' ? (ok ? delay() : null) : delay;
+        if (!ok && !kindleSite) { nextDelay = retryDelay(poller.failures); }
         if (nextDelay !== null) { poller.timer = setTimeout(poller.run, nextDelay); }
       }
       poller.cancel = function () {
@@ -823,7 +832,13 @@
       topLine();
       if (!isChild(views[current].page) && !isTasks(views[current].page)) { breakfast(english()); }
     }
-    if (boundary || contentBoundary) { refreshContent(); refreshMissingCalendars(); }
+    if (boundary || contentBoundary) {
+      refreshContent(); refreshMissingCalendars();
+      if (kindleSite) {
+        if (weather.refreshMode !== 'twice-daily' || !dailyWeatherValid(weather)) { resumeWeather(); }
+        loadOptionalScript(plannerScript, true);
+      }
+    }
   }
   function scheduleClock() {
     if (clockTimer !== null) { clearTimeout(clockTimer); }
@@ -833,8 +848,10 @@
     clockTimer = setTimeout(function () { clockTimer = null; syncClock(false); scheduleClock(); }, Math.max(1, delay));
   }
   function resumePage(reset) {
-    if (scriptNeeded(plannerScript)) { plannerScript.retryAt = 0; }
-    syncClock(reset); refreshContent(); refreshMissingCalendars(); resumeWeather(); scheduleClock();
+    if (!kindleSite && scriptNeeded(plannerScript)) { plannerScript.retryAt = 0; }
+    syncClock(reset);
+    if (!kindleSite) { refreshContent(); refreshMissingCalendars(); resumeWeather(); }
+    scheduleClock();
   }
   window.onpageshow = function (event) {
     resumePage(!!(event && event.persisted));
@@ -842,7 +859,7 @@
   window.onresize = function () { fitChild(); };
   window.onload = function () { resumePage(false); fitChild(); };
   window.onfocus = function () { resumePage(false); };
-  window.ononline = function () { resumePage(false); };
+  if (!kindleSite) { window.ononline = function () { resumePage(false); }; }
   if (document.addEventListener) { document.addEventListener('visibilitychange', function () { if (!document.hidden) { resumePage(false); } }, false); }
   function payloadSignature(value) {
     var content = {};
