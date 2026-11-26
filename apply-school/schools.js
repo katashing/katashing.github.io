@@ -208,42 +208,33 @@ window.SCHOOL_DATA = [
     plan: {
       type: "资助", gender: "男女", language: "中英", religion: "基督教",
       year: 2026, applicationStartDate: "2026-11-19", deadlineDate: "2026-12-03", assessmentDate: "2026-12-12",
-      deadlineText: "11月19-12月3", assessmentText: "12月12日（周六）笔试，老师告知上午，具体时间以电邮通知为准；尚未确认个人考试资格", actionText: "", alias: "",
-      status: "待开放", teacherNote: "家长已选定圣公会嘉福荣真小学，并确认已与老师沟通确认；本轮按嘉福推进。", followupText: "择校已与老师确认。11月19日开放后按官网要求申请，12月3日16:00截止；确认小三空缺及材料，等待实际递交确认和个人考试通知。", updateReceivedAt: "2026-11-13",
+      deadlineText: "11月19-12月3", assessmentText: "12月12日（周六）学校笔试，具体时间及报到安排待校方电邮；个人考试通知待收", actionText: "", alias: "",
+      status: "已提交", submissionDate: "", teacherNote: "家长确认已报名；实际递交日期未提供。", followupText: "留意校方电邮，确认12月12日笔试的具体时间及报到安排。", updateReceivedAt: "2026-11-26",
       applicationStartSource: "official",
       deadlineTime: "16:00",
       assessmentWeekday: "周六",
-      assessmentSession: "上午（老师告知，具体时间待通知）",
-      assessmentSource: "笔试日期已获官网确认；上午时段为老师告知",
+      assessmentSession: "具体时间待校方电邮",
+      assessmentSource: "笔试日期沿用11月12日官网核查的学校排期，个人考试通知待收",
       applicationUrl: "https://forms.gle/QStv3PSYVkKGj5Bj6",
       officialNote: "官网2026/27插班须知已核：11月19日至12月3日16:00网上申请，12月12日笔试，具体时间电邮通知；2027年2月1日入学。未明列小三空缺，个人考试资格待确认。",
-      dateNote: "申请截止：2026年12月3日（周四）16:00；2027年2月1日入学。12月12日上午为老师说明，准确时间以学校电邮通知为准。",
+      dateNote: "学校申请截止：2026年12月3日（周四）16:00；2027年2月1日入学。已报名，笔试具体时间及报到安排待校方电邮。",
       applicationDecision: "proceed",
-      assessmentConflict: {"date": "2026-12-12", "time": "上午", "source": "老师消息（11月12日收到）", "note": "两校原通用笔试排期同为12月12日上午；家长已选嘉福荣真。具体时刻及个人考试资格仍以学校通知为准。", "decisionStatus": "已选择嘉福荣真，并已与老师确认；宝湖道本轮暂不推进", "scheduleOnly": true, "selectedSchoolId": "north03", "decisionResolved": true, "rescheduleAvailable": null, "recommendedSchoolId": "north03", "schoolId": "tp01", "schoolName": "大埔旧墟公立学校（宝湖道）", "decisionSource": "家长2026年11月13日直接确认", "decisionReceivedOn": "2026-11-13", "confirmedWithTeacher": true},
+      assessmentConflict: {"date": "2026-12-12", "source": "老师消息（11月12日收到）", "note": "两校原通用笔试排期同为12月12日；家长已选嘉福荣真。嘉福具体时间及报到安排待校方电邮。", "decisionStatus": "已选择嘉福荣真，并已与老师确认；宝湖道本轮暂不推进", "scheduleOnly": true, "selectedSchoolId": "north03", "decisionResolved": true, "rescheduleAvailable": null, "recommendedSchoolId": "north03", "schoolId": "tp01", "schoolName": "大埔旧墟公立学校（宝湖道）", "decisionSource": "家长2026年11月13日直接确认", "decisionReceivedOn": "2026-11-13", "confirmedWithTeacher": true},
       tableSummary: {
         "dates": [
           {
             "label": "学校笔试",
-            "text": "12/12（周六）上午（老师告知）",
+            "text": "12/12（周六）· 时间待电邮",
             "kind": "assessment"
-          },
-          {
-            "label": "申请开放",
-            "text": "11/19（周四）",
-            "kind": "notice"
-          },
-          {
-            "label": "申请截止",
-            "text": "12/3（周四）16:00",
-            "kind": "deadline"
           }
         ],
-        "nextAction": "开放后报名；确认小三空缺和材料。",
+        "statusNote": "已报名（家长确认）",
+        "nextAction": "等校方电邮确认具体考试时间及报到安排。",
         "notes": [
-          "具体时间、个人考试资格待通知。"
+          "个人考试通知待收。"
         ]
       },
-      notes: "2026年11月13日家长明确选择圣公会嘉福荣真小学，并告知已与老师确认。两校选择事项已解决，本轮按嘉福推进；当前仍待11月19日开放，尚无实际递交或个人获邀确认。既有官网申请期、截止和笔试日期保持不变，具体考试时刻及小三学位待确认。 历史记录：2026年11月12日收到老师建议截图：嘉福荣真与大埔旧墟宝湖道都在原计划，两校12月12日周六上午笔试；老师以嘉福较近福田口岸为由建议优先嘉福。老师建议不等于家长已选择，不取消宝湖道；具体时间与能否错开待确认。官网同日核实嘉福申请期11月19日至12月3日16:00、12月12日笔试及2027年2月1日入学；上午仅老师告知，未确认小三空缺或个人获邀。截图未显示消息日期，收到日不当发送日。 历史记录：2026年10月15日收到老师共享表截图：列为11月递交批次，具体递交日期待定；申请时间仍为11月19日至12月3日。历史记录：此前规划表列12月12日笔试，本次截图未重列笔试日期，保留原安排待学校确认。尚无实际递交确认。"
+      notes: "2026年11月26日家长确认已报名。实际递交日期未提供。12月12日为学校笔试排期，具体时间、报到安排及个人考试通知待校方电邮。历史记录：11月13日家长已选择嘉福荣真并与老师确认，当时仍待11月19日开放。11月12日收到老师建议，原计划嘉福荣真与大埔旧墟宝湖道同为12月12日上午笔试；上午为当时老师说明。官网同日核实嘉福申请期11月19日至12月3日16:00、12月12日笔试及2027年2月1日入学。10月15日老师共享表曾将嘉福列为11月递交批次。"
     }
   },
   {
@@ -353,19 +344,20 @@ window.SCHOOL_DATA = [
     plan: {
       type: "资助", gender: "男女", language: "中英", religion: "无",
       year: 2026, deadlineDate: "", assessmentDate: "",
-      deadlineText: "暂未开放", assessmentText: "", actionText: "", alias: "上水惠州公立小学",
-      status: "待开放", followupText: "等小三名额开放。", teacherNote: "家长确认目前等待小三名额开放。", updateReceivedAt: "2026-11-20",
+      deadlineText: "", assessmentText: "", actionText: "", alias: "上水惠州公立小学",
+      status: "已提交", submissionDate: "", followupText: "等待学校通知；小三学位及笔试安排待确认。", teacherNote: "家长确认已报名；实际递交日期未提供。", updateReceivedAt: "2026-11-26",
       tableSummary: {
         "dates": [
           {
-            "label": "申请",
-            "text": "待开放（家长确认）",
+            "label": "小三学位",
+            "text": "名额待确认",
             "kind": "plain"
           }
         ],
-        "nextAction": "等小三名额开放。"
+        "statusNote": "已报名（家长确认）",
+        "nextAction": "等待学校通知；小三学位及笔试安排待确认。"
       },
-      notes: "2026年11月20日家长确认目前等待小三名额开放，维持待开放。历史记录：2026年10月15日读取老师共享表，列入11月递交批次，当时暂未开放，学校电话反馈11月再关注官网招生动态。2026年10月11日收到老师消息称上水惠州已开放并拟于下周递交，该早期安排仅作历史参考。"
+      notes: "2026年11月26日家长确认已报名。实际递交日期未提供，小三学位及笔试安排待学校通知。历史记录：此前等待小三名额，尚未递交。10月15日老师共享表曾列入11月递交批次，当时暂未开放；10月11日收到的较早老师消息曾称已开放并拟于下周递交。"
     }
   },
   {
@@ -464,18 +456,19 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中文", religion: "不适用",
       year: 2026, deadlineDate: "", assessmentDate: "",
       deadlineText: "", assessmentText: "", actionText: "", alias: "曾梅千禧學校",
-      status: "待递交", teacherNote: "老师计划“下周二之前递交”。消息日期待确认。", followupText: "老师计划下周二之前递交。核对材料，等老师确认递交结果。", updateReceivedAt: "2026-11-20",
+      status: "已提交", submissionDate: "", teacherNote: "家长确认已正式递交；实际递交日期未提供。", followupText: "等待学校考试或后续安排通知。", updateReceivedAt: "2026-11-26",
       tableSummary: {
         "dates": [
           {
-            "label": "递交计划",
-            "text": "下周二之前（老师告知）",
+            "label": "考试安排",
+            "text": "待学校通知",
             "kind": "plain"
           }
         ],
-        "nextAction": "核对材料，等老师确认递交结果。"
+        "statusNote": "已报名（家长确认）",
+        "nextAction": "等待学校考试或后续安排通知。"
       },
-      notes: "2026年11月18日收到老师回复“下周二之前递交”，家长于11月20日确认计划指曾梅千禧。截图未显示消息日期，保留相对时间。当前按老师计划跟进递交，实际提交、报名开放及学位待确认。历史记录：2026年10月15日老师共享表列为11月批次，当时暂未开放，电话反馈11月再关注官网招生动态。2026年10月14日家长确认加入已选，此前老师告知当时暂无学位。"
+      notes: "2026年11月26日家长确认已报名。实际递交日期未提供，等待学校考试或后续安排通知。历史记录：11月18日收到老师回复“下周二之前递交”，家长于11月20日确认该计划指曾梅千禧，老师消息日期未确认。10月15日老师共享表曾列为11月批次，当时暂未开放；10月14日家长确认加入已选。"
     }
   },
   {

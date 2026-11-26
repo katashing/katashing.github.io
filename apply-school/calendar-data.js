@@ -36,10 +36,10 @@
       label: '书面结果', displayTime: '16日或之前', kind: 'notice', certainty: 'schedule', source: '官方通告；老师补充',
       summary: '取录与否均通知',
       note: '无论取录与否；可能提前通知。如有需要，笔试后面试，具体安排待通知。' },
-    { id: 'north03-assessment', schoolId: 'north03', date: plan('north03').assessmentDate, time: '上午（老师告知）',
-      label: '笔试', displayTime: '上午', kind: 'exam', certainty: 'schedule', source: '日期官方；时段老师告知',
-      summary: '资格、时刻待通知',
-      note: '准确时间待电邮通知；个人考试资格待确认。' },
+    { id: 'north03-assessment', schoolId: 'north03', date: plan('north03').assessmentDate, time: '具体时间待校方电邮',
+      label: '笔试', displayTime: '等电邮定时', kind: 'exam', certainty: 'schedule', source: '学校公布笔试日期；家长确认已报名',
+      summary: '已报名 · 个人通知待收',
+      note: '具体时间及报到安排待校方电邮，个人考试通知待收。' },
     { id: 'sz02-assessment', schoolId: 'sz02', date: plan('sz02').assessmentDate, time: '时间待通知',
       label: '笔试', displayTime: '等邮件定时', kind: 'exam', certainty: 'teacher_notice', source: '老师确认可参加及笔试日期；中数由家长确认',
       summary: '老师确认可笔试 · 英文/中数/语文',
@@ -55,8 +55,8 @@
     { schoolId: 'north06', summary: '2027年1月笔试 · 仅入选者，日期待定', text: '2027年1月笔试，具体日期待定；仅入选者。' },
     { schoolId: 'north04', summary: '测试待电话通知', text: '测试日期待电话通知（老师告知）。' },
     { schoolId: 'sz02', summary: '英文＋小组面试 · 日期待通知', text: '英文面试＋小组面试，日期、时间待通知。' },
-    { schoolId: 'north07', summary: '待开放 · 暂无考试安排', text: '申请待开放，尚无本轮考试安排。' },
-    { schoolId: 'hk-extra02', summary: '待递交 · 暂无考试安排', text: '老师计划递交，尚无本轮考试安排。' }
+    { schoolId: 'north07', summary: '已报名 · 等学校通知', text: '家长确认已报名；小三学位及笔试安排待学校通知。' },
+    { schoolId: 'hk-extra02', summary: '已报名 · 等学校通知', text: '家长确认已正式递交；考试或后续安排待学校通知。' }
   ];
   window.SCHOOL_CALENDAR_DATA = {
     events: events.filter(event => active(event.schoolId) && event.date).sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id)),
