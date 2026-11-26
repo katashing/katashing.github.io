@@ -205,7 +205,7 @@ window.SCHEDULE_CHECK_DATA = {
       "status": "followup",
       "issueLabel": "个人面试时段待通知",
       "message": "2026/27学年下学期插班申请表注明，12月5日（周六）插班面试，仅限获邀者，具体时段待校方通知。校方会在12月2日（周三）或之前联络获邀家长。",
-      "checkedAt": "2026-10-14",
+      "checkedAt": "2026-11-23",
       "sources": [
         {
           "title": "官方小学概览2026（基本资料，不含本轮学位确认）",
