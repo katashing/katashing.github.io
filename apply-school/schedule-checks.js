@@ -203,8 +203,8 @@ window.SCHEDULE_CHECK_DATA = {
     },
     "hk-extra02": {
       "status": "followup",
-      "issueLabel": "考试安排待通知",
-      "message": "家长确认已正式递交；考试或后续安排待学校通知。既有官方小学概览为学校基本资料。",
+      "issueLabel": "个人面试时段待通知",
+      "message": "2026/27学年下学期插班申请表注明，12月5日（周六）插班面试，仅限获邀者，具体时段待校方通知。校方会在12月2日（周三）或之前联络获邀家长。",
       "checkedAt": "2026-10-14",
       "sources": [
         {

@@ -456,17 +456,26 @@ window.SCHOOL_DATA = [
       type: "资助", gender: "男女", language: "中文", religion: "不适用",
       year: 2026, deadlineDate: "", assessmentDate: "",
       deadlineText: "", assessmentText: "", actionText: "", alias: "曾梅千禧學校",
-      status: "已提交", submissionDate: "", teacherNote: "家长确认已正式递交；实际递交日期未提供。", followupText: "等待学校考试或后续安排通知。", updateReceivedAt: "2026-11-26",
+      status: "已提交", submissionDate: "", teacherNote: "家长确认已正式递交；实际递交日期未提供。", followupText: "留意校方联络，获邀后确认面试时段。", updateReceivedAt: "2026-11-26",
+      "interviewDate": "2026-12-05",
+      "interviewNoticeDeadline": "2026-12-02",
+      "interviewNote": "12月5日（周六）插班面试，仅限获邀者，具体时段待校方通知。",
+      "dateNote": "校方会在12月2日（周三）或之前联络获邀家长。",
       tableSummary: {
         "dates": [
           {
-            "label": "考试安排",
-            "text": "待学校通知",
-            "kind": "plain"
+            "label": "插班面试",
+            "text": "12月5日（周六）· 仅限获邀者，时段待通知",
+            "kind": "assessment"
+          },
+          {
+            "label": "获邀联络",
+            "text": "12月2日（周三）或之前",
+            "kind": "date"
           }
         ],
         "statusNote": "已报名（家长确认）",
-        "nextAction": "等待学校考试或后续安排通知。"
+        "nextAction": "留意校方联络，获邀后确认面试时段。"
       },
       notes: "2026年11月26日家长确认已报名。实际递交日期未提供，等待学校考试或后续安排通知。历史记录：11月18日收到老师回复“下周二之前递交”，家长于11月20日确认该计划指曾梅千禧，老师消息日期未确认。10月15日老师共享表曾列为11月批次，当时暂未开放；10月14日家长确认加入已选。"
     }

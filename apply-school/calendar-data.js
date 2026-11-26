@@ -20,6 +20,12 @@
       label: '查询开始', kind: 'notice', certainty: 'schedule', source: '官方安排',
       summary: '评估资格及场次 · 至12/4 23:59',
       note: '查询窗口至12月4日23:59；确认个人资格及场次。' },
+    { id: 'hk-extra02-invitation-notice', schoolId: 'hk-extra02', date: plan('hk-extra02').interviewNoticeDeadline, time: '12月2日或之前',
+      label: '获邀联络', displayTime: '2日或之前', kind: 'notice', certainty: 'schedule', source: '2026/27学年下学期插班申请表',
+      summary: '校方联络获邀家长', note: '校方会在12月2日（周三）或之前联络获邀家长。' },
+    { id: 'hk-extra02-interview', schoolId: 'hk-extra02', date: plan('hk-extra02').interviewDate, time: '时段待通知',
+      label: '插班面试', kind: 'interview', certainty: 'schedule', source: '2026/27学年下学期插班申请表',
+      summary: '仅限获邀者', note: '12月5日（周六）插班面试，仅限获邀者，具体时段待校方通知。' },
     { id: 'sz01-query-end', schoolId: 'sz01', date: '2026-12-04', time: '23:59',
       label: '查询截止', kind: 'notice', certainty: 'schedule', source: '官方安排',
       summary: '评估资格及场次',
@@ -55,8 +61,7 @@
     { schoolId: 'north06', summary: '2027年1月笔试 · 仅入选者，日期待定', text: '2027年1月笔试，具体日期待定；仅入选者。' },
     { schoolId: 'north04', summary: '测试待电话通知', text: '测试日期待电话通知（老师告知）。' },
     { schoolId: 'sz02', summary: '英文＋小组面试 · 日期待通知', text: '英文面试＋小组面试，日期、时间待通知。' },
-    { schoolId: 'north07', summary: '已报名 · 等学校通知', text: '家长确认已报名；小三学位及笔试安排待学校通知。' },
-    { schoolId: 'hk-extra02', summary: '已报名 · 等学校通知', text: '家长确认已正式递交；考试或后续安排待学校通知。' }
+    { schoolId: 'north07', summary: '已报名 · 等学校通知', text: '家长确认已报名；小三学位及笔试安排待学校通知。' }
   ];
   window.SCHOOL_CALENDAR_DATA = {
     events: events.filter(event => active(event.schoolId) && event.date).sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id)),
